@@ -1,2 +1,2 @@
 # beat-bridge-mobile
-Beat Bridge Repo for the Mobile Application
+Repository for the Beat Bridge Mobile Application
