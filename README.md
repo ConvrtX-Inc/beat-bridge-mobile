@@ -1,4 +1,4 @@
-# beatbridge
+# Beat Bridge
 
 A new Flutter project.
 
