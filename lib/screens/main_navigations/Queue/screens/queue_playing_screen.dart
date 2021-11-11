@@ -1,19 +1,19 @@
 // ignore_for_file: file_names
 
 import 'package:beatbridge/models/queuePlayingModel.dart';
-import 'package:beatbridge/ui/audio_file.dart';
+import 'package:beatbridge/screens/main_navigations/Queue/widgets/audio_file.dart';
 import 'package:beatbridge/utils/constant.dart';
 import 'package:beatbridge/utils/queuePlayingScreen_mockdata.dart';
 import 'package:flutter/material.dart';
 
-class queuePlayingScreen extends StatefulWidget {
-  const queuePlayingScreen({Key? key}) : super(key: key);
+class QueuePlayingScreen extends StatefulWidget {
+  const QueuePlayingScreen({Key? key}) : super(key: key);
 
   @override
-  _queuePlayingScreenState createState() => _queuePlayingScreenState();
+  _QueuePlayingScreenState createState() => _QueuePlayingScreenState();
 }
 
-class _queuePlayingScreenState extends State<queuePlayingScreen> {
+class _QueuePlayingScreenState extends State<QueuePlayingScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final List<queuePlayingModels> playerItems =
@@ -87,10 +87,9 @@ class _queuePlayingScreenState extends State<queuePlayingScreen> {
                       image: AssetImage('assets/images/ellie.png'),
                     )),
                 child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Image.asset(Constants.image1, scale: 1.7)),
+                    alignment: Alignment.topLeft,
+                    child: Image.asset(Constants.image1, scale: 1.7)),
               ),
-              
               Constants.spacingwidth20,
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
