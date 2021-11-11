@@ -1,9 +1,9 @@
 // ignore_for_file: file_names
 
-import 'package:beatbridge/models/queuePlayingModel.dart';
+import 'package:beatbridge/models/queue_playing_model.dart';
 import 'package:beatbridge/screens/main_navigations/Queue/widgets/audio_file.dart';
 import 'package:beatbridge/utils/constant.dart';
-import 'package:beatbridge/utils/queuePlayingScreen_mockdata.dart';
+import 'package:beatbridge/utils/queue_playing_screen_mockdata.dart';
 import 'package:flutter/material.dart';
 
 class QueuePlayingScreen extends StatefulWidget {
@@ -16,7 +16,7 @@ class QueuePlayingScreen extends StatefulWidget {
 class _QueuePlayingScreenState extends State<QueuePlayingScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final List<queuePlayingModels> playerItems =
+  final List<QueuePlayingModels> playerItems =
       QueuePlayingMockdataUtils.getMockedDataQueuePlaying();
 
   @override

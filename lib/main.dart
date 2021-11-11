@@ -1,8 +1,6 @@
-import 'package:beatbridge/screens/main_navigations/Queue/screens/queue_playing_screen.dart';
+import 'package:beatbridge/configurations/routes/route_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'configurations/routes/route_generator.dart';
 
 void main() {
   runApp(const MyApp());

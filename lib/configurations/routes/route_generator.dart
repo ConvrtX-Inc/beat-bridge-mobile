@@ -19,7 +19,7 @@ class RouteGenerator {
                   splash:
                       '${AssetsPath.assetsPNGPath}/app_logo_colored_slogan.png',
                   splashIconSize: 220,
-                  duration: 5000,
+                  duration: 500000,
                   splashTransition: SplashTransition.slideTransition,
                   // pageTransitionType: PageTransitionType.scale,
                   backgroundColor: AppColorConstants.stratos,
