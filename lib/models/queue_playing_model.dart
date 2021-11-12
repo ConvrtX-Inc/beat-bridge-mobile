@@ -1,9 +1,9 @@
 import 'dart:ui';
 
-/// Class for Queue playing screen items
-class queuePlayingModels {
+/// Class for queue playing screen items
+class QueuePlayingModels {
   /// Constructor
-  queuePlayingModels({
+  QueuePlayingModels({
     required this.id,
     required this.title,
     required this.name,
