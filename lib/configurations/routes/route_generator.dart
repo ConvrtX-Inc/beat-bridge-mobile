@@ -3,7 +3,9 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/constants/asset_path.dart';
 import 'package:beatbridge/screens/main_navigations/Queue/screens/queue_playing_screen.dart';
+import 'package:beatbridge/screens/splashes/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 /// Route generator configuration
 class RouteGenerator {
@@ -14,17 +16,7 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute<dynamic>(
-            builder: (_) => AnimatedSplashScreen(
-                  splash:
-                      '${AssetsPath.assetsPNGPath}/app_logo_colored_slogan.png',
-                  splashIconSize: 220,
-                  duration: 5000,
-                  splashTransition: SplashTransition.slideTransition,
-                  // pageTransitionType: PageTransitionType.scale,
-                  backgroundColor: AppColorConstants.stratos,
-                  nextScreen: const QueuePlayingScreen(),
-                ));
+        return MaterialPageRoute<dynamic>(builder: (_) => const SplashScreen());
       case '/queue_playing_screen':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const QueuePlayingScreen());

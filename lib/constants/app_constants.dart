@@ -10,8 +10,8 @@ class AppColorConstants {
   const AppColorConstants();
 
   /// Returns blue berry color
-  static const Color _stratos = Color(0xFF00063F);
+  static const Color _darkNavy = Color(0xFF020738);
 
   /// get blue berry color
-  static Color get stratos => _stratos;
+  static Color get darkNavy => _darkNavy;
 }

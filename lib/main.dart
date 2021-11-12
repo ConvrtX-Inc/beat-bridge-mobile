@@ -1,11 +1,12 @@
-import 'package:beatbridge/screens/main_navigations/Queue/screens/queue_playing_screen.dart';
+import 'package:beatbridge/configurations/routes/route_generator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'configurations/routes/route_generator.dart';
-
-void main() {
+void main() async {
   runApp(const MyApp());
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+      overlays: <SystemUiOverlay>[]);
 }
 
 /// Entry point of the app
