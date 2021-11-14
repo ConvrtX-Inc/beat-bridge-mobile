@@ -27,6 +27,7 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColorConstants.midnightPurple,
       body: Stack(
         children: <Widget>[
           PageView.builder(

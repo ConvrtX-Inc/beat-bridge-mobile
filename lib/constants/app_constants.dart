@@ -20,6 +20,12 @@ class AppColorConstants {
 
   /// get blue berry color
   static Color get dodgerBlue => _dodgerBlue;
+
+  /// Returns midnight purpose color
+  static const Color _midnightPurple = Color(0xFF1D0235);
+
+  /// get blue berry color
+  static Color get midnightPurple => _midnightPurple;
 }
 
 /// Class for app text constants

@@ -112,6 +112,7 @@ class ButtonAppRoundedButton extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w800,
+                        fontFamily: 'Gilroy-bold',
                         letterSpacing: 1.w,
                         color: _buttonColor,
                       ),
