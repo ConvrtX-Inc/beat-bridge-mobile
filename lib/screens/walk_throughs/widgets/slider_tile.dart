@@ -1,5 +1,6 @@
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/widgets/images/static_image_background.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -15,9 +16,13 @@ class SliderTile extends StatelessWidget {
     this.bottomHeaderText = '',
     this.headerImagePath = '',
     this.buttonText = '',
+    this.isLogin = false,
   }) : super(key: key);
 
+  /// index and additional height
   final int index;
+
+  /// Strings for path and images
   final String backgroundImagePath,
       logoImagePath,
       topHeaderText,
@@ -25,6 +30,8 @@ class SliderTile extends StatelessWidget {
       headerImagePath,
       buttonText;
 
+  /// Check if is for login
+  final bool isLogin;
   @override
   Widget build(BuildContext context) {
     return ImageStaticBackground(
@@ -55,12 +62,56 @@ class SliderTile extends StatelessWidget {
                           color: Colors.white,
                           fontSize: 20),
                     ),
-                    SizedBox(height: 126.h),
+                    SizedBox(height: isLogin ? 142.h : 126.h),
+                    if (isLogin)
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/login_input');
+                        },
+                        child: Center(
+                          child: RichText(
+                              text: TextSpan(
+                            text: AppTextConstants.alreadyAMember.toUpperCase(),
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 1,
+                                fontFamily: 'Gilroy'),
+                            children: [
+                              TextSpan(
+                                text:
+                                    ' ${AppTextConstants.logIn.toUpperCase()}',
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w900,
+                                    decoration: TextDecoration.underline,
+                                    letterSpacing: 1.4,
+                                    fontFamily: 'Gilroy'),
+                              ),
+                            ],
+                          )),
+                        ),
+                      ),
                   ]),
               Positioned(top: 72, left: 0, child: Image.asset(logoImagePath)),
             ],
           )),
       imagePath: backgroundImagePath,
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IntProperty('index', index));
+    properties.add(StringProperty('backgroundImagePath', backgroundImagePath));
+    properties.add(StringProperty('logoImagePath', logoImagePath));
+    properties.add(StringProperty('topHeaderText', topHeaderText));
+    properties.add(StringProperty('bottomHeaderText', bottomHeaderText));
+    properties.add(StringProperty('headerImagePath', headerImagePath));
+    properties.add(StringProperty('buttonText', buttonText));
+    properties.add(DiagnosticsProperty<bool>('isLogin', isLogin));
   }
 }

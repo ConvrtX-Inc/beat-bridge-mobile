@@ -1,11 +1,10 @@
 // ignore_for_file: avoid_classes_with_only_static_members
-import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:beatbridge/constants/app_constants.dart';
-import 'package:beatbridge/constants/asset_path.dart';
+import 'package:beatbridge/screens/auths/logins/screens/login.dart';
+import 'package:beatbridge/screens/auths/logins/screens/login_input.dart';
+import 'package:beatbridge/screens/auths/registers/screens/register.dart';
 import 'package:beatbridge/screens/main_navigations/Queue/screens/queue_playing_screen.dart';
 import 'package:beatbridge/screens/splashes/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 
 /// Route generator configuration
 class RouteGenerator {
@@ -17,6 +16,14 @@ class RouteGenerator {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute<dynamic>(builder: (_) => const SplashScreen());
+      case '/login':
+        return MaterialPageRoute<dynamic>(builder: (_) => const LoginScreen());
+      case '/login_input':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const LoginInputScreen());
+      case '/register':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const RegisterInputScreen());
       case '/queue_playing_screen':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const QueuePlayingScreen());

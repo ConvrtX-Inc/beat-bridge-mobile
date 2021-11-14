@@ -70,9 +70,13 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
                     ? AppTextConstants.getStarted
                     : AppTextConstants.next,
                 buttonCallback: () {
-                  sliderController.animateToPage(currentIndex + 1,
-                      duration: const Duration(milliseconds: 200),
-                      curve: Curves.linear);
+                  if (currentIndex == walkThroughData.length - 1) {
+                    Navigator.of(context).pushNamed('/login');
+                  } else {
+                    sliderController.animateToPage(currentIndex + 1,
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.linear);
+                  }
                 },
               ),
             ),

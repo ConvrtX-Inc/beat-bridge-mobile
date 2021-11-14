@@ -7,8 +7,6 @@ import 'package:beatbridge/models/walk_through_model.dart';
 class StaticDataService {
   /// Constructor
   static List<WalkThroughModel> getMockedDataWalkThrough() {
-    print(
-        '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.appLogoWhite}');
     return <WalkThroughModel>[
       WalkThroughModel(
         logoImagePath:

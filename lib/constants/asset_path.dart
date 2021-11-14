@@ -49,4 +49,7 @@ class AssetsNameConstants {
 
   /// returns walk through background 1 file name
   static const String walkThroughBackground3 = 'walk_through_background_3.png';
+
+  /// returns login colored text
+  static const String loginColoredText = 'login_colored_text.png';
 }
