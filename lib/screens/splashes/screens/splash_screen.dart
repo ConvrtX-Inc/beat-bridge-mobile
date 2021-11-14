@@ -1,7 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/constants/asset_path.dart';
-import 'package:beatbridge/screens/walk_throughs/screens/walk_through_1.dart';
+import 'package:beatbridge/screens/walk_throughs/screens/walk_through.dart';
 import 'package:beatbridge/widgets/images/static_image_background.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -26,9 +25,9 @@ class SplashScreen extends StatelessWidget {
                   splash: Image.asset(
                       '${AssetsPathConstants.assetsPNGPath}/app_logo_colored_slogan.png'),
                   splashIconSize: 220,
-                  nextScreen: const WalkThrough1Screen(),
+                  nextScreen: const WalkThroughScreen(),
                   splashTransition: SplashTransition.fadeTransition,
-                  pageTransitionType: PageTransitionType.fade,
+                  pageTransitionType: PageTransitionType.rightToLeftWithFade,
                 ),
               ),
             ],

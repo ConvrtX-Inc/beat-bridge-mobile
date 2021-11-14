@@ -25,4 +25,28 @@ class AssetsNameConstants {
 
   /// returns app logo colored slogan file name
   static const String appLogoColoredSlogan = 'app_logo_colored_slogan.png';
+
+  /// returns app logo white file name
+  static const String appLogoWhite = 'app_logo_white.png';
+
+  /// returns walk through colored text 1 file name
+  static const String walkThroughColoredText1 =
+      'walk_through_colored_text_1.png';
+
+  /// returns walk through colored text 2 file name
+  static const String walkThroughColoredText2 =
+      'walk_through_colored_text_2.png';
+
+  /// returns walk through colored text 3 file name
+  static const String walkThroughColoredText3 =
+      'walk_through_colored_text_3.png';
+
+  /// returns walk through background 1 file name
+  static const String walkThroughBackground1 = 'walk_through_background_1.png';
+
+  /// returns walk through background 2 file name
+  static const String walkThroughBackground2 = 'walk_through_background_2.png';
+
+  /// returns walk through background 1 file name
+  static const String walkThroughBackground3 = 'walk_through_background_3.png';
 }
