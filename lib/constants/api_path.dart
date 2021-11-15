@@ -17,8 +17,8 @@ class AppAPIPath {
   static String apiBaseUrl = '192.168.68.116:3000';
 
   /// Returns login url
-  static String loginUrl = '/api/v1/auth/email/login';
+  static String loginUrl = 'api/v1/auth/email/login';
 
   /// Returns register url
-  static String registerUrl = '/api/v1/auth/email/register';
+  static String registerUrl = 'api/v1/auth/username/register';
 }

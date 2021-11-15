@@ -50,6 +50,14 @@ class AssetsNameConstants {
   /// returns walk through background 1 file name
   static const String walkThroughBackground3 = 'walk_through_background_3.png';
 
-  /// returns login colored text
+  /// returns login colored text file name
   static const String loginColoredText = 'login_colored_text.png';
+
+  /// returns link landing page header image file name
+  static const String linkLandingPageHeaderImage =
+      'link_landing_page_image.png';
+
+  /// returns link landing page success image file name
+  static const String linkLandingPageSuccessImage =
+      'link_landing_page_success_image.png';
 }

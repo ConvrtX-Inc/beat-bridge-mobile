@@ -1,3 +1,4 @@
+import 'package:beatbridge/constants/app_constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -112,7 +113,7 @@ class ButtonAppRoundedButton extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w800,
-                        fontFamily: 'Gilroy-bold',
+                        fontFamily: AppTextConstants.gilroyBold,
                         letterSpacing: 1.w,
                         color: _buttonColor,
                       ),

@@ -1,6 +1,8 @@
 // ignore_for_file: avoid_classes_with_only_static_members
+
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded.dart';
+import 'package:beatbridge/widgets/buttons/app_button_rounded_gradient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,7 +30,7 @@ class FormHelper {
           style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w700,
-              fontFamily: 'Gilroy-bold',
+              fontFamily: AppTextConstants.gilroyBold,
               color: Colors.white),
         ),
         SizedBox(height: separatorHeight.h),
@@ -76,5 +78,20 @@ class FormHelper {
         buttonCallback: () {
           onTap();
         });
+  }
+
+  /// Widget for logins button form
+  static Widget buttonWidgetGradient(
+    String buttonText,
+    Function onTap,
+    bool isLoading,
+  ) {
+    return ButtonRoundedGradient(
+      isLoading: isLoading,
+      buttonText: buttonText,
+      buttonCallback: () {
+        onTap();
+      },
+    );
   }
 }

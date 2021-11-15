@@ -117,4 +117,45 @@ class AppTextConstants {
 
   /// Returns submit text
   static String submit = 'Submit';
+
+  /// Returns please wait text
+  static String pleaseWait = 'Please wait...';
+
+  /// Returns password and confirm password does not match text
+  static String passwordDoesNotMatch =
+      'Password and Confirm password does not match';
+
+  /// Returns cannot be empty text
+  static String cannotBeEmpty = 'cannot be empty';
+
+  /// Returns must be at least 6 characters text
+  static String mustBeAtLeast6Chars = 'must be at least 6 characters';
+
+  /// Returns invalid email format text
+  static String invalidEmailFormat = 'Invalid email format';
+
+  /// Returns already exists text
+  static String alreadyExists = 'already exists!';
+
+  /// Returns bullet text
+  static String bullet = '\u2022 ';
+
+  /// Returns bigger bullet text
+  static String biggerBullet = '●';
+
+  /// Returns hey text
+  static String hey = 'Hey';
+
+  /// Returns Gilroy bold text
+  static String gilroyBold = 'Gilroy-bold';
+
+  /// Returns account has been created text
+  static String accountHasBeenCreated =
+      'Your Account Has Been \nCreated, Now Lets Link Your Music';
+
+  /// Returns link my music text
+  static String linkMyMusic = 'Link my music';
+
+  /// Returns skip for now text
+  static String skipForNow = 'Skip for now so this later';
 }
