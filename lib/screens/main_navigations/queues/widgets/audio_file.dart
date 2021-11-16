@@ -4,7 +4,7 @@ import 'package:beatbridge/utils/constant.dart';
 import 'package:flutter/material.dart';
 // import 'package:audioplayers/audioplayers.dart';
 
-/// Audio file for queue playing screen
+/// Audio file for queues playing screen
 class AudioFile extends StatefulWidget {
   /// constructor
   const AudioFile({Key? key}) : super(key: key);
@@ -48,8 +48,8 @@ class _AudioFileState extends State<AudioFile>
   void initState() {
     // TODO: implement initState
     super.initState();
-    iconController =
-        AnimationController(vsync: this, duration: const Duration(milliseconds: 100));
+    iconController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 100));
 
     iconController.forward().then((value) async {
       await Future.delayed(const Duration(seconds: 1));
@@ -115,28 +115,28 @@ class _AudioFileState extends State<AudioFile>
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             InkWell(
-              onTap: (){},
+              onTap: () {},
               child: Image.asset(Constants.shuffle),
             ),
             InkWell(
-              onTap: (){},
+              onTap: () {},
               child: Image.asset(Constants.default2),
             ),
             InkWell(
-              onTap: (){},
+              onTap: () {},
               child: Image.asset(Constants.previous),
             ),
             Container(
               width: 60,
               height: 60,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                          colors: <Color>[
-                            Constants.lightviolet,
-                            Constants.lightred,
-                          ],
-                        ),
-                shape: BoxShape.circle),
+                  gradient: LinearGradient(
+                    colors: <Color>[
+                      Constants.lightviolet,
+                      Constants.lightred,
+                    ],
+                  ),
+                  shape: BoxShape.circle),
               child: Center(
                 child: GestureDetector(
                   // ignore: unnecessary_lambdas
@@ -168,15 +168,15 @@ class _AudioFileState extends State<AudioFile>
               ),
             ),
             InkWell(
-              onTap: (){},
+              onTap: () {},
               child: Image.asset(Constants.forward),
             ),
             InkWell(
-              onTap: (){},
+              onTap: () {},
               child: Image.asset(Constants.skip),
             ),
             InkWell(
-              onTap: (){},
+              onTap: () {},
               child: Image.asset(Constants.volume),
             )
           ],

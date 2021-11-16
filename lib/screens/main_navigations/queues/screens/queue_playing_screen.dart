@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:beatbridge/models/queue_playing_model.dart';
-import 'package:beatbridge/screens/main_navigations/Queue/widgets/audio_file.dart';
+import 'package:beatbridge/screens/main_navigations/queues/widgets/audio_file.dart';
 import 'package:beatbridge/utils/constant.dart';
 import 'package:beatbridge/utils/queue_playing_screen_mockdata.dart';
 import 'package:flutter/material.dart';
