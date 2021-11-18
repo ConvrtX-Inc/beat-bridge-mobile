@@ -60,4 +60,19 @@ class AssetsNameConstants {
   /// returns link landing page success image file name
   static const String linkLandingPageSuccessImage =
       'link_landing_page_success_image.png';
+
+  /// returns spotify logo image file name
+  static const String spotifyLogoImage = 'spotify_logo.png';
+
+  /// returns sound cloud logo image file name
+  static const String soundCloudLogoImage = 'sound_cloud_logo.png';
+
+  /// returns itunes  logo image file name
+  static const String itunesLogoImage = 'itunes_logo.png';
+
+  /// returns own music  logo image file name
+  static const String ownMusicLogoImage = 'own_music_logo.png';
+
+  /// returns own play button   image file name
+  static const String playButtonImage = 'play_btn.png';
 }
