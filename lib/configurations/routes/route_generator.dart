@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_classes_with_only_static_members
-import 'package:beatbridge/screens/auths/forgot_password/new_password.dart';
-import 'package:beatbridge/screens/auths/forgot_password/verification_code.dart';
-import 'package:beatbridge/screens/auths/forgot_password/verify_email.dart';
+import 'package:beatbridge/screens/auths/forgot_password/screens/new_password.dart';
+import 'package:beatbridge/screens/auths/forgot_password/screens/verification_code.dart';
+import 'package:beatbridge/screens/auths/forgot_password/screens/verify_email.dart';
 import 'package:beatbridge/screens/auths/logins/screens/login.dart';
 import 'package:beatbridge/screens/auths/logins/screens/login_input.dart';
 import 'package:beatbridge/screens/auths/registers/screens/register.dart';
