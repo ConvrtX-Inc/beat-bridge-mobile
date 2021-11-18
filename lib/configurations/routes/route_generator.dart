@@ -1,4 +1,7 @@
 // ignore_for_file: avoid_classes_with_only_static_members
+import 'package:beatbridge/screens/auths/forgot_password/new_password.dart';
+import 'package:beatbridge/screens/auths/forgot_password/verification_code.dart';
+import 'package:beatbridge/screens/auths/forgot_password/verify_email.dart';
 import 'package:beatbridge/screens/auths/logins/screens/login.dart';
 import 'package:beatbridge/screens/auths/logins/screens/login_input.dart';
 import 'package:beatbridge/screens/auths/registers/screens/register.dart';
@@ -19,6 +22,15 @@ class RouteGenerator {
         return MaterialPageRoute<dynamic>(builder: (_) => const SplashScreen());
       case '/login':
         return MaterialPageRoute<dynamic>(builder: (_) => const LoginScreen());
+      case '/verify_email':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const VerifyEmailScreen());
+      case '/new_password':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const NewPasswordScreen());
+      case '/verification_code':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const VerificationCodeScreen());
       case '/login_input':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const LoginInputScreen());

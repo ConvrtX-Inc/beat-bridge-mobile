@@ -24,7 +24,7 @@ class ButtonRoundedGradient extends StatelessWidget {
   final Color buttonTextColor;
 
   /// function to call for navigation between screens
-  final dynamic buttonCallback;
+  final VoidCallback? buttonCallback;
 
   @override
   Widget build(BuildContext context) {

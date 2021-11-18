@@ -23,8 +23,17 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
             fontFamily: 'Gilroy',
+            pageTransitionsTheme: const PageTransitionsTheme(
+              builders: <TargetPlatform, PageTransitionsBuilder>{
+                TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+                TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+              },
+            ),
           ),
-          initialRoute: '/',
+          //TODO: bring back initial route to '/'
+
+          // initialRoute: '/',
+          initialRoute: '/verification_code',
           onGenerateRoute: RouteGenerator.generateRoute),
       designSize: const Size(375, 812),
     );

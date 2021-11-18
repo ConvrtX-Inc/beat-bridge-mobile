@@ -91,6 +91,25 @@ class AppTextConstants {
   /// Returns already a member text
   static String alreadyAMember = 'Already a member?';
 
+  /// Returns Verify your Email
+  static String verifyEmail = 'Verify Email';
+
+  /// Returns Email
+  static String email = 'Email';
+
+  /// Returns Please verify your email address here.
+  static String verifyEmailDescription =
+      'Please verify your email address here.';
+
+  /// Returns Please enter email here.
+  static String enterEmail = 'Enter your email here...';
+
+  /// Returns Enter new Password.
+  static String enterNewPasswordTitle = 'Enter new password';
+
+  /// Returns New Password.
+  static String newPassword = 'New Password';
+
   /// Returns login text
   static String login = 'Login';
 
@@ -124,6 +143,16 @@ class AppTextConstants {
   /// Returns password and confirm password does not match text
   static String passwordDoesNotMatch =
       'Password and Confirm password does not match';
+
+  /// Returns Verification Code text
+  static String verificationCodeTitle = 'Verification Code';
+
+  /// Returns Check your email for verification code that we sent to you text
+  static String verificationCodeDescription =
+      'Check your email for verification code that we sent to you';
+
+  /// Returns Resend Code? text
+  static String resendCode = 'Resend Code?';
 
   /// Returns cannot be empty text
   static String cannotBeEmpty = 'cannot be empty';
