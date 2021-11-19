@@ -16,48 +16,18 @@ class _StepOneState extends State<StepOne> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColorConstants.mirage,
-      body: Padding(
+      body:
+      SingleChildScrollView(child:Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(
+          child:
+        Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 41.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 7.w),
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back_ios,
-                      color: Colors.white, size: 15.w),
-                  onPressed: () {},
-                ),
-              ),
-              SizedBox(height: 26.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 11.w),
-                child: Text(
-                  AppTextConstants.makeYourQueue,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: AppColorConstants.roseWhite,
-                      fontSize: 30),
-                ),
-              ),
-              SizedBox(height: 45.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 11.w),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        'STEP 1/5',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color:
-                                AppColorConstants.roseWhite.withOpacity(0.64),
-                            letterSpacing: 4),
-                      ),
-                      SizedBox(
-                        height: 8.h,
-                      ),
                       Text(AppTextConstants.enterYourQueueName,
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
@@ -88,7 +58,7 @@ class _StepOneState extends State<StepOne> {
                     ]),
               )
             ],
-          )),
+          ))),
     );
   }
 }

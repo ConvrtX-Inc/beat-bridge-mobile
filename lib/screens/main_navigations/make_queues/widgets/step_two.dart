@@ -14,7 +14,6 @@ class StepTwo extends StatefulWidget {
 }
 
 class _StepTwoState extends State<StepTwo> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final List<MusicPlatformModel> musicPlatforms =
       StaticDataService.getMusicPlatformModel();
@@ -23,8 +22,7 @@ class _StepTwoState extends State<StepTwo> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColorConstants.mirage,
-        key: _scaffoldKey,
-        body: Stack(children: <Widget>[
+        body: SingleChildScrollView( child: Stack(children: <Widget>[
           Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -33,41 +31,6 @@ class _StepTwoState extends State<StepTwo> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(height: 41.h),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 7.w),
-                          child: IconButton(
-                            icon: Icon(Icons.arrow_back_ios,
-                                color: Colors.white, size: 15.w),
-                            onPressed: () {},
-                          ),
-                        ),
-                        SizedBox(height: 26.h),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 11.w),
-                          child: Text(
-                            AppTextConstants.makeYourQueue,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: AppColorConstants.roseWhite,
-                                fontSize: 30),
-                          ),
-                        ),
-                        SizedBox(height: 45.h),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 11.w),
-                          child: Text(
-                            'STEP 2/5',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppColorConstants.roseWhite
-                                    .withOpacity(0.64),
-                                letterSpacing: 4),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 8.h,
-                        ),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 11.w),
                           child: Text(AppTextConstants.letsAddMusic,
@@ -85,28 +48,19 @@ class _StepTwoState extends State<StepTwo> {
                     children: musicPlatforms.map((p) {
                   return _musicPlatformItems(context, p.index);
                 }).toList()),
+
+                Padding(
+                  padding:
+                  EdgeInsets.symmetric(horizontal: 27.w, vertical: 16.h),
+                  child: ButtonRoundedGradient(
+                    buttonText: AppTextConstants.continueTxt,
+                    buttonCallback: () {
+                      widget.onStepTwoDone();
+                    },
+                  ),
+                ),
               ]),
-          Positioned(
-              bottom: 32.h,
-              child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 11.w),
-                            child: ButtonRoundedGradient(
-                              buttonText: AppTextConstants.continueTxt,
-                              buttonCallback: () {
-                                widget.onStepTwoDone();
-                              },
-                            ),
-                          ),
-                        ],
-                      )))),
-        ]));
+        ])));
   }
 
   Widget _musicPlatformItems(BuildContext context, int index) {
