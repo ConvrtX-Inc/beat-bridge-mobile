@@ -3,6 +3,7 @@ import 'package:beatbridge/screens/auths/logins/screens/login.dart';
 import 'package:beatbridge/screens/auths/logins/screens/login_input.dart';
 import 'package:beatbridge/screens/auths/registers/screens/register.dart';
 import 'package:beatbridge/screens/main_navigations/links/screens/link_landing_page.dart';
+import 'package:beatbridge/screens/main_navigations/make_queues/screens/make_queue_screen.dart';
 import 'package:beatbridge/screens/main_navigations/queues/screens/queue_playing_screen.dart';
 import 'package:beatbridge/screens/splashes/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,9 @@ class RouteGenerator {
       case '/queue_playing_screen':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const QueuePlayingScreen());
+      case '/make_your_queue_screen':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const MakeYourQueueScreen());
       default:
         return _errorRoute();
     }

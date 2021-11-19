@@ -158,4 +158,37 @@ class AppTextConstants {
 
   /// Returns skip for now text
   static String skipForNow = 'Skip for now so this later';
+
+  /// Returns make your queue text
+  static String makeYourQueue = 'Make Your Queue';
+
+  /// Returns enter your queue name text
+  static String enterYourQueueName = 'Enter your queue name';
+
+  ///Returns eg. beatbridge favorite text
+  static String egBeatBridgeFavorite = 'Eg: Beatbridge Favorite';
+
+  ///Returns continue text
+  static String continueTxt = 'Continue';
+
+  ///Returns let's add music text
+  static String letsAddMusic = "Let's add music";
+
+  ///Returns spotify text
+  static String spotify = 'Spotify';
+
+  ///Returns sound cloud text
+  static String soundCloud = 'Sound Cloud';
+
+  ///Returns itunes text
+  static String itunes = 'ITunes';
+
+  /// Returns add your own text
+  static String addYourOwn = 'Add Your Own';
+
+  /// Returns recently played text
+  static String recentlyPlayed = 'Recently Played';
+
+  /// Returns see all text
+  static String seeAll = 'SEE ALL';
 }
