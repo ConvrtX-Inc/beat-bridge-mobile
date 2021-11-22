@@ -32,8 +32,7 @@ class MyApp extends StatelessWidget {
           ),
           //TODO: bring back initial route to '/'
 
-          // initialRoute: '/',
-          initialRoute: '/verification_code',
+          initialRoute: '/test_spotify',
           onGenerateRoute: RouteGenerator.generateRoute),
       designSize: const Size(375, 812),
     );
