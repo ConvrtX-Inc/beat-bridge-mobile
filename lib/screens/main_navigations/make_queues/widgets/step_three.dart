@@ -1,14 +1,15 @@
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/constants/asset_path.dart';
 import 'package:beatbridge/models/recently_played_model.dart';
+import 'package:beatbridge/screens/main_navigations/make_queues/screens/make_queue_screen.dart';
 import 'package:beatbridge/utils/recently_played_mock_data.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded_gradient.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StepThree extends StatefulWidget {
   const StepThree({Key? key, required this.onStepThreeDone}) : super(key: key);
-
   final void Function() onStepThreeDone;
 
   @override
@@ -47,13 +48,18 @@ class _StepThreeState extends State<StepThree> {
                                           fontSize: 22)),
                                   Padding(
                                       padding:
-                                          EdgeInsets.symmetric(horizontal: 8.w),
+                                          EdgeInsets.symmetric(horizontal: 6.w),
                                       child: Image.asset(
-                                        '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.spotifyLogoImage}',
+                                        MakeYourQueueScreen.of(context)
+                                            .selectedPlatform
+                                            .logoImagePath,
                                         height: 24,
                                         width: 24,
                                       )),
-                                  Text('${AppTextConstants.spotify}',
+                                  Text(
+                                      MakeYourQueueScreen.of(context)
+                                          .selectedPlatform
+                                          .name,
                                       style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                           color: AppColorConstants.roseWhite,
@@ -66,7 +72,7 @@ class _StepThreeState extends State<StepThree> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text('${AppTextConstants.recentlyPlayed}',
+                                  Text(AppTextConstants.recentlyPlayed,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: AppColorConstants.roseWhite
@@ -74,7 +80,7 @@ class _StepThreeState extends State<StepThree> {
                                           fontSize: 22)),
                                   TextButton(
                                       onPressed: () {},
-                                      child: Text('${AppTextConstants.seeAll}',
+                                      child: Text(AppTextConstants.seeAll,
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color:
@@ -173,7 +179,11 @@ class _StepThreeState extends State<StepThree> {
               scale: 1.5,
               child: Checkbox(
                   value: recentlyPlayedItems[index].isSelected,
-                  onChanged: (bool? value) {},
+                  onChanged: (bool? value) {
+                    setState(() {
+                      recentlyPlayedItems[index].isSelected = value!;
+                    });
+                  },
                   checkColor: AppColorConstants.rubberDuckyYellow,
                   fillColor: MaterialStateProperty.resolveWith(getColor),
                   side: MaterialStateBorderSide.resolveWith(
@@ -187,5 +197,11 @@ class _StepThreeState extends State<StepThree> {
         ],
       )
     ]);
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IterableProperty<RecentlyPlayedModel>('recentlyPlayedItems', recentlyPlayedItems));
   }
 }

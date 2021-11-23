@@ -5,13 +5,26 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StepOne extends StatefulWidget {
   const StepOne({Key? key, required this.onStepOneDone}) : super(key: key);
-  final void Function() onStepOneDone;
+  final void Function(String queueName) onStepOneDone;
+
+
 
   @override
   _StepOneState createState() => _StepOneState();
 }
 
 class _StepOneState extends State<StepOne> {
+
+  final queueNameTxtController =  TextEditingController();
+
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    queueNameTxtController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +50,8 @@ class _StepOneState extends State<StepOne> {
                         height: 20.h,
                       ),
                       TextField(
+
+                        controller: queueNameTxtController,
                         decoration: InputDecoration(
                             hintText: AppTextConstants.egBeatBridgeFavorite,
                             hintStyle: TextStyle(
@@ -47,12 +62,13 @@ class _StepOneState extends State<StepOne> {
                                 borderSide: BorderSide(
                                     color: AppColorConstants.roseWhite
                                         .withOpacity(0.55)))),
+                        style:TextStyle(color: AppColorConstants.roseWhite),
                       ),
                       SizedBox(height: 60.h),
                       ButtonRoundedGradient(
                         buttonText: AppTextConstants.continueTxt,
                         buttonCallback: () {
-                          widget.onStepOneDone();
+                          widget.onStepOneDone(queueNameTxtController.text);
                         },
                       )
                     ]),

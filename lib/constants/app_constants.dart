@@ -191,4 +191,32 @@ class AppTextConstants {
 
   /// Returns see all text
   static String seeAll = 'SEE ALL';
+
+  ///Returns add friends text
+  static String addFriends = 'Add Friends';
+
+  ///Returns make admin text
+  static String makeAdmin = 'Make Admin';
+
+  ///Returns connect with bluetooth text
+  static String connectWithBluetooth = 'Connect With Bluetooth';
+
+  ///Returns bluetooth text
+  static String bluetooth = 'Bluetooth';
+
+  ///Returns discoverable as text
+  static String discoverableAs = 'Discoverable As';
+
+  ///Returns my devices text
+  static String myDevices = 'My Devices';
+
+  /// Returns connected text
+  static String connected = 'Connected';
+
+  /// Returns not connected text
+  static String notConnected = 'Not Connected';
+
+  ///Returns all done text
+  static String allDone = 'All Done';
+
 }

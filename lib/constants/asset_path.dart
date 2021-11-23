@@ -73,6 +73,12 @@ class AssetsNameConstants {
   /// returns own music  logo image file name
   static const String ownMusicLogoImage = 'own_music_logo.png';
 
-  /// returns own play button   image file name
+  /// returns play button   image file name
   static const String playButtonImage = 'play_btn.png';
+
+  /// returns bluetooth active image file name
+  static const String bluetoothActiveImage = 'bluetooth_active.png';
+
+  /// returns bluetooth inactive image file name
+  static const String bluetoothInActiveImage = 'bluetooth_inactive.png';
 }

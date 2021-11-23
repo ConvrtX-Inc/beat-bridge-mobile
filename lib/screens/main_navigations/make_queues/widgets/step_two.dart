@@ -1,5 +1,6 @@
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/models/music_platform_model.dart';
+import 'package:beatbridge/screens/main_navigations/make_queues/screens/make_queue_screen.dart';
 import 'package:beatbridge/utils/services/static_data_service.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded_gradient.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class _StepTwoState extends State<StepTwo> {
 
   final List<MusicPlatformModel> musicPlatforms =
       StaticDataService.getMusicPlatformModel();
+      String selectedPlatform ='';
 
   @override
   Widget build(BuildContext context) {
@@ -114,8 +116,12 @@ class _StepTwoState extends State<StepTwo> {
                     Transform.scale(
                         scale: 1.5,
                         child: Checkbox(
-                            value: musicPlatforms[index].isSelected,
-                            onChanged: (bool? value) {},
+                            value: musicPlatforms[index].name == MakeYourQueueScreen.of(context).selectedPlatform.name,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                MakeYourQueueScreen.of(context).selectedPlatform = musicPlatforms[index];
+                              });
+                            },
                             checkColor: AppColorConstants.rubberDuckyYellow,
                             fillColor:
                                 MaterialStateProperty.resolveWith(getColor),
