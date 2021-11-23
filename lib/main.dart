@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
             fontFamily: 'Gilroy',
           ),
-          initialRoute: '/',
+          initialRoute: '/make_your_queue_screen',
           onGenerateRoute: RouteGenerator.generateRoute),
       designSize: const Size(375, 812),
     );
