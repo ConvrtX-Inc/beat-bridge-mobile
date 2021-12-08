@@ -1,34 +1,45 @@
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/constants/asset_path.dart';
 import 'package:beatbridge/models/my_devices_model.dart';
-import 'package:beatbridge/utils/my_devices_mock_data.dart';
+import 'package:beatbridge/utils/services/static_data_service.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded_gradient.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 
+///Step five
 class StepFive extends StatefulWidget {
-  const StepFive({Key? key, required this.onStepFiveDone}) : super(key: key);
+  ///Constructor
+  const StepFive({required this.onStepFiveDone, Key? key}) : super(key: key);
+
+  ///Callback
   final void Function() onStepFiveDone;
 
   @override
   _StepFiveState createState() => _StepFiveState();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(ObjectFlagProperty<void Function()>.has(
+        'onStepFiveDone', onStepFiveDone));
+  }
 }
 
 class _StepFiveState extends State<StepFive> {
   bool isBluetoothOn = true;
 
-  final List<MyDevicesModel> myDevicesList =
-      MyDevicesMockDataUtils().getMyDevicesMockData();
+  final List<MyDevicesModel> myDevicesList = StaticDataService.getMyDevicesMockData();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColorConstants.mirage,
-        body: SingleChildScrollView(child: _stepFiveUI(context)));
+        body: SingleChildScrollView(child: buildStepFiveUI(context)));
   }
 
-  _stepFiveUI(BuildContext context) {
+  Widget buildStepFiveUI(BuildContext context) {
     return Column(children: <Widget>[
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -39,7 +50,7 @@ class _StepFiveState extends State<StepFive> {
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 0, 0, 14.h),
-                    child: Text('${AppTextConstants.connectWithBluetooth}',
+                    child: Text(AppTextConstants.connectWithBluetooth,
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             color: AppColorConstants.roseWhite,
@@ -54,7 +65,7 @@ class _StepFiveState extends State<StepFive> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text('${AppTextConstants.bluetooth}',
+                              Text(AppTextConstants.bluetooth,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       color: AppColorConstants.roseWhite
@@ -74,8 +85,8 @@ class _StepFiveState extends State<StepFive> {
                             valueFontSize: 15,
                             toggleSize: 35,
                             value: isBluetoothOn,
-                            borderRadius: 30.0,
-                            onToggle: (val) {
+                            borderRadius: 30,
+                            onToggle: (bool val) {
                               setState(() {
                                 isBluetoothOn = val;
                               });
@@ -88,7 +99,7 @@ class _StepFiveState extends State<StepFive> {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text('${AppTextConstants.myDevices}',
+                        Text(AppTextConstants.myDevices,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: AppColorConstants.roseWhite
@@ -96,7 +107,7 @@ class _StepFiveState extends State<StepFive> {
                                 fontSize: 22)),
                         TextButton(
                             onPressed: () {},
-                            child: Text('${AppTextConstants.seeAll}',
+                            child: Text(AppTextConstants.seeAll,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: AppColorConstants.roseWhite,
@@ -108,11 +119,11 @@ class _StepFiveState extends State<StepFive> {
           padding: EdgeInsets.symmetric(horizontal: 27.w),
           itemCount: myDevicesList.length,
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext ctx, int index) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[_myDeviceItem(context, index)],
+              children: <Widget>[buildMyDeviceItem(context, index)],
             );
           }),
       Column(
@@ -130,7 +141,7 @@ class _StepFiveState extends State<StepFive> {
     ]);
   }
 
-  _myDeviceItem(BuildContext context, index) {
+  Widget buildMyDeviceItem(BuildContext context, int index) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
         Widget>[
       SizedBox(height: 24.h),
@@ -164,7 +175,7 @@ class _StepFiveState extends State<StepFive> {
                       TextStyle(color: AppColorConstants.paleSky, fontSize: 13))
             ],
           ),
-          Spacer(),
+          const Spacer(),
           Container(
             height: 50,
             width: 50,
@@ -180,5 +191,13 @@ class _StepFiveState extends State<StepFive> {
         ],
       )
     ]);
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<bool>('isBluetoothOn', isBluetoothOn))
+      ..add(IterableProperty<MyDevicesModel>('myDevicesList', myDevicesList));
   }
 }

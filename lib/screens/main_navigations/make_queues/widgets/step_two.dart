@@ -3,15 +3,27 @@ import 'package:beatbridge/models/music_platform_model.dart';
 import 'package:beatbridge/screens/main_navigations/make_queues/screens/make_queue_screen.dart';
 import 'package:beatbridge/utils/services/static_data_service.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded_gradient.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+///Step Two
 class StepTwo extends StatefulWidget {
-  const StepTwo({Key? key, required this.onStepTwoDone}) : super(key: key);
+  ///Constructor
+  const StepTwo({required this.onStepTwoDone, Key? key}) : super(key: key);
+
+  ///Callback
   final void Function() onStepTwoDone;
 
   @override
   _StepTwoState createState() => _StepTwoState();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(ObjectFlagProperty<void Function()>.has(
+        'onStepTwoDone', onStepTwoDone));
+  }
 }
 
 class _StepTwoState extends State<StepTwo> {
@@ -86,24 +98,22 @@ class _StepTwoState extends State<StepTwo> {
               child: Container(
                   padding: EdgeInsets.all(20.h),
                   child: Image.asset(
-                    '${musicPlatforms[index].logoImagePath}',
+                    musicPlatforms[index].logoImagePath,
                     width: 34,
                     height: 34,
                   ))),
           Expanded(
               flex: 3,
-              child: Container(
-                  child: Text(
-                '${musicPlatforms[index].name}',
+              child: Text(
+                musicPlatforms[index].name,
                 style: TextStyle(
                     color: AppColorConstants.roseWhite,
                     fontSize: 18,
                     fontWeight: FontWeight.w600),
-              ))),
+              )),
           Expanded(
               flex: 3,
-              child: Container(
-                  child: Column(
+              child: Column(
                 children: <Widget>[
                   if (musicPlatforms[index].name == AppTextConstants.addYourOwn)
                     Transform.scale(
@@ -116,31 +126,44 @@ class _StepTwoState extends State<StepTwo> {
                     Transform.scale(
                         scale: 1.5,
                         child: Checkbox(
-                            value: musicPlatforms[index].name == MakeYourQueueScreen.of(context).selectedPlatform.name,
+                            value: musicPlatforms[index].name ==
+                                MakeYourQueueScreen.of(context)
+                                    .selectedPlatform
+                                    .name,
                             onChanged: (bool? value) {
                               setState(() {
-                                MakeYourQueueScreen.of(context).selectedPlatform = musicPlatforms[index];
+                                MakeYourQueueScreen.of(context)
+                                    .selectedPlatform = musicPlatforms[index];
                               });
                             },
                             checkColor: AppColorConstants.rubberDuckyYellow,
                             fillColor:
                                 MaterialStateProperty.resolveWith(getColor),
                             side: MaterialStateBorderSide.resolveWith(
-                              (states) => BorderSide(
-                                width: 1.0,
+                              (Set<MaterialState> states) => BorderSide(
+                                width: 2,
                                 color: AppColorConstants.paleSky,
                               ),
                             ),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5))))
                 ],
-              ))),
+              )),
         ],
       ),
-      if(index < musicPlatforms.length-1)
+      if (index < musicPlatforms.length - 1)
         Divider(
           color: AppColorConstants.paleSky,
         )
     ]);
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(IterableProperty<MusicPlatformModel>(
+          'musicPlatforms', musicPlatforms))
+      ..add(StringProperty('selectedPlatform', selectedPlatform));
   }
 }

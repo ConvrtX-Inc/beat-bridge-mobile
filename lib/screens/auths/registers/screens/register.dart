@@ -40,6 +40,8 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
   bool _isAPICallInProgress = false;
   List<String> errorMessages = <String>[];
 
+ TextServices textServices = TextServices();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,12 +88,12 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
         SizedBox(height: 63.h),
         FormHelper.inputFieldWidgetWithController(
             context, AppTextConstants.username, AppTextConstants.username,
-            (onValidateValue) {
+            (String onValidateValue) {
           if (onValidateValue.isEmpty) {
             return '${AppTextConstants.username} cannot be empty';
           }
           return null;
-        }, (onSavedValue) {
+        }, (String onSavedValue) {
           _username = onSavedValue.toString().trim();
         },
             separatorHeight: 15,
@@ -102,7 +104,7 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
           context,
           AppTextConstants.emailOrPhoneNumber,
           AppTextConstants.emailOrPhoneNumber,
-          (onValidateValue) {
+              (String onValidateValue) {
             if (onValidateValue.isEmpty) {
               return '${AppTextConstants.emailOrPhoneNumber} cannot be empty';
             }
@@ -122,7 +124,7 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
           context,
           AppTextConstants.password,
           AppTextConstants.password,
-          (dynamic onValidateValue) {
+              (String onValidateValue) {
             if (onValidateValue.isEmpty) {
               return '${AppTextConstants.password} ${AppTextConstants.cannotBeEmpty}';
             }
@@ -146,7 +148,7 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
           context,
           AppTextConstants.confirmPassword,
           AppTextConstants.confirmPassword,
-          (onValidateValue) {
+              (String onValidateValue) {
             if (onValidateValue.isEmpty) {
               return '${AppTextConstants.confirmPassword} cannot be empty';
             }
@@ -185,12 +187,15 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
               if (result.status == 'error') {
                 final Map<String, dynamic> decoded =
                     jsonDecode(result.errorResponse);
-                final Map<String, dynamic> data = decoded['errors'];
-                data.forEach((String k, v) =>
-                    {errorMessages.add(TextServices().filterErrorMessage(v))});
+                 decoded['errors'].forEach((String k, dynamic v) =>
+                    <dynamic>{
+                      errorMessages..add(textServices
+                          .filterErrorMessage(v))
+                    });
+
               } else {
                 await Navigator.pushNamedAndRemoveUntil(
-                    context, '/link_landing_page', (Route route) => false);
+                    context, '/link_landing_page', (Route<dynamic> route) => false);
               }
             }
 
@@ -223,8 +228,10 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-        DiagnosticsProperty<bool>('isAPICallInProgress', _isAPICallInProgress));
-    properties.add(IterableProperty<String>('errorMessages', errorMessages));
+    properties
+      ..add(DiagnosticsProperty<bool>(
+          'isAPICallInProgress', _isAPICallInProgress))
+      ..add(IterableProperty<String>('errorMessages', errorMessages))
+      ..add(DiagnosticsProperty<TextServices>('textServices', textServices));
   }
 }

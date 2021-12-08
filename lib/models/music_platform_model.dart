@@ -2,10 +2,10 @@
 class MusicPlatformModel {
   /// Constructor
   MusicPlatformModel({
-    required this.name,
-    required this.logoImagePath,
-    required this.isSelected,
-    required this.index
+      this.name ='',
+      this.logoImagePath ='',
+      this.isSelected =false,
+      this.index = 0
   });
 
   /// Initialization for platform name

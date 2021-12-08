@@ -1,22 +1,28 @@
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded_gradient.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+///Step One
 class StepOne extends StatefulWidget {
-  const StepOne({Key? key, required this.onStepOneDone}) : super(key: key);
+  ///Constructor
+  const StepOne({required this.onStepOneDone,Key? key}) : super(key: key);
+  ///Callback
   final void Function(String queueName) onStepOneDone;
-
-
 
   @override
   _StepOneState createState() => _StepOneState();
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(ObjectFlagProperty<void Function(String queueName)>.has('onStepOneDone', onStepOneDone));
+  }
 }
 
 class _StepOneState extends State<StepOne> {
 
-  final queueNameTxtController =  TextEditingController();
-
+  final TextEditingController queueNameTxtController =  TextEditingController();
 
   @override
   void dispose() {
@@ -68,6 +74,7 @@ class _StepOneState extends State<StepOne> {
                       ButtonRoundedGradient(
                         buttonText: AppTextConstants.continueTxt,
                         buttonCallback: () {
+                          FocusScope.of(context).requestFocus(FocusNode());
                           widget.onStepOneDone(queueNameTxtController.text);
                         },
                       )
@@ -76,5 +83,10 @@ class _StepOneState extends State<StepOne> {
             ],
           ))),
     );
+  }
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<TextEditingController>('queueNameTxtController', queueNameTxtController));
   }
 }

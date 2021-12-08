@@ -2,23 +2,34 @@ import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/constants/asset_path.dart';
 import 'package:beatbridge/models/recently_played_model.dart';
 import 'package:beatbridge/screens/main_navigations/make_queues/screens/make_queue_screen.dart';
-import 'package:beatbridge/utils/recently_played_mock_data.dart';
+import 'package:beatbridge/utils/services/static_data_service.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded_gradient.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+///Step Three
 class StepThree extends StatefulWidget {
-  const StepThree({Key? key, required this.onStepThreeDone}) : super(key: key);
+  ///Constructor
+  const StepThree({required this.onStepThreeDone, Key? key}) : super(key: key);
+
+  ///Callback
   final void Function() onStepThreeDone;
 
   @override
   _StepThreeState createState() => _StepThreeState();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(ObjectFlagProperty<void Function()>.has(
+        'onStepThreeDone', onStepThreeDone));
+  }
 }
 
 class _StepThreeState extends State<StepThree> {
   final List<RecentlyPlayedModel> recentlyPlayedItems =
-      RecentlyPlayedMockDataUtils().getRecentlyPlayedModel();
+      StaticDataService.getRecentlyPlayedMockData();
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +113,7 @@ class _StepThreeState extends State<StepThree> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
-                            _recentlyPlayedItem(context, index),
+                            buildRecentlyPlayedItem(context, index),
                           ],
                         );
                       })),
@@ -126,7 +137,7 @@ class _StepThreeState extends State<StepThree> {
         ]));
   }
 
-  Widget _recentlyPlayedItem(BuildContext context, int index) {
+  Widget buildRecentlyPlayedItem(BuildContext context, int index) {
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -157,7 +168,6 @@ class _StepThreeState extends State<StepThree> {
                         fit: BoxFit.fitHeight,
                       )),
                   child: Align(
-                      alignment: Alignment.center,
                       child: Image.asset(
                           '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.playButtonImage}')))),
           Column(
@@ -174,7 +184,7 @@ class _StepThreeState extends State<StepThree> {
                       TextStyle(color: AppColorConstants.paleSky, fontSize: 13))
             ],
           ),
-          Spacer(),
+          const Spacer(),
           Transform.scale(
               scale: 1.5,
               child: Checkbox(
@@ -187,8 +197,8 @@ class _StepThreeState extends State<StepThree> {
                   checkColor: AppColorConstants.rubberDuckyYellow,
                   fillColor: MaterialStateProperty.resolveWith(getColor),
                   side: MaterialStateBorderSide.resolveWith(
-                    (states) => BorderSide(
-                      width: 1.0,
+                    (Set<MaterialState> states) => BorderSide(
+                      width: 2,
                       color: AppColorConstants.paleSky,
                     ),
                   ),
