@@ -5,15 +5,19 @@ import 'package:beatbridge/screens/main_navigations/make_queues/widgets/step_fou
 import 'package:beatbridge/screens/main_navigations/make_queues/widgets/step_one.dart';
 import 'package:beatbridge/screens/main_navigations/make_queues/widgets/step_three.dart';
 import 'package:beatbridge/screens/main_navigations/make_queues/widgets/step_two.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+///Make your queue
 class MakeYourQueueScreen extends StatefulWidget {
+  ///Constructor
+  const MakeYourQueueScreen({Key? key}) : super(key: key);
 
+  /// allow child widgets to access variables
   static _MakeYourQueueScreenState of(BuildContext context) {
     return context.findAncestorStateOfType<_MakeYourQueueScreenState>()!;
   }
-  const MakeYourQueueScreen({Key? key}) : super(key: key);
 
   @override
   _MakeYourQueueScreenState createState() => _MakeYourQueueScreenState();
@@ -23,11 +27,9 @@ class _MakeYourQueueScreenState extends State<MakeYourQueueScreen> {
   int currentIndex = 0;
   int currentStep = 1;
   int finalStep = 5;
-
   String queueName = '';
-  var selectedPlatform  = MusicPlatformModel(isSelected: false,name: '', logoImagePath: '',index: 0);
-  final PageController controller = PageController(initialPage: 0);
-
+  MusicPlatformModel selectedPlatform = MusicPlatformModel();
+  final PageController controller = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +47,7 @@ class _MakeYourQueueScreenState extends State<MakeYourQueueScreen> {
                     child: IconButton(
                       icon: Icon(Icons.arrow_back_ios,
                           color: Colors.white, size: 15.w),
-                      onPressed: () {
-                        navigateBack();
-                      },
+                      onPressed: navigateBack,
                     )),
                 SizedBox(height: 26.h),
                 Padding(
@@ -64,7 +64,7 @@ class _MakeYourQueueScreenState extends State<MakeYourQueueScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 27.w),
                   child: Text(
-                    'STEP ${currentStep}/${finalStep}',
+                    'STEP $currentStep/$finalStep',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: AppColorConstants.roseWhite.withOpacity(0.64),
@@ -76,7 +76,7 @@ class _MakeYourQueueScreenState extends State<MakeYourQueueScreen> {
           Expanded(
             child: PageView(
               controller: controller,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               onPageChanged: (int val) {
                 setState(() {
                   currentIndex = val;
@@ -98,7 +98,6 @@ class _MakeYourQueueScreenState extends State<MakeYourQueueScreen> {
 
   /// function to call when step one is completed
   void onStepOneComplete(String queueName) {
-    print(queueName);
     switchPage();
   }
 
@@ -137,5 +136,18 @@ class _MakeYourQueueScreenState extends State<MakeYourQueueScreen> {
     });
     controller.animateToPage(currentIndex - 1,
         duration: const Duration(milliseconds: 200), curve: Curves.linear);
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(IntProperty('currentIndex', currentIndex))
+      ..add(IntProperty('currentStep', currentStep))
+      ..add(IntProperty('finalStep', finalStep))
+      ..add(StringProperty('queueName', queueName))
+      ..add(DiagnosticsProperty<MusicPlatformModel>(
+          'selectedPlatform', selectedPlatform))
+      ..add(DiagnosticsProperty<PageController>('controller', controller));
   }
 }

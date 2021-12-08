@@ -14,7 +14,7 @@ class AppAPIPath {
   static String apiBaseMode = isStaging ? 'http://' : 'https://';
 
   /// Returns API base url
-  static String apiBaseUrl = '192.168.68.116:3000';
+  static String apiBaseUrl = 'dev-beatbridge-convrtx.herokuapp.com';
 
   /// Returns login url
   static String loginUrl = 'api/v1/auth/email/login';

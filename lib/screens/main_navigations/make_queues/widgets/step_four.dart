@@ -1,22 +1,32 @@
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/models/people_model.dart';
-import 'package:beatbridge/utils/add_friends_mock_data.dart';
+import 'package:beatbridge/utils/services/static_data_service.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded_gradient.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+///Step four
 class StepFour extends StatefulWidget {
-  const StepFour({Key? key, required this.onStepFourDone}) : super(key: key);
+  ///Constructor
+  const StepFour({required this.onStepFourDone, Key? key}) : super(key: key);
 
+  ///Callback for step four
   final void Function() onStepFourDone;
 
   @override
   _StepFourState createState() => _StepFourState();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(ObjectFlagProperty<void Function()>.has(
+        'onStepFourDone', onStepFourDone));
+  }
 }
 
 class _StepFourState extends State<StepFour> {
-  final List<PeopleModel> peopleList =
-      PeopleListMockDataUtils().getPeopleListModel();
+  final List<PeopleModel> peopleList = StaticDataService.getPeopleListMockData();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +44,7 @@ class _StepFourState extends State<StepFour> {
                       Padding(
                           padding: EdgeInsets.symmetric(horizontal: 11.w),
                           child: Column(children: <Widget>[
-                            Text('${AppTextConstants.addFriends}',
+                            Text(AppTextConstants.addFriends,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     color: AppColorConstants.roseWhite,
@@ -51,7 +61,7 @@ class _StepFourState extends State<StepFour> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
-                            _peopleItem(context, index),
+                            buildPeopleItem(context, index),
                           ],
                         );
                       })),
@@ -75,7 +85,7 @@ class _StepFourState extends State<StepFour> {
         ]));
   }
 
-  _peopleItem(BuildContext context, int index) {
+  Widget buildPeopleItem(BuildContext context, int index) {
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -101,60 +111,60 @@ class _StepFourState extends State<StepFour> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     image: DecorationImage(
-                      image: AssetImage('${peopleList[index].profileImageUrl}'),
-                      fit: BoxFit.fitHeight,
-                    )),
+                      image: AssetImage(peopleList[index].profileImageUrl),
+                          fit: BoxFit.fitHeight,
+                        )),
               )),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(peopleList[index].name,
                   style: TextStyle(
-                      color: AppColorConstants.roseWhite,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14)),
-              SizedBox(height: 6.h),
-              Text('${peopleList[index].totalTrackCount} Tracks',
-                  style: TextStyle(
-                      color: AppColorConstants.paleSky, fontSize: 13)),
-              _musicPlatformsUsed(context, index)
-            ],
-          ),
-          Spacer(),
-          Transform.scale(
-              scale: 1.5,
-              child: Checkbox(
-                  value: peopleList[index].isSelected,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      peopleList[index].isSelected = value!;
-                    });
-                  },
-                  checkColor: AppColorConstants.rubberDuckyYellow,
-                  fillColor: MaterialStateProperty.resolveWith(getColor),
+                          color: AppColorConstants.roseWhite,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14)),
+                  SizedBox(height: 6.h),
+                  Text('${peopleList[index].totalTrackCount} Tracks',
+                      style: TextStyle(
+                          color: AppColorConstants.paleSky, fontSize: 13)),
+                  buildMusicPlatformsUsedRow(context, index)
+                ],
+              ),
+              const Spacer(),
+              Transform.scale(
+                  scale: 1.5,
+                  child: Checkbox(
+                      value: peopleList[index].isSelected,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          peopleList[index].isSelected = value!;
+                        });
+                      },
+                      checkColor: AppColorConstants.rubberDuckyYellow,
+                      fillColor: MaterialStateProperty.resolveWith(getColor),
                   side: MaterialStateBorderSide.resolveWith(
-                    (states) => BorderSide(
-                      width: 1.0,
-                      color: AppColorConstants.paleSky,
-                    ),
-                  ),
+                        (Set<MaterialState> states) => BorderSide(
+                          width: 2,
+                          color: AppColorConstants.paleSky,
+                        ),
+                      ),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5))))
         ],
       ),
       if (peopleList[index].isSelected)
-        _makeAdminButton(context)
-    ]);
+        buildMakeAdminButton(context)
+        ]);
   }
 
-  _musicPlatformsUsed(BuildContext context, index) {
+  Widget buildMusicPlatformsUsedRow(BuildContext context, int index) {
     return Column(children: <Widget>[
       Row(
         children: <Widget>[
           for (int i = 0; i < peopleList[index].musicPlatformsUsed.length; i++)
             Image(
                 image: AssetImage(
-                    '${peopleList[index].musicPlatformsUsed[i].logoImageUrl}'),
+                    peopleList[index].musicPlatformsUsed[i].logoImageUrl),
                 height: 20,
                 width: 20),
           SizedBox(width: 6.w)
@@ -163,7 +173,7 @@ class _StepFourState extends State<StepFour> {
     ]);
   }
 
-  _makeAdminButton(BuildContext context) {
+  Widget buildMakeAdminButton(BuildContext context) {
     return Container(
         margin: const EdgeInsets.fromLTRB(0, 14, 0, 0),
         height: 36,
@@ -185,5 +195,11 @@ class _StepFourState extends State<StepFour> {
                   color: AppColorConstants.roseWhite,
                   fontWeight: FontWeight.bold)),
         ));
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IterableProperty<PeopleModel>('peopleList', peopleList));
   }
 }
