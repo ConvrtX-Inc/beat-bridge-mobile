@@ -61,6 +61,9 @@ class AssetsNameConstants {
   static const String linkLandingPageSuccessImage =
       'link_landing_page_success_image.png';
 
+  /// returns link Your Music success image file name
+  static const String linkYourMusic = 'link_your_music.png';
+
   /// returns spotify logo image file name
   static const String spotifyLogoImage = 'spotify_logo.png';
 

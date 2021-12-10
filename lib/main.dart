@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
             fontFamily: 'Gilroy',
           ),
-          initialRoute: '/',
+          initialRoute: '/select_platform',
           onGenerateRoute: RouteGenerator.generateRoute),
       designSize: const Size(375, 812),
     );

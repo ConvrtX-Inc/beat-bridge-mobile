@@ -219,4 +219,10 @@ class AppTextConstants {
   ///Returns all done text
   static String allDone = 'All Done';
 
+  ///Returns Success text
+  static String success = 'Success';
+
+  ///Returns select music profile you wish to add and dance on text
+  static String selectMusicProfile =
+      'select music profile you wish to add and dance on';
 }
