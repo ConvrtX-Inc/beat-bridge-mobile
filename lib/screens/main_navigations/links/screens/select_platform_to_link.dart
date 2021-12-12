@@ -80,16 +80,8 @@ class _SelectPlatformToLinkState extends State<SelectPlatformToLink> {
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    SizedBox(
-                                      height: 40.h,
-                                    ),
-                                  ],
-                                ),
+                              SizedBox(
+                                height: 40.h,
                               ),
                               Column(
                                   children: musicPlatforms.map((p) {
@@ -148,7 +140,7 @@ class _SelectPlatformToLinkState extends State<SelectPlatformToLink> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(musicPlatforms[index].logoImagePath),
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fitHeight,
                   ),
                 ),
               ),
