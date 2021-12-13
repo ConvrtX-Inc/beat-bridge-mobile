@@ -1,9 +1,11 @@
 import 'package:beatbridge/configurations/routes/route_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
+  await dotenv.load(fileName: '.env');
   runApp(const MyApp());
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
       overlays: <SystemUiOverlay>[]);
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
             fontFamily: 'Gilroy',
           ),
-          initialRoute: '/select_platform',
+          initialRoute: '/test_spotify',
           onGenerateRoute: RouteGenerator.generateRoute),
       designSize: const Size(375, 812),
     );

@@ -4,6 +4,7 @@ import 'package:beatbridge/screens/auths/logins/screens/login_input.dart';
 import 'package:beatbridge/screens/auths/registers/screens/register.dart';
 import 'package:beatbridge/screens/main_navigations/links/screens/link_landing_page.dart';
 import 'package:beatbridge/screens/main_navigations/links/screens/select_platform_to_link.dart';
+import 'package:beatbridge/screens/main_navigations/links/screens/test_spot.dart';
 import 'package:beatbridge/screens/main_navigations/make_queues/screens/make_queue_screen.dart';
 import 'package:beatbridge/screens/main_navigations/queues/screens/queue_playing_screen.dart';
 import 'package:beatbridge/screens/splashes/screens/splash_screen.dart';
@@ -39,6 +40,8 @@ class RouteGenerator {
       case '/select_platform':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const SelectPlatformToLink());
+      case '/test_spotify':
+        return MaterialPageRoute<dynamic>(builder: (_) => const TestSpot());
       default:
         return _errorRoute();
     }

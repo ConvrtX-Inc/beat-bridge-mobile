@@ -47,29 +47,26 @@ class StaticDataService {
     ];
   }
 
-/// Static data for Music platforms
-   static  List<MusicPlatformModel> getMusicPlatformModel() {
-     return [
-       MusicPlatformModel(
-           name: AppTextConstants.spotify,
-           index: 0,
-           logoImagePath:
-           '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants
-               .spotifyLogoImage}',
-           isSelected: true),
-       MusicPlatformModel(
-           name: AppTextConstants.soundCloud,
-           index: 1,
-           logoImagePath:
-           '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants
-               .soundCloudLogoImage}',
-           isSelected: false),
-       MusicPlatformModel(
-           name: AppTextConstants.itunes,
-           index: 2,
-           logoImagePath:
-           '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants
-               .itunesLogoImage}',
+  /// Static data for Music platforms
+  static List<MusicPlatformModel> getMusicPlatformModel() {
+    return [
+      MusicPlatformModel(
+          name: AppTextConstants.spotify,
+          index: 0,
+          logoImagePath:
+              '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.spotifyLogoImage}',
+          isSelected: true),
+      MusicPlatformModel(
+          name: AppTextConstants.soundCloud,
+          index: 1,
+          logoImagePath:
+              '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.soundCloudLogoImage}',
+          isSelected: false),
+      MusicPlatformModel(
+          name: AppTextConstants.itunes,
+          index: 2,
+          logoImagePath:
+              '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.itunesLogoImage}',
           isSelected: false),
       MusicPlatformModel(
           name: AppTextConstants.addYourOwn,
@@ -203,21 +200,17 @@ class StaticDataService {
           id: 1,
           name: 'Sony',
           isConnected: true,
-          deviceImageUrl: '${AssetsPathConstants.assetsPNGPath}/sony.png'
-      ),
+          deviceImageUrl: '${AssetsPathConstants.assetsPNGPath}/sony.png'),
       MyDevicesModel(
           id: 2,
           name: 'JBL Roomie',
           isConnected: false,
-          deviceImageUrl: '${AssetsPathConstants.assetsPNGPath}/jbl.png'
-      ),
+          deviceImageUrl: '${AssetsPathConstants.assetsPNGPath}/jbl.png'),
       MyDevicesModel(
           id: 3,
           name: 'Yaz Device',
           isConnected: false,
-          deviceImageUrl: '${AssetsPathConstants.assetsPNGPath}/yaz.png'
-      ),
-
+          deviceImageUrl: '${AssetsPathConstants.assetsPNGPath}/yaz.png'),
     ];
   }
 
@@ -229,40 +222,35 @@ class StaticDataService {
         isSelected: true,
         songTitle: 'Fear of the Water',
         artistName: 'G-Easy',
-        songImageUrl:
-        '${AssetsPathConstants.assetsPNGPath}/g_easy.png',
+        songImageUrl: '${AssetsPathConstants.assetsPNGPath}/g_easy.png',
       ),
       RecentlyPlayedModel(
         id: 2,
         isSelected: false,
         songTitle: 'Love me like you do',
         artistName: 'Ariana Grande',
-        songImageUrl:
-        '${AssetsPathConstants.assetsPNGPath}/ariana.png',
+        songImageUrl: '${AssetsPathConstants.assetsPNGPath}/ariana.png',
       ),
       RecentlyPlayedModel(
         id: 3,
         isSelected: true,
         songTitle: 'Light it up',
         artistName: 'Drake',
-        songImageUrl:
-        '${AssetsPathConstants.assetsPNGPath}/drake.png',
+        songImageUrl: '${AssetsPathConstants.assetsPNGPath}/drake.png',
       ),
       RecentlyPlayedModel(
         id: 4,
         isSelected: false,
         songTitle: '21 Guns',
         artistName: 'Green Day',
-        songImageUrl:
-        '${AssetsPathConstants.assetsPNGPath}/green_day.png',
+        songImageUrl: '${AssetsPathConstants.assetsPNGPath}/green_day.png',
       ),
       RecentlyPlayedModel(
         id: 5,
         isSelected: true,
         songTitle: 'Blinding Lights',
         artistName: 'The Weekend',
-        songImageUrl:
-        '${AssetsPathConstants.assetsPNGPath}/the_weekend.png',
+        songImageUrl: '${AssetsPathConstants.assetsPNGPath}/the_weekend.png',
       ),
     ];
   }
