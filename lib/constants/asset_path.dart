@@ -11,6 +11,9 @@ class AssetsPathConstants {
   /// returns assets png path
   static const String assetsPNGPath = 'assets/images/png';
 
+  /// returns assets png path
+  static const String assetsJPGPath = 'assets/images/jpg';
+
   /// returns assets svg path
   static const String assetsSVGPath = 'assets/images/svg';
 }

@@ -62,6 +62,12 @@ class AppColorConstants {
 
   /// get arty rubber ducky yellow color
   static Color get rubberDuckyYellow => _rubberDuckyYellow;
+
+  /// Returns Lavender color
+  static const Color _lavender = Color(0xFFB250FF);
+
+  /// get Lavender color
+  static Color get lavender => _lavender;
 }
 
 /// Class for app text constants
@@ -221,6 +227,9 @@ class AppTextConstants {
 
   ///Returns Success text
   static String success = 'Success';
+
+  ///Returns heyWelcome text
+  static String heyWelcome = 'Hey Welcome';
 
   ///Returns select music profile you wish to add and dance on text
   static String selectMusicProfile =

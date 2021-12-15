@@ -6,7 +6,11 @@ import 'package:beatbridge/utils/services/static_data_service.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded_gradient.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:spotify_sdk/spotify_sdk.dart';
+import 'package:logger/logger.dart';
 
 /// Screen for link landing page
 class SelectPlatformToLink extends StatefulWidget {
@@ -25,6 +29,17 @@ class _SelectPlatformToLinkState extends State<SelectPlatformToLink> {
       StaticDataService.getMusicPlatformModel();
 
   int selectedPlatform = -1;
+  final Logger _logger = Logger(
+    //filter: CustomLogFilter(), // custom logfilter can be used to have logs in release mode
+    printer: PrettyPrinter(
+      methodCount: 2, // number of method calls to be displayed
+      errorMethodCount: 8, // number of method calls if stacktrace is provided
+      lineLength: 120, // width of the output
+      colors: true, // Colorful log messages
+      printEmojis: true, // Print an emoji for each log message
+      printTime: true,
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +111,11 @@ class _SelectPlatformToLinkState extends State<SelectPlatformToLink> {
             ),
             ButtonRoundedGradient(
               buttonText: AppTextConstants.submit.toUpperCase(),
-              buttonCallback: () async {},
+              buttonCallback: () async {
+                if (selectedPlatform == 0) {
+                  await connectToSpotifyRemote();
+                }
+              },
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 26.h),
@@ -116,6 +135,47 @@ class _SelectPlatformToLinkState extends State<SelectPlatformToLink> {
         ),
       ),
     );
+  }
+
+  Future<void> connectToSpotifyRemote() async {
+    try {
+      final bool result = await SpotifySdk.connectToSpotifyRemote(
+          clientId: dotenv.env['CLIENT_ID'].toString(),
+          redirectUrl: dotenv.env['REDIRECT_URL'].toString());
+      setStatus(result
+          ? 'connect to spotify successful'
+          : 'connect to spotify failed');
+    } on PlatformException catch (e) {
+      setStatus(e.code, message: e.message);
+    } on MissingPluginException {
+      setStatus('not implemented');
+    }
+  }
+
+  Future<String> getAuthenticationToken() async {
+    try {
+      final String authenticationToken =
+          await SpotifySdk.getAuthenticationToken(
+              clientId: dotenv.env['CLIENT_ID'].toString(),
+              redirectUrl: dotenv.env['REDIRECT_URL'].toString(),
+              scope: 'app-remote-control, '
+                  'user-modify-playback-state, '
+                  'playlist-read-private, '
+                  'playlist-modify-public,user-read-currently-playing');
+      setStatus('Got a token: $authenticationToken');
+      return authenticationToken;
+    } on PlatformException catch (e) {
+      setStatus(e.code, message: e.message);
+      return Future<String>.error('$e.code: $e.message');
+    } on MissingPluginException {
+      setStatus('not implemented');
+      return Future<String>.error('not implemented');
+    }
+  }
+
+  void setStatus(String code, {String? message}) {
+    var text = message ?? '';
+    _logger.i('$code$text');
   }
 
   Widget _musicPlatformItems(BuildContext context, int index) {

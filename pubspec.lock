@@ -22,6 +22,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  bs_flutter_modal:
+    dependency: "direct main"
+    description:
+      name: bs_flutter_modal
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.6"
+  bs_flutter_utils:
+    dependency: transitive
+    description:
+      name: bs_flutter_utils
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   characters:
     dependency: transitive
     description:
