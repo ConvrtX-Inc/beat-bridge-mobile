@@ -107,17 +107,32 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
           controller: _passwordController,
           obscureText: true,
         ),
-        SizedBox(height: 43.h),
+        SizedBox(height: 8.h),
+        Align(
+          alignment: Alignment.topRight,
+          child: TextButton(
+            child: Text('Forgot Password?',
+                style: TextStyle(
+                    color: AppColorConstants
+                        .roseWhite,
+                  letterSpacing: 1
+                    )),
+            onPressed: () {
+              Navigator.of(context).pushNamed('/verify_email');
+            },
+          ),
+        ),
         ButtonRoundedGradient(
           buttonText: AppTextConstants.login,
           isLoading: _isAPICallInProgress,
           buttonCallback: () async {
-            setState(() {
-              _isAPICallInProgress = true;
-              errorMessages = <String>[];
-            });
+
 
             if (validateAndSave()) {
+              setState(() {
+                _isAPICallInProgress = true;
+                errorMessages = <String>[];
+              });
               Timer(
                   const Duration(seconds: 1),
                   () async => {

@@ -98,7 +98,9 @@ class LinkLandingPageScreen extends StatelessWidget {
                     fontSize: 12.sp,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/recent_queues');
+                },
               ),
             )
           ],

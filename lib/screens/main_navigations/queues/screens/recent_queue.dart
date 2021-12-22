@@ -226,18 +226,6 @@ class _RecentQueuesState extends State<RecentQueues> {
   }
 
   Widget buildTopPlayedItem(int index) {
-    Color getColor(Set<MaterialState> states) {
-      const Set<MaterialState> interactiveStates = <MaterialState>{
-        MaterialState.pressed,
-        MaterialState.hovered,
-        MaterialState.focused,
-      };
-      if (states.any(interactiveStates.contains)) {
-        return AppColorConstants.roseWhite;
-      }
-      return AppColorConstants.artyClickPurple;
-    }
-
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -273,26 +261,7 @@ class _RecentQueuesState extends State<RecentQueues> {
                           color: AppColorConstants.paleSky, fontSize: 13))
                 ],
               ),
-              const Spacer(),
-              Transform.scale(
-                  scale: 1.5,
-                  child: Checkbox(
-                      value: topPlayedItems[index].isSelected,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          topPlayedItems[index].isSelected = value!;
-                        });
-                      },
-                      checkColor: AppColorConstants.rubberDuckyYellow,
-                      fillColor: MaterialStateProperty.resolveWith(getColor),
-                      side: MaterialStateBorderSide.resolveWith(
-                        (Set<MaterialState> states) => BorderSide(
-                          width: 2,
-                          color: AppColorConstants.paleSky,
-                        ),
-                      ),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5))))
+
             ],
           )
         ]);

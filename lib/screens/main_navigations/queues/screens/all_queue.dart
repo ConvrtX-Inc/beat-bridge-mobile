@@ -17,6 +17,7 @@ class AllQueueScreen extends StatefulWidget {
 
 class _AllQueueScreenState extends State<AllQueueScreen> {
   final List<RecentQueueModel> queueList = StaticDataService.getRecentQueues();
+  int selectedQueueIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,12 +120,14 @@ class _AllQueueScreenState extends State<AllQueueScreen> {
               Transform.scale(
                   scale: 1.5,
                   child: Checkbox(
-                      value: queueList[index].isSelected,
+                      value: selectedQueueIndex == index,
                       onChanged: (bool? value) {
                         setState(() {
-                          queueList[index].isSelected = value!;
+                          // queueList[index].isSelected = value!;
+                          selectedQueueIndex = index;
                         });
                       },
+
                       checkColor: AppColorConstants.rubberDuckyYellow,
                       fillColor: MaterialStateProperty.resolveWith(getColor),
                       side: MaterialStateBorderSide.resolveWith(
@@ -180,6 +183,8 @@ class _AllQueueScreenState extends State<AllQueueScreen> {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<RecentQueueModel>('queueList', queueList));
+    properties
+        ..add(IterableProperty<RecentQueueModel>('queueList', queueList))
+    ..add(IntProperty('selectedQueueIndex', selectedQueueIndex));
   }
 }
