@@ -87,7 +87,7 @@ class _MakeYourQueueScreenState extends State<MakeYourQueueScreen> {
                 StepTwo(onStepTwoDone: onStepTwoComplete),
                 StepThree(onStepThreeDone: onStepThreeComplete),
                 StepFour(onStepFourDone: onStepFourComplete),
-                StepFive(onStepFiveDone: onStepFourComplete)
+                StepFive(onStepFiveDone: onStepFiveComplete)
               ],
             ),
           ),
@@ -116,6 +116,11 @@ class _MakeYourQueueScreenState extends State<MakeYourQueueScreen> {
     switchPage();
   }
 
+  /// function to call when step five is completed
+  void onStepFiveComplete() {
+    Navigator.of(context).pop();
+  }
+
   ///function for switching between pages
   void switchPage() {
     setState(() {
@@ -129,13 +134,18 @@ class _MakeYourQueueScreenState extends State<MakeYourQueueScreen> {
 
   ///function when pressing back icon and navigating back
   void navigateBack() {
-    setState(() {
-      if (currentStep > 1) {
-        currentStep--;
-      }
-    });
-    controller.animateToPage(currentIndex - 1,
-        duration: const Duration(milliseconds: 200), curve: Curves.linear);
+    if(currentStep == 1){
+      Navigator.pop(context);
+    }else{
+      setState(() {
+        if (currentStep > 1) {
+          currentStep--;
+        }
+      });
+      controller.animateToPage(currentIndex - 1,
+          duration: const Duration(milliseconds: 200), curve: Curves.linear);
+    }
+
   }
 
   @override

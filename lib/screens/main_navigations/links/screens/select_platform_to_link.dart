@@ -115,6 +115,7 @@ class _SelectPlatformToLinkState extends State<SelectPlatformToLink> {
                 if (selectedPlatform == 0) {
                   await connectToSpotifyRemote();
                 }
+                await Navigator.of(context).pushNamed('/recent_queues');
               },
             ),
             Padding(

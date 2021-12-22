@@ -85,7 +85,9 @@ class LinkLandingPageScreen extends StatelessWidget {
             ),
             ButtonRoundedGradient(
               buttonText: AppTextConstants.linkMyMusic.toUpperCase(),
-              buttonCallback: () async {},
+              buttonCallback: ()  {
+                Navigator.of(context).pushNamed('/select_platform');
+              },
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 26.h),
@@ -98,7 +100,9 @@ class LinkLandingPageScreen extends StatelessWidget {
                     fontSize: 12.sp,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/recent_queues');
+                },
               ),
             )
           ],

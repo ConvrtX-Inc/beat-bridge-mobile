@@ -1,4 +1,7 @@
 // ignore_for_file: avoid_classes_with_only_static_members
+import 'package:beatbridge/screens/auths/forgot_password/screens/new_password.dart';
+import 'package:beatbridge/screens/auths/forgot_password/screens/verification_code.dart';
+import 'package:beatbridge/screens/auths/forgot_password/screens/verify_email.dart';
 import 'package:beatbridge/screens/auths/logins/screens/login.dart';
 import 'package:beatbridge/screens/auths/logins/screens/login_input.dart';
 import 'package:beatbridge/screens/auths/registers/screens/register.dart';
@@ -6,7 +9,10 @@ import 'package:beatbridge/screens/main_navigations/links/screens/link_landing_p
 import 'package:beatbridge/screens/main_navigations/links/screens/select_platform_to_link.dart';
 import 'package:beatbridge/screens/main_navigations/links/screens/test_spot.dart';
 import 'package:beatbridge/screens/main_navigations/make_queues/screens/make_queue_screen.dart';
+import 'package:beatbridge/screens/main_navigations/queues/screens/all_queue.dart';
 import 'package:beatbridge/screens/main_navigations/queues/screens/queue_playing_screen.dart';
+import 'package:beatbridge/screens/main_navigations/queues/screens/recent_queue.dart';
+import 'package:beatbridge/screens/main_navigations/queues/screens/test_spotify.dart';
 import 'package:beatbridge/screens/settings/profile_settings.dart';
 import 'package:beatbridge/screens/splashes/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +29,15 @@ class RouteGenerator {
         return MaterialPageRoute<dynamic>(builder: (_) => const SplashScreen());
       case '/login':
         return MaterialPageRoute<dynamic>(builder: (_) => const LoginScreen());
+      case '/verify_email':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const VerifyEmailScreen());
+      case '/new_password':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const NewPasswordScreen());
+      case '/verification_code':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const VerificationCodeScreen());
       case '/login_input':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const LoginInputScreen());
@@ -38,6 +53,18 @@ class RouteGenerator {
       case '/make_your_queue_screen':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const MakeYourQueueScreen());
+      case '/recent_queues':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const RecentQueues());
+      case '/all_queues':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const AllQueueScreen());
+      case '/test_spotify':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const TestSpotifyScreen());
+      case '/select_platform':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const SelectPlatformToLink());
       case '/select_platform':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const SelectPlatformToLink());

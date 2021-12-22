@@ -63,6 +63,12 @@ class AppColorConstants {
   /// get arty rubber ducky yellow color
   static Color get rubberDuckyYellow => _rubberDuckyYellow;
 
+  /// Returns lemon color
+  static const Color _lemon= Color(0xFFFFED8D);
+
+  /// get arty lemon color
+  static Color get lemon => _lemon;
+
   /// Returns Lavender color
   static const Color _lavender = Color(0xFFB250FF);
 
@@ -96,6 +102,25 @@ class AppTextConstants {
 
   /// Returns already a member text
   static String alreadyAMember = 'Already a member?';
+
+  /// Returns Verify your Email
+  static String verifyEmail = 'Verify Email';
+
+  /// Returns Email
+  static String email = 'Email';
+
+  /// Returns Please verify your email address here.
+  static String verifyEmailDescription =
+      'Please verify your email address here.';
+
+  /// Returns Please enter email here.
+  static String enterEmail = 'Enter your email here...';
+
+  /// Returns Enter new Password.
+  static String enterNewPasswordTitle = 'Enter new password';
+
+  /// Returns New Password.
+  static String newPassword = 'New Password';
 
   /// Returns login text
   static String login = 'Login';
@@ -131,6 +156,16 @@ class AppTextConstants {
   static String passwordDoesNotMatch =
       'Password and Confirm password does not match';
 
+  /// Returns Verification Code text
+  static String verificationCodeTitle = 'Verification Code';
+
+  /// Returns Check your email for verification code that we sent to you text
+  static String verificationCodeDescription =
+      'Check your email for verification code that we sent to you';
+
+  /// Returns Resend Code? text
+  static String resendCode = 'Resend Code?';
+
   /// Returns cannot be empty text
   static String cannotBeEmpty = 'cannot be empty';
 
@@ -163,7 +198,7 @@ class AppTextConstants {
   static String linkMyMusic = 'Link my music';
 
   /// Returns skip for now text
-  static String skipForNow = 'Skip for now so this later';
+  static String skipForNow = 'Skip for now do this later';
 
   /// Returns make your queue text
   static String makeYourQueue = 'Make Your Queue';
@@ -195,6 +230,9 @@ class AppTextConstants {
   /// Returns recently played text
   static String recentlyPlayed = 'Recently Played';
 
+  /// Returns top played text
+  static String topPlayed = 'Top Played';
+
   /// Returns see all text
   static String seeAll = 'SEE ALL';
 
@@ -224,6 +262,21 @@ class AppTextConstants {
 
   ///Returns all done text
   static String allDone = 'All Done';
+
+  ///Returns recent queues string
+ static String recentQueues =  'Recent Queues';
+
+  ///Returns all queues string
+  static String allQueues =  'All Queues';
+
+ ///Returns start new queue text
+ static String startNewQueue = 'Start New Queue';
+
+  ///Returns join nearby queue text
+  static String joinNearbyQueue = 'Join Nearby Queue';
+
+  ///Returns follow your friends text
+  static String followYourFriends = 'Follow Your Friends';
 
   ///Returns Success text
   static String success = 'Success';

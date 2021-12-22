@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:beatbridge/constants/app_constants.dart';
@@ -169,12 +170,18 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
           buttonText: AppTextConstants.submit,
           isLoading: _isAPICallInProgress,
           buttonCallback: () async {
-            setState(() {
-              _isAPICallInProgress = true;
-              errorMessages = <String>[];
-            });
+            // setState(() {
+            //   _isAPICallInProgress = true;
+            //   errorMessages = <String>[];
+            // });
             if (validateAndSave()) {
-              final UserModel userModelParams = UserModel(
+
+              setState(() {
+                _isAPICallInProgress = true;
+                errorMessages = <String>[];
+              });
+
+              /*final UserModel userModelParams = UserModel(
                   username: _username,
                   email: _emailOrPhoneNumber,
                   password: _password,
@@ -196,13 +203,27 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
               } else {
                 await Navigator.pushNamedAndRemoveUntil(
                     context, '/link_landing_page', (Route<dynamic> route) => false);
-              }
+              }*/
+
+              /// for testing only
+              Timer(
+                  const Duration(seconds: 1),
+                      () async => {
+                    setState(() {
+                      _isAPICallInProgress = false;
+                    }),
+                      await Navigator.pushNamedAndRemoveUntil(
+                      context, '/link_landing_page', (Route<dynamic> route) => false)
+                  });
+
+
             }
 
-            setState(() {
-              _isAPICallInProgress = false;
-            });
+            // setState(() {
+            //   _isAPICallInProgress = false;
+            // });
           },
+
         ),
         SizedBox(height: 10.h),
         Column(

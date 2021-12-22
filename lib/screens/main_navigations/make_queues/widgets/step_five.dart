@@ -133,7 +133,9 @@ class _StepFiveState extends State<StepFive> {
             padding: EdgeInsets.symmetric(horizontal: 27.w, vertical: 16.h),
             child: ButtonRoundedGradient(
               buttonText: AppTextConstants.allDone,
-              buttonCallback: () {},
+              buttonCallback: () {
+                widget.onStepFiveDone();
+              },
             ),
           ),
         ],
