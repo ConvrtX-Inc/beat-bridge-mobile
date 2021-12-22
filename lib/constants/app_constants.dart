@@ -62,6 +62,15 @@ class AppColorConstants {
 
   /// get arty rubber ducky yellow color
   static Color get rubberDuckyYellow => _rubberDuckyYellow;
+
+  /// Returns lemon color
+  static const Color _lemon= Color(0xFFFFED8D);
+
+  /// get arty lemon color
+  static Color get lemon => _lemon;
+
+
+
 }
 
 /// Class for app text constants
@@ -189,6 +198,9 @@ class AppTextConstants {
   /// Returns recently played text
   static String recentlyPlayed = 'Recently Played';
 
+  /// Returns top played text
+  static String topPlayed = 'Top Played';
+
   /// Returns see all text
   static String seeAll = 'SEE ALL';
 
@@ -218,5 +230,20 @@ class AppTextConstants {
 
   ///Returns all done text
   static String allDone = 'All Done';
+
+  ///Returns recent queues string
+ static String recentQueues =  'Recent Queues';
+
+  ///Returns all queues string
+  static String allQueues =  'All Queues';
+
+ ///Returns start new queue text
+ static String startNewQueue = 'Start New Queue';
+
+  ///Returns join nearby queue text
+  static String joinNearbyQueue = 'Join Nearby Queue';
+
+  ///Returns follow your friends text
+  static String followYourFriends = 'Follow Your Friends';
 
 }
