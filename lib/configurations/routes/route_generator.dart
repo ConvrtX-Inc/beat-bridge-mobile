@@ -65,6 +65,11 @@ class RouteGenerator {
       case '/select_platform':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const SelectPlatformToLink());
+      case '/select_platform':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const SelectPlatformToLink());
+      case '/test_spotify':
+        return MaterialPageRoute<dynamic>(builder: (_) => const TestSpot());
       case '/profile-settings':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const ProfileSettigs());
