@@ -11,6 +11,9 @@ class AssetsPathConstants {
   /// returns assets png path
   static const String assetsPNGPath = 'assets/images/png';
 
+  /// returns assets png path
+  static const String assetsJPGPath = 'assets/images/jpg';
+
   /// returns assets svg path
   static const String assetsSVGPath = 'assets/images/svg';
 }
@@ -60,6 +63,9 @@ class AssetsNameConstants {
   /// returns link landing page success image file name
   static const String linkLandingPageSuccessImage =
       'link_landing_page_success_image.png';
+
+  /// returns link Your Music success image file name
+  static const String linkYourMusic = 'link_your_music.png';
 
   /// returns spotify logo image file name
   static const String spotifyLogoImage = 'spotify_logo.png';

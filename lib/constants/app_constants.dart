@@ -69,8 +69,11 @@ class AppColorConstants {
   /// get arty lemon color
   static Color get lemon => _lemon;
 
+  /// Returns Lavender color
+  static const Color _lavender = Color(0xFFB250FF);
 
-
+  /// get Lavender color
+  static Color get lavender => _lavender;
 }
 
 /// Class for app text constants
@@ -275,4 +278,13 @@ class AppTextConstants {
   ///Returns follow your friends text
   static String followYourFriends = 'Follow Your Friends';
 
+  ///Returns Success text
+  static String success = 'Success';
+
+  ///Returns heyWelcome text
+  static String heyWelcome = 'Hey Welcome';
+
+  ///Returns select music profile you wish to add and dance on text
+  static String selectMusicProfile =
+      'select music profile you wish to add and dance on';
 }

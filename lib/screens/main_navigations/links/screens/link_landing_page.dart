@@ -85,7 +85,9 @@ class LinkLandingPageScreen extends StatelessWidget {
             ),
             ButtonRoundedGradient(
               buttonText: AppTextConstants.linkMyMusic.toUpperCase(),
-              buttonCallback: () async {},
+              buttonCallback: ()  {
+                Navigator.of(context).pushNamed('/select_platform');
+              },
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 26.h),

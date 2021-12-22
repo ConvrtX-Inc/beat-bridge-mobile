@@ -60,6 +60,7 @@ class _RecentQueuesState extends State<RecentQueues> {
             child: InkWell(
                 onTap: () {
                   debugPrint('should open profile...');
+                  Navigator.of(context).pushNamed('/profile-settings');
                 },
                 child: SvgPicture.asset(
                     '${AssetsPathConstants.assetsSVGPath}/menu.svg')),
