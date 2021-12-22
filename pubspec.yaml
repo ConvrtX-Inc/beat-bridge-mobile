@@ -35,7 +35,9 @@ dependencies:
   flutter_svg: ^0.22.0
   http: ^0.13.4
   flutter_switch: ^0.3.2
-
+  spotify_sdk: ^2.2.0
+  flutter_dotenv: ^5.0.2
+  bs_flutter_modal: ^1.0.6
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -68,8 +70,10 @@ flutter:
     - assets/music/music.mp3
     - assets/images/
     - assets/images/png/
+    - assets/images/jpg/
     - assets/images/png/2x/
     - assets/images/png/3x/
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
