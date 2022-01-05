@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
               },
             ),
           ),
-          initialRoute: '/',
+          initialRoute: '/recent_queues',
           onGenerateRoute: RouteGenerator.generateRoute),
       designSize: const Size(375, 812),
     );

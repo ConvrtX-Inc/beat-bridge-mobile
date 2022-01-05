@@ -36,16 +36,23 @@ dependencies:
   http: ^0.13.4
   flutter_switch: ^0.3.2
   pin_code_fields: ^7.3.0
-  spotify: ^0.6.0
+  # spotify: ^0.6.0
   url_launcher: ^6.0.15
   uni_links: ^0.5.1
   webview_flutter: ^2.3.1
-  spotify_sdk: ^2.2.0
-  flutter_dotenv: ^5.0.2
-  bs_flutter_modal: ^1.0.6
+  spotify_sdk: ^2.2.0 #spotify sdk for spotify authentication
+  flutter_dotenv: ^5.0.2 #store spotify credentials in .env file
+  bs_flutter_modal: ^1.0.6 #use in selecting avatars
+  flutter_secure_storage: ^4.2.1 #storing oauth token
+  # oauth2_client: ^2.3.1
+  # flutter_web_auth: ^0.4.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  spotify:
+    git:
+      url: https://github.com/rinukkusu/spotify-dart.git
+      ref: master # branch name
 
 
 dev_dependencies:

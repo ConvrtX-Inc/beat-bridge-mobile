@@ -1,8 +1,11 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/constants/asset_path.dart';
 import 'package:beatbridge/models/people_model.dart';
 import 'package:beatbridge/models/recent_queue_model.dart';
 import 'package:beatbridge/models/recently_played_model.dart';
+import 'package:beatbridge/utils/services/spotify_api_service.dart';
 import 'package:beatbridge/utils/services/static_data_service.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded_gradient.dart';
@@ -10,6 +13,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:spotify/spotify.dart' as spot;
+// import 'package:spotify/spotify.dart';
 
 ///Recent Queues
 class RecentQueues extends StatefulWidget {
@@ -31,7 +36,6 @@ class _RecentQueuesState extends State<RecentQueues> {
       StaticDataService.getPeopleListMockData();
   int selectedQueueIndex = 1;
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -39,6 +43,7 @@ class _RecentQueuesState extends State<RecentQueues> {
 
     debugPrint('friends ${friendList.length}');
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,11 +106,51 @@ class _RecentQueuesState extends State<RecentQueues> {
                                 color: AppColorConstants.roseWhite,
                                 fontSize: 13)))
                   ])),
-          Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 11.w,
-              ),
-              child: buildTopPlayedItemList()),
+          FutureBuilder<String>(
+            future: SpotifyApiService.getAuthenticationToken(), // async work
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                case ConnectionState.done:
+                  print(snapshot.data);
+                  return FutureBuilder<Iterable<spot.Track>>(
+                    future: SpotifyApiService.getTopTracks(snapshot.data!),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<Iterable<spot.Track>> recentPlayed) {
+                      switch (recentPlayed.connectionState) {
+                        case ConnectionState.waiting:
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        case ConnectionState.done:
+                          if (recentPlayed.hasError) {
+                            return Text(recentPlayed.error.toString());
+                          } else {
+                            return Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 11.w,
+                                ),
+                                child:
+                                    buildTopPlayedItemList(recentPlayed.data!));
+                            // return Text(recentPlayed.data!.first.track!.name!);
+                          }
+                        // ignore: no_default_cases
+                        default:
+                          return const Text('Unhandle State');
+                      }
+                    },
+                  );
+                // ignore: no_default_cases
+                default:
+                  return snapshot.hasError
+                      ? Center(child: Text('Error: ${snapshot.error}'))
+                      : Container();
+              }
+            },
+          ),
           SizedBox(height: 28.h),
           Padding(
             padding: EdgeInsets.symmetric(
@@ -125,7 +170,7 @@ class _RecentQueuesState extends State<RecentQueues> {
             ),
             child: ButtonAppRoundedButton(
               buttonText: AppTextConstants.joinNearbyQueue,
-              buttonCallback: (){
+              buttonCallback: () {
                 Navigator.of(context).pushNamed('/all_queues');
               },
             ),
@@ -218,54 +263,81 @@ class _RecentQueuesState extends State<RecentQueues> {
     );
   }
 
-  Widget buildTopPlayedItemList() {
-    return Column(
-        children: topPlayedItems.map((RecentlyPlayedModel item) {
-      final int index = topPlayedItems.indexOf(item);
-      return buildTopPlayedItem(index);
-    }).toList());
+  Widget buildTopPlayedItemList(Iterable<spot.Track> rPlayed) {
+    final Iterable<spot.Track> firstFour = rPlayed.take(4);
+    // return ListView(children: firstFour.map(buildTopPlayedItem).toList());
+    return ListView.builder(
+      shrinkWrap: true,
+      key: const Key('topList'),
+      itemCount: firstFour.length,
+      itemBuilder: (BuildContext context, int index) {
+        // return Text(rPlayed.elementAt(index).id.toString());
+        return buildTopPlayedItem(firstFour.elementAt(index), index);
+      },
+    );
   }
 
-  Widget buildTopPlayedItem(int index) {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SizedBox(height: 24.h),
-          Row(
-            children: <Widget>[
-              Padding(
+  Widget buildTopPlayedItem(spot.Track item, int index) {
+    // print(item.artists!.last.name!);
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      key: Key(item.id.toString()),
+      leading: FutureBuilder<spot.Artist>(
+        future: SpotifyApiService.getArtistDetails(
+            item.artists!.first.id!), // async work
+        builder: (BuildContext context, AsyncSnapshot<spot.Artist> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return const SizedBox(
+                height: 50,
+                width: 50,
+                child: Center(child: CircularProgressIndicator()),
+              );
+
+            // ignore: no_default_cases
+            default:
+              if (snapshot.hasError)
+                return Text('Error: ${snapshot.error}');
+              else
+                return Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 20.h, 0),
                   child: Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          image: DecorationImage(
-                            image:
-                                AssetImage(topPlayedItems[index].songImageUrl),
-                            fit: BoxFit.fitHeight,
-                          )),
-                      child: Align(
-                          child: Image.asset(
-                              '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.playButtonImage}')))),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(topPlayedItems[index].songTitle,
-                      style: TextStyle(
-                          color: AppColorConstants.roseWhite,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 17)),
-                  SizedBox(height: 8.h),
-                  Text(topPlayedItems[index].artistName,
-                      style: TextStyle(
-                          color: AppColorConstants.paleSky, fontSize: 13))
-                ],
-              ),
-
-            ],
-          )
-        ]);
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(
+                          image: NetworkImage(
+                              snapshot.data!.images!.first.url.toString()),
+                          fit: BoxFit.cover),
+                      // image: DecorationImage(
+                      //   image: AssetImage(topPlayedItems[index].songImageUrl),
+                      //   fit: BoxFit.fitHeight,
+                      // ),
+                    ),
+                    child: Align(
+                      child: Image.asset(
+                          '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.playButtonImage}'),
+                    ),
+                  ),
+                );
+          }
+        },
+      ),
+      title: Text(
+        item.name!,
+        key: Key(index.toString() + item.id.toString()),
+        style: TextStyle(
+            color: AppColorConstants.roseWhite,
+            fontWeight: FontWeight.w600,
+            fontSize: 17),
+      ),
+      subtitle: Text(
+        item.artists!.last.name!,
+        key: Key("item" + index.toString()),
+        style: TextStyle(color: AppColorConstants.paleSky, fontSize: 13),
+      ),
+    );
   }
 
   Widget buildFriendList() {
@@ -276,7 +348,7 @@ class _RecentQueuesState extends State<RecentQueues> {
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
           children: <Widget>[
-            for (int i = 0; i < friendList.length-1; i++) buildFriendItem(i),
+            for (int i = 0; i < friendList.length - 1; i++) buildFriendItem(i),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.w),
                 child: Column(children: <Widget>[
@@ -304,7 +376,6 @@ class _RecentQueuesState extends State<RecentQueues> {
                   ),
                 ]))
           ]),
-
     );
   }
 
@@ -323,8 +394,15 @@ class _RecentQueuesState extends State<RecentQueues> {
                     fit: BoxFit.fitHeight,
                   )),
             ),
-            SizedBox(height: 6.h,),
-            Text(friendList[index].name,textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontSize: 10.sp,fontWeight: FontWeight.w600))
+            SizedBox(
+              height: 6.h,
+            ),
+            Text(friendList[index].name,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w600))
           ],
         ));
   }
