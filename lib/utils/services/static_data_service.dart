@@ -374,4 +374,25 @@ class StaticDataService {
           ]),
     ];
   }
+
+  ///Static Data for Music Platforms
+
+  static List<MusicPlatformModel> getMusicPlatformsUsed() {
+    return <MusicPlatformModel>[
+      MusicPlatformModel(
+        name: AppTextConstants.soundCloud,
+        logoImagePath:
+            '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.soundCloudLogoImage}',
+      ),
+      MusicPlatformModel(
+        name: AppTextConstants.spotify,
+        logoImagePath:
+            '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.spotifyLogoImage}',
+      ),
+      MusicPlatformModel(
+          name: AppTextConstants.itunes,
+          logoImagePath:
+              '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.itunesLogoImage}'),
+    ];
+  }
 }

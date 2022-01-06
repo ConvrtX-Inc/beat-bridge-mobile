@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 ///App Outlined Button
 class AppOutlinedButton extends StatelessWidget {
@@ -10,13 +11,15 @@ class AppOutlinedButton extends StatelessWidget {
       Color btnTextColor = Colors.white,
       String btnText = '',
       double btnHeight = 36,
-        Color btnOutlineColor = const Color(0xFF8201FF),
+        bool isLoading = false,
+      Color btnOutlineColor = const Color(0xFF8201FF),
       this.btnCallback})
       : _btnColor = btnColor,
-  _btnOutlineColor = btnOutlineColor,
+        _btnOutlineColor = btnOutlineColor,
         _btnTextColor = btnTextColor,
         _btnText = btnText,
         _btnHeight = btnHeight,
+        _isLoading = isLoading,
         super(
           key: key,
         );
@@ -26,6 +29,7 @@ class AppOutlinedButton extends StatelessWidget {
   final Color _btnTextColor;
   final String _btnText;
   final double _btnHeight;
+  final bool _isLoading;
 
   ///Callback for button
   final VoidCallback? btnCallback;
@@ -40,16 +44,24 @@ class AppOutlinedButton extends StatelessWidget {
           onPressed: btnCallback,
           autofocus: true,
           style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(_btnColor
-                  ),
+              backgroundColor: MaterialStateProperty.all<Color>(_btnColor),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                     side: BorderSide(color: _btnOutlineColor, width: 1.5)),
               )),
-          child: Text(_btnText,
+          child: _isLoading ?
+              Center( child: SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  color: _btnTextColor,
+                  strokeWidth: 2,
+                ),
+              ))
+                : Text(_btnText,
               style:
-                  TextStyle(color: _btnTextColor, fontWeight: FontWeight.bold)),
+              TextStyle(color: _btnTextColor, fontWeight: FontWeight.bold)),
         ));
   }
 

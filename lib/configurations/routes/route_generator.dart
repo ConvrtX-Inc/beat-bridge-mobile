@@ -12,6 +12,7 @@ import 'package:beatbridge/screens/main_navigations/links/screens/select_platfor
 import 'package:beatbridge/screens/main_navigations/links/screens/test_spot.dart';
 import 'package:beatbridge/screens/main_navigations/make_queues/screens/make_queue_screen.dart';
 import 'package:beatbridge/screens/main_navigations/queues/screens/all_queue.dart';
+import 'package:beatbridge/screens/main_navigations/queues/screens/queue_details.dart';
 import 'package:beatbridge/screens/main_navigations/queues/screens/queue_playing_screen.dart';
 import 'package:beatbridge/screens/main_navigations/queues/screens/recent_queue.dart';
 import 'package:beatbridge/screens/main_navigations/queues/screens/test_spotify.dart';
@@ -56,8 +57,7 @@ class RouteGenerator {
         return MaterialPageRoute<dynamic>(
             builder: (_) => const MakeYourQueueScreen());
       case '/recent_queues':
-        return MaterialPageRoute<dynamic>(
-            builder: (_) => const RecentQueues());
+        return MaterialPageRoute<dynamic>(builder: (_) => const RecentQueues());
       case '/all_queues':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const AllQueueScreen());
@@ -67,15 +67,19 @@ class RouteGenerator {
       case '/select_platform':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const SelectPlatformToLink());
-      case '/profile-settings':
-        return MaterialPageRoute<dynamic>(
-            builder: (_) => const ProfileSettigs());
       case '/friends':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const FriendScreen());
       case '/near_you':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const NearYouScreen());
+      case '/test_spotify_sdk':
+        return MaterialPageRoute<dynamic>(builder: (_) => const TestSpot());
+      case '/profile-settings':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const ProfileSettigs());
+      case '/queue-details':
+        return MaterialPageRoute<dynamic>(builder: (_) => const QueueDetails());
       default:
         return _errorRoute();
     }

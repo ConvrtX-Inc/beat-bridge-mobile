@@ -1,6 +1,14 @@
+import 'dart:convert';
+
 import 'package:beatbridge/constants/app_constants.dart';
+import 'package:beatbridge/constants/asset_path.dart';
+import 'package:beatbridge/models/apis/api_standard_return.dart';
+import 'package:beatbridge/models/friends/friend_model.dart';
 import 'package:beatbridge/models/people_model.dart';
+import 'package:beatbridge/utils/helpers/text_helper.dart';
+import 'package:beatbridge/utils/services/rest_api_service.dart';
 import 'package:beatbridge/utils/services/static_data_service.dart';
+import 'package:beatbridge/widgets/music_platforms/music_platform_used.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,6 +25,16 @@ class FriendScreen extends StatefulWidget {
 class _FriendScreenState extends State<FriendScreen> {
   final List<PeopleModel> peopleList =
       StaticDataService.getPeopleListMockData();
+
+  List<FriendModel> friendList = <FriendModel>[];
+  bool hasError = false;
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getFriends();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,26 +79,32 @@ class _FriendScreenState extends State<FriendScreen> {
               ),
             ),
           ]),
-          Text(
-            '54 ${AppTextConstants.friends}',
-            style: TextStyle(
-                fontWeight: FontWeight.w700,
-                color: AppColorConstants.roseWhite,
-                letterSpacing: 2,
-                fontSize: 13.sp),
-          ),
-          Expanded(child: buildFriendList())
+          if(friendList.isNotEmpty)
+            Text(
+              '${friendList.length} ${AppTextConstants.friends}',
+              style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: AppColorConstants.roseWhite,
+                  letterSpacing: 2,
+                  fontSize: 13.sp),
+            ),
+          if (isLoading) const Center(child: CircularProgressIndicator()),
+          if(friendList.isNotEmpty)
+            Expanded(child: buildFriendList())
+          else if(!isLoading)
+            TextHelper.noAvailableDataTextDisplay(),
+          if(hasError) TextHelper.anErrorOccurredTextDisplay()
+
         ]);
   }
 
-  Widget buildFriendList() {
-    return ListView.builder(
-      itemCount: peopleList.length,
-      itemBuilder: (BuildContext context, int index) {
-        return buildFriendItem(index);
-      },
-    );
-  }
+
+  Widget buildFriendList() => ListView.builder(
+        itemCount: friendList.length,
+        itemBuilder: (BuildContext context, int index) {
+          return buildFriendItem(index);
+        },
+      );
 
   Widget buildFriendItem(int index) =>
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
@@ -95,47 +119,65 @@ class _FriendScreenState extends State<FriendScreen> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       image: DecorationImage(
-                        image: AssetImage(peopleList[index].profileImageUrl),
+                        image: friendList[index].profileImage != ''
+                            ? AssetImage(friendList[index].profileImage)
+                            : const AssetImage(
+                            '${AssetsPathConstants.assetsPNGPath}/blank_profile_pic.png'),
                         fit: BoxFit.fitHeight,
                       )),
                 )),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(peopleList[index].name,
+                Text('User $index',
                     style: TextStyle(
                         color: AppColorConstants.roseWhite,
                         fontWeight: FontWeight.w600,
                         fontSize: 14)),
                 SizedBox(height: 6.h),
-                Text('${peopleList[index].totalTrackCount} Tracks',
+                Text('${friendList[index].tracks} Tracks',
                     style: TextStyle(
                         color: AppColorConstants.paleSky, fontSize: 13)),
-                buildMusicPlatformsUsedRow(context, index)
+                MusicPlatformUsed(
+                    musicPlatforms: StaticDataService.getMusicPlatformsUsed())
               ],
             ),
           ],
         ),
       ]);
 
-  Widget buildMusicPlatformsUsedRow(BuildContext context, int index) {
-    return Column(children: <Widget>[
-      Row(
-        children: <Widget>[
-          for (int i = 0; i < peopleList[index].musicPlatformsUsed.length; i++)
-            Padding(padding: EdgeInsets.symmetric(horizontal: 2.w), child:Image(
-                image: AssetImage(
-                    peopleList[index].musicPlatformsUsed[i].logoImageUrl),
-                height: 20,
-                width: 20)),
 
-        ],
-      )
-    ]);
+  Future<void> getFriends() async {
+    setState(() {
+      isLoading = !isLoading;
+    });
+    final APIStandardReturnFormat result = await APIServices().getFriendList();
+    final List<FriendModel> friends = <FriendModel>[];
+    final dynamic jsonData = jsonDecode(result.successResponse);
+    if (result.statusCode == 200) {
+      for (final dynamic res in jsonData) {
+        final FriendModel friend = FriendModel.fromJson(res);
+        friends.add(friend);
+      }
+      setState(() {
+        isLoading = false;
+        friendList = friends;
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+        hasError = true;
+      });
+    }
   }
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<PeopleModel>('peopleList', peopleList));
+    properties
+        ..add(IterableProperty<PeopleModel>('peopleList', peopleList))
+    ..add(IterableProperty<FriendModel>('friendList', friendList))
+    ..add(DiagnosticsProperty<bool>('hasError', hasError))
+    ..add(DiagnosticsProperty<bool>('isLoading', isLoading));
   }
 }
