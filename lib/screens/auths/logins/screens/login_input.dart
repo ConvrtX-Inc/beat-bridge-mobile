@@ -135,7 +135,7 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
               });
               await APIServices()
                   .login(_username, _password)
-                  .then((APIStandardReturnFormat response) {
+                  .then((APIStandardReturnFormat response) async {
                 setState(() {
                   _isAPICallInProgress = false;
                 });
@@ -150,21 +150,10 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
                   final UserModel user =
                       UserModel.fromJson(json.decode(response.successResponse));
                   UserSingleton.instance.user = user;
-                  final token = UserSingleton.instance.user.token;
-                  print(token);
-                  // final jsonD = json.decode(response.successResponse);
-
+                  await Navigator.pushReplacementNamed(
+                      context, '/recent_queues');
                 }
               });
-              // Timer(
-              //     const Duration(seconds: 1),
-              //     () async => {
-              //           setState(() {
-              //             _isAPICallInProgress = false;
-              //           }),
-              //           await Navigator.pushReplacementNamed(
-              //               context, '/recent_queues')
-              //         });
             }
           },
         ),
