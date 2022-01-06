@@ -287,4 +287,19 @@ class AppTextConstants {
   ///Returns select music profile you wish to add and dance on text
   static String selectMusicProfile =
       'select music profile you wish to add and dance on';
+
+  ///Returns friends text
+  static String friends = 'Friends';
+
+  ///Returns find friends text
+  static String findFriends = 'Find Friends';
+
+  ///Returns near you text
+  static String nearYou = 'Near You';
+
+  ///Returns people text
+  static String people = 'people';
+
+  ///Returns add friend text
+  static String addFriend = 'Add Friend';
 }
