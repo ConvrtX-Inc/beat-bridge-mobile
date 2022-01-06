@@ -1,10 +1,15 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
+import 'dart:convert';
+
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/constants/asset_path.dart';
+import 'package:beatbridge/models/apis/api_standard_return.dart';
 import 'package:beatbridge/models/people_model.dart';
 import 'package:beatbridge/models/recent_queue_model.dart';
 import 'package:beatbridge/models/recently_played_model.dart';
+import 'package:beatbridge/models/users/user_queue_model.dart';
+import 'package:beatbridge/utils/services/rest_api_service.dart';
 import 'package:beatbridge/utils/services/spotify_api_service.dart';
 import 'package:beatbridge/utils/services/static_data_service.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded.dart';
@@ -35,7 +40,7 @@ class _RecentQueuesState extends State<RecentQueues> {
   final List<PeopleModel> friendList =
       StaticDataService.getPeopleListMockData();
   int selectedQueueIndex = 1;
-
+  List<String> errorMessages = <String>[];
   @override
   void initState() {
     // TODO: implement initState
@@ -194,20 +199,54 @@ class _RecentQueuesState extends State<RecentQueues> {
   }
 
   Widget buildRecentQueuesList() {
-    return Container(
-        height: 120.h,
-        padding: EdgeInsets.symmetric(horizontal: 10.w),
-        child: ListView.builder(
-          itemCount: recentQueueList.length,
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (BuildContext context, int index) {
-            return buildRecentQueueItem(index);
-          },
-        ));
+    return FutureBuilder<APIStandardReturnFormat>(
+      future: APIServices().getUserQueues(), // async work
+      builder: (BuildContext context,
+          AsyncSnapshot<APIStandardReturnFormat> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return const SizedBox(
+              height: 50,
+              width: 50,
+              child: Center(child: CircularProgressIndicator()),
+            );
+
+          // ignore: no_default_cases
+          default:
+            if (snapshot.hasError)
+              return Text('Error: ${snapshot.error}');
+            else if (snapshot.data!.status == 'error') {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              // final UserQueueModel userQueues = UserQueueModel.fromJson(
+              //     json.decode(snapshot.data!.successResponse));
+              final dynamic jsonData =
+                  jsonDecode(snapshot.data!.successResponse);
+              final List<UserQueueModel> userQueues = <UserQueueModel>[];
+              final qs = (jsonData as List)
+                  .map((i) => UserQueueModel.fromJson(i))
+                  .toList();
+              userQueues.addAll(qs);
+
+              return Container(
+                height: 120.h,
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: ListView.builder(
+                  itemCount: userQueues.length,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (BuildContext context, int index) {
+                    return buildRecentQueueItem(userQueues[index], index);
+                  },
+                ),
+              );
+            }
+        }
+      },
+    );
   }
 
-  Widget buildRecentQueueItem(int index) {
+  Widget buildRecentQueueItem(UserQueueModel queue, int index) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 2.w),
       child: Column(
@@ -254,7 +293,7 @@ class _RecentQueuesState extends State<RecentQueues> {
           SizedBox(
               width: 60.w,
               child: Text(
-                recentQueueList[index].name,
+                queue.name,
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white, fontSize: 10.sp),
               ))

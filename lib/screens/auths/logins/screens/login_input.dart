@@ -150,6 +150,7 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
                   final UserModel user =
                       UserModel.fromJson(json.decode(response.successResponse));
                   UserSingleton.instance.user = user;
+
                   await Navigator.pushReplacementNamed(
                       context, '/recent_queues');
                 }

@@ -3,9 +3,12 @@
   single place and need to return the data if the rest call is a success or need to return custom error exception on
   the basis of 4xx, 5xx status code. We can make use of http package to make the rest API call in the flutter
  */
+import 'dart:io';
+
 import 'package:beatbridge/constants/api_path.dart';
 import 'package:beatbridge/models/apis/api_standard_return.dart';
 import 'package:beatbridge/models/users/user_model.dart';
+import 'package:beatbridge/models/users/user_queue_model.dart';
 import 'package:beatbridge/utils/services/global_api_service.dart';
 import 'package:http/http.dart' as http;
 
@@ -53,6 +56,24 @@ class APIServices {
           'latitude': '1.28210155945393',
           'longitude': '103.81722480263163'
         });
+    return GlobalAPIServices().formatResponseToStandardFormat(response);
+  }
+
+  /// API service for user Queues
+  Future<APIStandardReturnFormat> getUserQueues() async {
+    print('$apiBaseUrl/${AppAPIPath.userQueues}');
+    // final http.Response response = await http.get(
+    //     Uri.http(apiBaseMode, '$apiBaseUrl/${AppAPIPath.userQueues}'),
+    //     headers: {
+    //       HttpHeaders.authorizationHeader:
+    //           'Bearer ${UserSingleton.instance.user.token}',
+    //     });
+    final http.Response response =
+        await http.get(Uri.http(apiBaseUrl, AppAPIPath.userQueues), headers: {
+      HttpHeaders.authorizationHeader:
+          'Bearer ${UserSingleton.instance.user.token}',
+    });
+    print(response.body);
     return GlobalAPIServices().formatResponseToStandardFormat(response);
   }
 }
