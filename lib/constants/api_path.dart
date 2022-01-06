@@ -17,7 +17,7 @@ class AppAPIPath {
   static String apiBaseUrl = 'dev-beatbridge-convrtx.herokuapp.com';
 
   /// Returns login url
-  static String loginUrl = 'api/v1/auth/email/login';
+  static String loginUrl = 'api/v1/auth/username/login';
 
   /// Returns register url
   static String registerUrl = 'api/v1/auth/username/register';

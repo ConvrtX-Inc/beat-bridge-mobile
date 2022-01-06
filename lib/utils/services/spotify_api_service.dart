@@ -45,7 +45,7 @@ class SpotifyApiService {
 
   static Future<String> getAuthenticationToken() async {
     try {
-      var authenticationToken = await SpotifySdk.getAuthenticationToken(
+      final authenticationToken = await SpotifySdk.getAuthenticationToken(
           clientId: dotenv.env['CLIENT_ID'].toString(),
           redirectUrl: dotenv.env['REDIRECT_URL'].toString(),
           scope: 'app-remote-control, '
@@ -93,8 +93,8 @@ class SpotifyApiService {
   }
 
   static Future<Artist> getArtistDetails(String artistID) async {
-    final storage = new FlutterSecureStorage();
-    String? token = await storage.read(key: 'spotifyAuthToken');
+    const FlutterSecureStorage storage = FlutterSecureStorage();
+    final String? token = await storage.read(key: 'spotifyAuthToken');
     final Artist art = Artist();
     try {
       final SpotifyApi spotify = SpotifyApi.withAccessToken(token!);
