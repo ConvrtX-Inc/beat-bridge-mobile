@@ -57,6 +57,12 @@ class AppColorConstants {
   /// get arty click purple color
   static Color get artyClickPurple => _artyClickPurple;
 
+  /// Returns Jasmine Purple color
+  static const Color _jasminePurple = Color(0xFFA646FF);
+
+  /// get Jasmine Purple color
+  static Color get jasminePurple => _jasminePurple;
+
   /// Returns rubber ducky yellow color
   static const Color _rubberDuckyYellow = Color(0xFFFFD601);
 
@@ -64,7 +70,7 @@ class AppColorConstants {
   static Color get rubberDuckyYellow => _rubberDuckyYellow;
 
   /// Returns lemon color
-  static const Color _lemon= Color(0xFFFFED8D);
+  static const Color _lemon = Color(0xFFFFED8D);
 
   /// get arty lemon color
   static Color get lemon => _lemon;
@@ -233,6 +239,12 @@ class AppTextConstants {
   /// Returns top played text
   static String topPlayed = 'Top Played';
 
+  /// Returns top played text
+  static String mostPlayed = 'Most Played';
+
+  /// Returns top played text
+  static String allSongs = 'All Songs';
+
   /// Returns see all text
   static String seeAll = 'SEE ALL';
 
@@ -264,19 +276,22 @@ class AppTextConstants {
   static String allDone = 'All Done';
 
   ///Returns recent queues string
- static String recentQueues =  'Recent Queues';
+  static String recentQueues = 'Recent Queues';
 
   ///Returns all queues string
-  static String allQueues =  'All Queues';
+  static String allQueues = 'All Queues';
 
- ///Returns start new queue text
- static String startNewQueue = 'Start New Queue';
+  ///Returns start new queue text
+  static String startNewQueue = 'Start New Queue';
 
   ///Returns join nearby queue text
   static String joinNearbyQueue = 'Join Nearby Queue';
 
   ///Returns follow your friends text
   static String followYourFriends = 'Follow Your Friends';
+
+  ///Returns follow your friends text
+  static String members = 'Members';
 
   ///Returns Success text
   static String success = 'Success';

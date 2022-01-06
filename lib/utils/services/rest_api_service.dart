@@ -27,8 +27,7 @@ class APIServices {
         body: {
           'username': userParams.username,
           'email': userParams.email,
-          'password': userParams.password,
-          'phone_number': userParams.phoneNumber
+          'phone_number': userParams.phoneNo
         });
 
     if (isDebugging) {
@@ -37,9 +36,23 @@ class APIServices {
           '$apiBaseMode$apiBaseUrl${AppAPIPath.registerUrl}',
           response.statusCode,
           response.body,
-          userParams.phoneNumber);
+          userParams.phoneNo);
     }
 
+    return GlobalAPIServices().formatResponseToStandardFormat(response);
+  }
+
+  /// API service for login
+  Future<APIStandardReturnFormat> login(
+      String username, String password) async {
+    final http.Response response = await http.post(
+        Uri.parse('$apiBaseMode$apiBaseUrl/${AppAPIPath.loginUrl}'),
+        body: {
+          'username': username,
+          'password': password,
+          'latitude': '1.28210155945393',
+          'longitude': '103.81722480263163'
+        });
     return GlobalAPIServices().formatResponseToStandardFormat(response);
   }
 }

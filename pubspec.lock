@@ -118,6 +118,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.0.0+2"
+  flutter_secure_storage:
+    dependency: "direct main"
+    description:
+      name: flutter_secure_storage
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.2.1"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -276,9 +283,11 @@ packages:
   spotify:
     dependency: "direct main"
     description:
-      name: spotify
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: master
+      resolved-ref: "14fe4b2db89aa2d536971a887ec0cfdb366df04d"
+      url: "https://github.com/rinukkusu/spotify-dart.git"
+    source: git
     version: "0.6.0"
   spotify_sdk:
     dependency: "direct main"

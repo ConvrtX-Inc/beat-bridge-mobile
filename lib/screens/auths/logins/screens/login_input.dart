@@ -1,8 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:beatbridge/constants/app_constants.dart';
+import 'package:beatbridge/models/apis/api_standard_return.dart';
+import 'package:beatbridge/models/users/user_model.dart';
 import 'package:beatbridge/utils/helpers/form_helper.dart';
 import 'package:beatbridge/utils/helpers/text_helper.dart';
+import 'package:beatbridge/utils/services/rest_api_service.dart';
+import 'package:beatbridge/utils/services/text_service.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded_gradient.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +32,7 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   final GlobalKey<FormState> loginFormGlobalKey = GlobalKey<FormState>();
-
+  TextServices textServices = TextServices();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,10 +118,7 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
           child: TextButton(
             child: Text('Forgot Password?',
                 style: TextStyle(
-                    color: AppColorConstants
-                        .roseWhite,
-                  letterSpacing: 1
-                    )),
+                    color: AppColorConstants.roseWhite, letterSpacing: 1)),
             onPressed: () {
               Navigator.of(context).pushNamed('/verify_email');
             },
@@ -126,22 +128,32 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
           buttonText: AppTextConstants.login,
           isLoading: _isAPICallInProgress,
           buttonCallback: () async {
-
-
             if (validateAndSave()) {
               setState(() {
                 _isAPICallInProgress = true;
                 errorMessages = <String>[];
               });
-              Timer(
-                  const Duration(seconds: 1),
-                  () async => {
-                        setState(() {
-                          _isAPICallInProgress = false;
-                        }),
-                        await Navigator.pushReplacementNamed(
-                            context, '/recent_queues')
+              await APIServices()
+                  .login(_username, _password)
+                  .then((APIStandardReturnFormat response) async {
+                setState(() {
+                  _isAPICallInProgress = false;
+                });
+
+                if (response.status == 'error') {
+                  final Map<String, dynamic> decoded =
+                      jsonDecode(response.errorResponse);
+                  decoded['errors'].forEach((String k, dynamic v) => <dynamic>{
+                        errorMessages..add(textServices.filterErrorMessage(v))
                       });
+                } else {
+                  final UserModel user =
+                      UserModel.fromJson(json.decode(response.successResponse));
+                  UserSingleton.instance.user = user;
+                  await Navigator.pushReplacementNamed(
+                      context, '/recent_queues');
+                }
+              });
             }
           },
         ),

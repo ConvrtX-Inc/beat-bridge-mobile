@@ -12,6 +12,9 @@ class TextServices {
       case 'usernameAlreadyExists':
         filteredMessage = 'Username ${AppTextConstants.alreadyExists}';
         break;
+      case 'incorrectPassword':
+        filteredMessage = 'Incorrect Password';
+        break;
       default:
         filteredMessage = errorTextMessage;
     }
