@@ -2,6 +2,8 @@ import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/models/people_model.dart';
 import 'package:beatbridge/utils/services/static_data_service.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded_gradient.dart';
+import 'package:beatbridge/widgets/buttons/app_outlined_button.dart';
+import 'package:beatbridge/widgets/music_platforms/music_platform_used.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -127,7 +129,7 @@ class _StepFourState extends State<StepFour> {
                   Text('${peopleList[index].totalTrackCount} Tracks',
                       style: TextStyle(
                           color: AppColorConstants.paleSky, fontSize: 13)),
-                  buildMusicPlatformsUsedRow(context, index)
+                  MusicPlatformUsed(musicPlatforms: StaticDataService.getMusicPlatformsUsed())
                 ],
               ),
               const Spacer(),
@@ -153,49 +155,13 @@ class _StepFourState extends State<StepFour> {
         ],
       ),
       if (peopleList[index].isSelected)
-        buildMakeAdminButton(context)
+        AppOutlinedButton(btnCallback: (){
+          debugPrint('Make admin pressed');
+        },btnText: AppTextConstants.makeAdmin)
         ]);
   }
 
-  Widget buildMusicPlatformsUsedRow(BuildContext context, int index) {
-    return Column(children: <Widget>[
-      Row(
-        children: <Widget>[
-          for (int i = 0; i < peopleList[index].musicPlatformsUsed.length; i++)
-            Image(
-                image: AssetImage(
-                    peopleList[index].musicPlatformsUsed[i].logoImageUrl),
-                height: 20,
-                width: 20),
-          SizedBox(width: 6.w)
-        ],
-      )
-    ]);
-  }
 
-  Widget buildMakeAdminButton(BuildContext context) {
-    return Container(
-        margin: const EdgeInsets.fromLTRB(0, 14, 0, 0),
-        height: 36,
-        width: double.infinity,
-        child: ElevatedButton(
-          onPressed: () {},
-          autofocus: true,
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(
-                  const Color.fromRGBO(166, 70, 255, 0.29)),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    side: BorderSide(
-                        color: AppColorConstants.artyClickPurple, width: 1.5)),
-              )),
-          child: Text(AppTextConstants.makeAdmin,
-              style: TextStyle(
-                  color: AppColorConstants.roseWhite,
-                  fontWeight: FontWeight.bold)),
-        ));
-  }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

@@ -5,6 +5,8 @@ import 'package:beatbridge/screens/auths/forgot_password/screens/verify_email.da
 import 'package:beatbridge/screens/auths/logins/screens/login.dart';
 import 'package:beatbridge/screens/auths/logins/screens/login_input.dart';
 import 'package:beatbridge/screens/auths/registers/screens/register.dart';
+import 'package:beatbridge/screens/main_navigations/friends/screens/friend.dart';
+import 'package:beatbridge/screens/main_navigations/friends/screens/near_you.dart';
 import 'package:beatbridge/screens/main_navigations/links/screens/link_landing_page.dart';
 import 'package:beatbridge/screens/main_navigations/links/screens/select_platform_to_link.dart';
 import 'package:beatbridge/screens/main_navigations/links/screens/test_spot.dart';
@@ -65,6 +67,12 @@ class RouteGenerator {
       case '/select_platform':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const SelectPlatformToLink());
+      case '/friends':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const FriendScreen());
+      case '/near_you':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const NearYouScreen());
       case '/test_spotify_sdk':
         return MaterialPageRoute<dynamic>(builder: (_) => const TestSpot());
       case '/profile-settings':

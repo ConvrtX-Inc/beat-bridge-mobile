@@ -1,4 +1,5 @@
 import 'package:beatbridge/models/apis/api_standard_return.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 /// Global API services
@@ -25,11 +26,11 @@ class GlobalAPIServices {
   }
 
   /// debugging
-  void debugging(functionName, url, statusCode, body, params) {
-    print('FUNCTION NAME ---->>>>>>>> $functionName');
-    print('RESPONSE URL ---->>>>>>>> $url');
-    print('RESPONSE STATUS CODE ---->>>>>>>> $statusCode');
-    print('RESPONSE BODY ---->>>>>>>> $body');
-    print('RESPONSE PARAMETERS ---->>>>>>>> $params');
+  void debugging(String functionName,String url, int statusCode,dynamic body, dynamic params) {
+    debugPrint('FUNCTION NAME ---->>>>>>>> $functionName');
+    debugPrint('RESPONSE URL ---->>>>>>>> $url');
+    debugPrint('RESPONSE STATUS CODE ---->>>>>>>> $statusCode');
+    debugPrint('RESPONSE BODY ---->>>>>>>> $body');
+    debugPrint('RESPONSE PARAMETERS ---->>>>>>>> $params');
   }
 }
