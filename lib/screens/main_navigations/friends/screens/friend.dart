@@ -23,18 +23,14 @@ class FriendScreen extends StatefulWidget {
 }
 
 class _FriendScreenState extends State<FriendScreen> {
-  final List<PeopleModel> peopleList =
-      StaticDataService.getPeopleListMockData();
-
   List<FriendModel> friendList = <FriendModel>[];
   bool hasError = false;
-  bool isLoading = false;
+
 
   @override
   void initState() {
     super.initState();
-    getFriends();
-  }
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -42,62 +38,78 @@ class _FriendScreenState extends State<FriendScreen> {
         backgroundColor: AppColorConstants.mirage,
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 27.w),
-          child: buildFriendsUI(),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(height: 41.h),
+                IconButton(
+                    icon: Icon(
+                      Icons.arrow_back_ios,
+                      color: AppColorConstants.roseWhite,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }),
+                SizedBox(height: 26.h),
+                Row(children: <Widget>[
+                  Text(
+                    AppTextConstants.friends,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: AppColorConstants.roseWhite,
+                        fontSize: 30.sp),
+                  ),
+                  const Spacer(),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/near_you');
+                    },
+                    child: Text(
+                      AppTextConstants.findFriends,
+                      style:
+                          TextStyle(color: AppColorConstants.artyClickPurple),
+                    ),
+                  ),
+                ]),
+                Expanded(child: buildFriendsUI())
+              ]),
         ));
   }
 
-  Widget buildFriendsUI() {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SizedBox(height: 41.h),
-          IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: AppColorConstants.roseWhite,
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              }),
-          SizedBox(height: 26.h),
-          Row(children: <Widget>[
-            Text(
-              AppTextConstants.friends,
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: AppColorConstants.roseWhite,
-                  fontSize: 30.sp),
-            ),
-            const Spacer(),
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/near_you');
-              },
-              child: Text(
-                AppTextConstants.findFriends,
-                style: TextStyle(color: AppColorConstants.artyClickPurple),
-              ),
-            ),
-          ]),
-          if(friendList.isNotEmpty)
-            Text(
-              '${friendList.length} ${AppTextConstants.friends}',
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: AppColorConstants.roseWhite,
-                  letterSpacing: 2,
-                  fontSize: 13.sp),
-            ),
-          if (isLoading) const Center(child: CircularProgressIndicator()),
-          if(friendList.isNotEmpty)
-            Expanded(child: buildFriendList())
-          else if(!isLoading)
-            TextHelper.noAvailableDataTextDisplay(),
-          if(hasError) TextHelper.anErrorOccurredTextDisplay()
-
-        ]);
-  }
-
+  Widget buildFriendsUI() => FutureBuilder<List<FriendModel>>(
+        future: getFriendList(),
+        builder:
+            (BuildContext context, AsyncSnapshot<List<FriendModel>> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return const Center(child: CircularProgressIndicator());
+            case ConnectionState.done:
+              if (snapshot.data!.isNotEmpty) {
+                friendList = snapshot.data!;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      '${friendList.length} ${AppTextConstants.friends}',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          color: AppColorConstants.roseWhite,
+                          letterSpacing: 2,
+                          fontSize: 13.sp),
+                    ),
+                   Expanded(child: buildFriendList())
+                  ],
+                );
+              } else {
+                if(hasError) {
+                  return TextHelper.anErrorOccurredTextDisplay();
+                }
+                return TextHelper.noAvailableDataTextDisplay();
+              }
+          }
+          return Container();
+        },
+      );
 
   Widget buildFriendList() => ListView.builder(
         itemCount: friendList.length,
@@ -122,7 +134,7 @@ class _FriendScreenState extends State<FriendScreen> {
                         image: friendList[index].profileImage != ''
                             ? AssetImage(friendList[index].profileImage)
                             : const AssetImage(
-                            '${AssetsPathConstants.assetsPNGPath}/blank_profile_pic.png'),
+                                '${AssetsPathConstants.assetsPNGPath}/blank_profile_pic.png'),
                         fit: BoxFit.fitHeight,
                       )),
                 )),
@@ -147,10 +159,7 @@ class _FriendScreenState extends State<FriendScreen> {
       ]);
 
 
-  Future<void> getFriends() async {
-    setState(() {
-      isLoading = !isLoading;
-    });
+  Future<List<FriendModel>> getFriendList() async {
     final APIStandardReturnFormat result = await APIServices().getFriendList();
     final List<FriendModel> friends = <FriendModel>[];
     final dynamic jsonData = jsonDecode(result.successResponse);
@@ -159,25 +168,19 @@ class _FriendScreenState extends State<FriendScreen> {
         final FriendModel friend = FriendModel.fromJson(res);
         friends.add(friend);
       }
+    }else{
       setState(() {
-        isLoading = false;
-        friendList = friends;
-      });
-    } else {
-      setState(() {
-        isLoading = false;
         hasError = true;
       });
     }
+    return friends;
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-        ..add(IterableProperty<PeopleModel>('peopleList', peopleList))
-    ..add(IterableProperty<FriendModel>('friendList', friendList))
-    ..add(DiagnosticsProperty<bool>('hasError', hasError))
-    ..add(DiagnosticsProperty<bool>('isLoading', isLoading));
-  }
+      ..add(IterableProperty<FriendModel>('friendList', friendList))
+      ..add(DiagnosticsProperty<bool>('hasError', hasError));
+   }
 }

@@ -30,11 +30,7 @@ class _NearYouScreenState extends State<NearYouScreen> {
     getFriendsNearYou();
   }
 
-  final List<PeopleModel> peopleList =
-      StaticDataService.getPeopleListMockData();
-
   List<NearYouModel> friendsNearYou = <NearYouModel>[];
-  bool isLoading = false;
   bool hasError = false;
   bool isAPICallInProgress = false;
   late int selectedFriendIndex;
@@ -45,48 +41,65 @@ class _NearYouScreenState extends State<NearYouScreen> {
         backgroundColor: AppColorConstants.mirage,
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 27.w),
-          child: buildFriendsNearYouUI(),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(height: 41.h),
+                IconButton(
+                    icon: Icon(
+                      Icons.arrow_back_ios,
+                      color: AppColorConstants.roseWhite,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }),
+                SizedBox(height: 26.h),
+                Text(
+                  AppTextConstants.nearYou,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: AppColorConstants.roseWhite,
+                      fontSize: 30.sp),
+                ),
+                SizedBox(height: 16.h),
+                Expanded(child: buildFriendsNearYouUI())
+              ]),
         ));
   }
 
-  Widget buildFriendsNearYouUI() {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SizedBox(height: 41.h),
-          IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: AppColorConstants.roseWhite,
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              }),
-          SizedBox(height: 26.h),
-          Text(
-            AppTextConstants.nearYou,
-            style: TextStyle(
-                fontWeight: FontWeight.w700,
-                color: AppColorConstants.roseWhite,
-                fontSize: 30.sp),
-          ),
-          SizedBox(height: 16.h),
-          Text(
-            '${friendsNearYou.length} ${AppTextConstants.people}',
-            style: TextStyle(
-                fontWeight: FontWeight.w700,
-                color: AppColorConstants.roseWhite,
-                letterSpacing: 2,
-                fontSize: 13.sp),
-          ),
-          if (isLoading) const Center(child: CircularProgressIndicator()),
-          if (friendsNearYou.isNotEmpty)
-            Expanded(child: buildFriendNearYouList())
-          else if (!isLoading)
-            TextHelper.noAvailableDataTextDisplay(),
-          if (hasError) TextHelper.anErrorOccurredTextDisplay()
-        ]);
-  }
+
+  Widget buildFriendsNearYouUI() => FutureBuilder<List<NearYouModel>>(
+    future: getFriendsNearYou(),
+      builder: (BuildContext context, AsyncSnapshot<List<NearYouModel>> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return const Center(child: CircularProgressIndicator());
+          case ConnectionState.done:
+            if (snapshot.data!.isNotEmpty) {
+              friendsNearYou = snapshot.data!;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    '${friendsNearYou.length} ${AppTextConstants.people}',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: AppColorConstants.roseWhite,
+                        letterSpacing: 2,
+                        fontSize: 13.sp),
+                  ),
+                  Expanded(child: buildFriendNearYouList())
+                ],
+              );
+            } else {
+              if(hasError) {
+                return TextHelper.anErrorOccurredTextDisplay();
+              }
+              return TextHelper.noAvailableDataTextDisplay();
+            }
+        }
+        return Container();
+      });
 
   Widget buildFriendNearYouList() {
     return ListView.builder(
@@ -149,10 +162,7 @@ class _NearYouScreenState extends State<NearYouScreen> {
         ),
       ]);
 
-  Future<void> getFriendsNearYou() async {
-    setState(() {
-      isLoading = !isLoading;
-    });
+  Future<List<NearYouModel>> getFriendsNearYou() async {
     final APIStandardReturnFormat result =
         await APIServices().findFriendsNearYou();
 
@@ -167,17 +177,13 @@ class _NearYouScreenState extends State<NearYouScreen> {
         final NearYouModel friend = NearYouModel.fromJson(res);
         friends.add(friend);
       }
-
-      setState(() {
-        isLoading = false;
-        friendsNearYou = friends;
-      });
     } else {
       setState(() {
-        isLoading = false;
         hasError = true;
       });
     }
+
+    return friends;
   }
 
   Future<void> addFriend(int index) async {
@@ -189,7 +195,7 @@ class _NearYouScreenState extends State<NearYouScreen> {
     final APIStandardReturnFormat result =
         await APIServices().addFriend(friendsNearYou[index].email);
     if (result.statusCode == 200) {
-      _showToast(context,AppTextConstants.friendRequestSent);
+      _showToast(context, AppTextConstants.friendRequestSent);
 
       setState(() {
         friendsNearYou.remove(friendsNearYou[index]);
@@ -201,25 +207,23 @@ class _NearYouScreenState extends State<NearYouScreen> {
         hasError = true;
       });
 
-      _showToast(context,AppTextConstants.anErrorOccurred);
+      _showToast(context, AppTextConstants.anErrorOccurred);
     }
   }
 
-  void _showToast(BuildContext context,String message) {
-    ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-        content: Text(message), duration: const Duration(seconds: 1)));
+  void _showToast(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message), duration: const Duration(seconds: 1)));
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(IterableProperty<PeopleModel>('peopleList', peopleList))
-      ..add(IterableProperty<NearYouModel>('friendsNearYou', friendsNearYou))
-      ..add(DiagnosticsProperty<bool>('isLoading', isLoading))
-      ..add(DiagnosticsProperty<bool>('hasError', hasError))
-    ..add(
-        DiagnosticsProperty<bool>('isAPICallInProgress', isAPICallInProgress))
-    ..add(IntProperty('selectedFriendIndex', selectedFriendIndex));
+       ..add(IterableProperty<NearYouModel>('friendsNearYou', friendsNearYou))
+       ..add(DiagnosticsProperty<bool>('hasError', hasError))
+      ..add(
+          DiagnosticsProperty<bool>('isAPICallInProgress', isAPICallInProgress))
+      ..add(IntProperty('selectedFriendIndex', selectedFriendIndex));
   }
 }
