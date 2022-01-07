@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
               },
             ),
           ),
-          initialRoute: '/friends',
+          initialRoute: '/profile-settings',
           onGenerateRoute: RouteGenerator.generateRoute),
       designSize: const Size(375, 812),
     );

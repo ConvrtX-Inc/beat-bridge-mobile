@@ -141,7 +141,7 @@ class _FriendScreenState extends State<FriendScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('User $index',
+                Text(friendList[index].username,
                     style: TextStyle(
                         color: AppColorConstants.roseWhite,
                         fontWeight: FontWeight.w600,

@@ -18,6 +18,9 @@ import 'package:beatbridge/screens/main_navigations/queues/screens/recent_queue.
 import 'package:beatbridge/screens/main_navigations/queues/screens/test_spotify.dart';
 import 'package:beatbridge/screens/settings/profile_settings.dart';
 import 'package:beatbridge/screens/splashes/screens/splash_screen.dart';
+import 'package:beatbridge/screens/supports/create_ticket.dart';
+import 'package:beatbridge/screens/supports/support.dart';
+import 'package:beatbridge/screens/supports/support_thread.dart';
 import 'package:flutter/material.dart';
 
 /// Route generator configuration
@@ -80,6 +83,13 @@ class RouteGenerator {
             builder: (_) => const ProfileSettigs());
       case '/queue-details':
         return MaterialPageRoute<dynamic>(builder: (_) => const QueueDetails());
+      case '/support':
+        return MaterialPageRoute<dynamic>(builder: (_) => const SupportScreen());
+      case '/support-thread':
+        return MaterialPageRoute<dynamic>(builder: (_) => const SupportThreadScreen());
+      case '/create-ticket':
+        return MaterialPageRoute<dynamic>(builder: (_) => const CreateTicketScreen());
+
       default:
         return _errorRoute();
     }

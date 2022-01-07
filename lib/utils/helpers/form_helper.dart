@@ -10,18 +10,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 /// Utility for form helper
 class FormHelper {
   /// Widget for form input field with controller
-  static Widget inputFieldWidgetWithController(
-    BuildContext context,
-    String keyName,
-    String labelName,
-    Function onValidate,
-    Function onSaved, {
-    required TextEditingController controller,
-    String initialValue = '',
-    bool obscureText = false,
-    String inputPlaceholder = '',
-    double separatorHeight = 16,
-  }) {
+  static Widget inputFieldWidgetWithController(BuildContext context,
+      String keyName, String labelName, Function onValidate, Function onSaved,
+      {required TextEditingController controller,
+      String initialValue = '',
+      bool obscureText = false,
+      String inputPlaceholder = '',
+      double separatorHeight = 16,
+      dynamic minLines,
+      dynamic maxLines = 1}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -36,6 +33,9 @@ class FormHelper {
         SizedBox(height: separatorHeight.h),
         TextFormField(
           controller: controller,
+          keyboardType: TextInputType.multiline,
+          minLines: minLines,
+          maxLines: maxLines,
           key: Key(keyName),
           obscureText: obscureText,
           obscuringCharacter: AppTextConstants.asterisk,

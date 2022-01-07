@@ -84,7 +84,7 @@ class APIServices {
     debugPrint('latitude $latitude longitude $longitude');
 
     final http.Response response = await http.post(
-        Uri.http(apiBaseUrl, '/api/v1/user-connections/nearest-friends'),
+        Uri.http(apiBaseUrl, '/api/v1/users/nearest-users'),
         headers: {
           HttpHeaders.authorizationHeader: 'Bearer $token',
         },

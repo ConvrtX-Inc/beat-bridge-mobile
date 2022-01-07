@@ -15,6 +15,8 @@ class UserModel {
     this.longitude = '',
     this.createdDate = '',
     this.updatedDate = '',
+    this.password = '',
+    this.phoneNumber = ''
   });
 
   /// Initialization
@@ -30,6 +32,8 @@ class UserModel {
       latitude,
       longitude,
       createdDate,
+      password,
+      phoneNumber,
       updatedDate;
 
   static UserModel fromJson(Map<String, dynamic> json) => UserModel(
