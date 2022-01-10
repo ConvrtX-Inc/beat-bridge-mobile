@@ -1,8 +1,18 @@
+// ignore_for_file: diagnostic_describe_all_properties, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, sort_constructors_first, public_member_api_docs
+
+import 'dart:convert';
+
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/constants/asset_path.dart';
+import 'package:beatbridge/models/apis/api_standard_return.dart';
+import 'package:beatbridge/models/apis/response_to_user.dart';
 import 'package:beatbridge/models/people_model.dart';
 import 'package:beatbridge/models/recent_queue_model.dart';
 import 'package:beatbridge/models/recently_played_model.dart';
+import 'package:beatbridge/models/users/queue_member_model.dart';
+import 'package:beatbridge/models/users/queue_model.dart';
+import 'package:beatbridge/utils/services/rest_api_service.dart';
+import 'package:beatbridge/utils/services/spotify_api_service.dart';
 import 'package:beatbridge/utils/services/static_data_service.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded_gradient.dart';
@@ -10,11 +20,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:spotify/spotify.dart' as spot;
 
 ///Queue Details
 class QueueDetails extends StatefulWidget {
   ///Constructor
-  const QueueDetails({Key? key}) : super(key: key);
+  final QueueModel queue;
+
+  QueueDetails(this.queue);
 
   @override
   _QueueDetailsState createState() => _QueueDetailsState();
@@ -33,9 +46,7 @@ class _QueueDetailsState extends State<QueueDetails> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
     debugPrint('friends ${friendList.length}');
   }
 
@@ -107,78 +118,80 @@ class _QueueDetailsState extends State<QueueDetails> {
                   width: 132.w,
                 ),
                 SizedBox(width: 20.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Created by : Eric',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 10.sp,
-                      ),
-                    ),
-                    Text(
-                      'Karaoke at Eric’s',
-                      style: TextStyle(
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Created by : ${widget.queue.creator.username}',
+                        style: TextStyle(
                           color: Colors.white,
-                          fontSize: 22.sp,
-                          fontWeight: FontWeight.w800),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: 'Songs : ',
-                              style: TextStyle(
-                                  fontFamily: 'Gilroy',
-                                  fontSize: 15.sp,
-                                  color: Colors.grey)),
-                          TextSpan(
-                              text: '40',
-                              style: TextStyle(
-                                  fontFamily: 'Gilroy',
-                                  fontSize: 15.sp,
-                                  color: Colors.white)),
-                        ],
+                          fontSize: 10.sp,
+                        ),
                       ),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: 'Members : ',
-                              style: TextStyle(
-                                  fontFamily: 'Gilroy',
-                                  fontSize: 15.sp,
-                                  color: Colors.grey)),
-                          TextSpan(
-                              text: '08',
-                              style: TextStyle(
-                                  fontFamily: 'Gilroy',
-                                  fontSize: 15.sp,
-                                  color: Colors.white)),
-                        ],
+                      Text(
+                        widget.queue.name,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22.sp,
+                            fontWeight: FontWeight.w800),
                       ),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: 'Times Played : ',
-                              style: TextStyle(
-                                  fontFamily: 'Gilroy',
-                                  fontSize: 15.sp,
-                                  color: Colors.grey)),
-                          TextSpan(
-                              text: '65',
-                              style: TextStyle(
-                                  fontFamily: 'Gilroy',
-                                  fontSize: 15.sp,
-                                  color: Colors.white)),
-                        ],
+                      RichText(
+                        text: TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'Songs : ',
+                                style: TextStyle(
+                                    fontFamily: 'Gilroy',
+                                    fontSize: 15.sp,
+                                    color: Colors.grey)),
+                            TextSpan(
+                                text: '40',
+                                style: TextStyle(
+                                    fontFamily: 'Gilroy',
+                                    fontSize: 15.sp,
+                                    color: Colors.white)),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                      RichText(
+                        text: TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'Members : ',
+                                style: TextStyle(
+                                    fontFamily: 'Gilroy',
+                                    fontSize: 15.sp,
+                                    color: Colors.grey)),
+                            TextSpan(
+                                text: '08',
+                                style: TextStyle(
+                                    fontFamily: 'Gilroy',
+                                    fontSize: 15.sp,
+                                    color: Colors.white)),
+                          ],
+                        ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'Times Played : ',
+                                style: TextStyle(
+                                    fontFamily: 'Gilroy',
+                                    fontSize: 15.sp,
+                                    color: Colors.grey)),
+                            TextSpan(
+                                text: '65',
+                                style: TextStyle(
+                                    fontFamily: 'Gilroy',
+                                    fontSize: 15.sp,
+                                    color: Colors.white)),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
@@ -203,10 +216,33 @@ class _QueueDetailsState extends State<QueueDetails> {
                                 fontSize: 13)))
                   ])),
           Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 11.w,
-              ),
-              child: buildTopPlayedItemList()),
+            padding: EdgeInsets.symmetric(
+              horizontal: 11.w,
+            ),
+            // child: buildTopPlayedItemList(),
+            child: FutureBuilder<Iterable<spot.Track>>(
+              future: SpotifyApiService.getTopTracks(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<Iterable<spot.Track>> recentPlayed) {
+                switch (recentPlayed.connectionState) {
+                  case ConnectionState.waiting:
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  case ConnectionState.done:
+                    if (recentPlayed.hasError) {
+                      return Text(recentPlayed.error.toString());
+                    } else {
+                      return buildTopPlayedItemList(recentPlayed.data!);
+                      // return Text(recentPlayed.data!.first.track!.name!);
+                    }
+                  // ignore: no_default_cases
+                  default:
+                    return const Text('Unhandle State');
+                }
+              },
+            ),
+          ),
           SizedBox(height: 20.h),
           Divider(
             color: AppColorConstants.paleSky,
@@ -231,10 +267,33 @@ class _QueueDetailsState extends State<QueueDetails> {
                                 fontSize: 13)))
                   ])),
           Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 11.w,
-              ),
-              child: buildTopPlayedItemList()),
+            padding: EdgeInsets.symmetric(
+              horizontal: 11.w,
+            ),
+            // child: buildTopPlayedItemList(),
+            child: FutureBuilder<Iterable<spot.PlayHistory>>(
+              future: SpotifyApiService.getRecentPlayed(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<Iterable<spot.PlayHistory>> recentPlayed) {
+                switch (recentPlayed.connectionState) {
+                  case ConnectionState.waiting:
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  case ConnectionState.done:
+                    if (recentPlayed.hasError) {
+                      return Text(recentPlayed.error.toString());
+                    } else {
+                      return buildRecentPlayedItemList(recentPlayed.data!);
+                      // return Text(recentPlayed.data!.first.track!.name!);
+                    }
+                  // ignore: no_default_cases
+                  default:
+                    return const Text('Unhandle State');
+                }
+              },
+            ),
+          ),
           SizedBox(height: 20.h),
           Divider(
             color: AppColorConstants.paleSky,
@@ -333,120 +392,266 @@ class _QueueDetailsState extends State<QueueDetails> {
     );
   }
 
-  Widget buildTopPlayedItemList() {
+  Widget buildTopPlayedItemList(Iterable<spot.Track> rPlayed) {
+    final Iterable<spot.Track> firstThree = rPlayed.take(3);
     return Column(
-        children: topPlayedItems.map((RecentlyPlayedModel item) {
-      final int index = topPlayedItems.indexOf(item);
-      return buildTopPlayedItem(index);
-    }).toList());
+      children: List.generate(
+          firstThree.length,
+          (int index) =>
+              buildTopPlayedItem(firstThree.elementAt(index), index)),
+    );
   }
 
-  Widget buildTopPlayedItem(int index) {
+  Widget buildRecentPlayedItemList(Iterable<spot.PlayHistory> rPlayed) {
+    final Iterable<spot.PlayHistory> firstThree = rPlayed.take(3);
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SizedBox(height: 24.h),
-          Row(
-            children: <Widget>[
-              Padding(
+      children: List.generate(
+          firstThree.length,
+          (int index) =>
+              buildRecentPlayedItem(firstThree.elementAt(index), index)),
+    );
+  }
+
+  Widget buildTopPlayedItem(spot.Track item, int index) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      key: Key(item.id.toString()),
+      leading: FutureBuilder<spot.Artist>(
+        future: SpotifyApiService.getArtistDetails(
+            item.artists!.first.id!), // async work
+        builder: (BuildContext context, AsyncSnapshot<spot.Artist> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return const SizedBox(
+                height: 50,
+                width: 50,
+                child: Center(child: CircularProgressIndicator()),
+              );
+
+            // ignore: no_default_cases
+            default:
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                return Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 20.h, 0),
                   child: Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(
+                          image: NetworkImage(
+                              snapshot.data!.images!.first.url.toString()),
+                          fit: BoxFit.cover),
+                    ),
+                    child: Align(
+                      child: Image.asset(
+                          '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.playButtonImage}'),
+                    ),
+                  ),
+                );
+              }
+          }
+        },
+      ),
+      title: Text(
+        item.name!,
+        key: Key(index.toString() + item.id.toString()),
+        style: TextStyle(
+            color: AppColorConstants.roseWhite,
+            fontWeight: FontWeight.w600,
+            fontSize: 17),
+      ),
+      subtitle: Text(
+        item.artists!.last.name!,
+        key: Key("item" + index.toString()),
+        style: TextStyle(color: AppColorConstants.paleSky, fontSize: 13),
+      ),
+    );
+  }
+
+  Widget buildRecentPlayedItem(spot.PlayHistory item, int index) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      key: Key(item.track!.id.toString()),
+      leading: FutureBuilder<spot.Artist>(
+        future: SpotifyApiService.getArtistDetails(
+            item.track!.artists!.first.id!), // async work
+        builder: (BuildContext context, AsyncSnapshot<spot.Artist> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return const SizedBox(
+                height: 50,
+                width: 50,
+                child: Center(child: CircularProgressIndicator()),
+              );
+
+            // ignore: no_default_cases
+            default:
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                return Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 20.h, 0),
+                  child: Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(
+                          image: NetworkImage(
+                              snapshot.data!.images!.first.url.toString()),
+                          fit: BoxFit.cover),
+                    ),
+                    child: Align(
+                      child: Image.asset(
+                          '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.playButtonImage}'),
+                    ),
+                  ),
+                );
+              }
+          }
+        },
+      ),
+      title: Text(
+        item.track!.name!,
+        key: Key(index.toString() + item.track!.id.toString()),
+        style: TextStyle(
+            color: AppColorConstants.roseWhite,
+            fontWeight: FontWeight.w600,
+            fontSize: 17),
+      ),
+      subtitle: Text(
+        item.track!.artists!.last.name!,
+        key: Key("item" + index.toString()),
+        style: TextStyle(color: AppColorConstants.paleSky, fontSize: 13),
+      ),
+    );
+  }
+
+  Widget buildFriendList() {
+    return FutureBuilder<APIStandardReturnFormat>(
+      future: APIServices().getQueueMember(widget.queue.id), // async work
+      builder: (BuildContext context,
+          AsyncSnapshot<APIStandardReturnFormat> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return const SizedBox(
+              height: 50,
+              width: 50,
+              child: Center(child: CircularProgressIndicator()),
+            );
+
+          // ignore: no_default_cases
+          default:
+            if (snapshot.hasError)
+              return Text('Error: ${snapshot.error}');
+            else if (snapshot.data!.status == 'error') {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              final dynamic jsonData =
+                  jsonDecode(snapshot.data!.successResponse);
+              final List<QueueMemberModel> members = <QueueMemberModel>[];
+              final qMembers = (jsonData as List)
+                  .map((i) => QueueMemberModel.fromJson(i))
+                  .toList();
+              members.addAll(qMembers);
+
+              return Container(
+                height: 120.h,
+                child: ListView(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    children: <Widget>[
+                      for (int i = 0; i < members.length; i++)
+                        buildFriendItem(members[i], i),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.w),
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                gradient: LinearGradient(
+                                  begin: const Alignment(-0.5, 0),
+                                  colors: <Color>[
+                                    AppColorConstants.artyClickPurple,
+                                    AppColorConstants.lemon
+                                  ],
+                                ),
+                              ),
+                              child: Center(
+                                  child: Text(
+                                '8+',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 22.sp,
+                                    fontWeight: FontWeight.w800),
+                              )),
+                            ),
+                          ],
+                        ),
+                      )
+                    ]),
+              );
+            }
+        }
+      },
+    );
+  }
+
+  Widget buildFriendItem(QueueMemberModel member, int index) {
+    return FutureBuilder<APIResponsedToUserObject>(
+      future: APIServices().getUserDetailsById(member.id), // async work
+      builder: (BuildContext context,
+          AsyncSnapshot<APIResponsedToUserObject> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return const SizedBox(
+              height: 50,
+              width: 50,
+              child: Center(child: CircularProgressIndicator()),
+            );
+
+          // ignore: no_default_cases
+          default:
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                child: Column(
+                  children: <Widget>[
+                    Container(
                       height: 50,
                       width: 50,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           image: DecorationImage(
                             image:
-                                AssetImage(topPlayedItems[index].songImageUrl),
+                                AssetImage(friendList[index].profileImageUrl),
                             fit: BoxFit.fitHeight,
                           )),
-                      child: Align(
-                          child: Image.asset(
-                              '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.playButtonImage}')))),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(topPlayedItems[index].songTitle,
-                      style: TextStyle(
-                          color: AppColorConstants.roseWhite,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 17)),
-                  SizedBox(height: 8.h),
-                  Text(topPlayedItems[index].artistName,
-                      style: TextStyle(
-                          color: AppColorConstants.paleSky, fontSize: 13))
-                ],
-              ),
-            ],
-          )
-        ]);
-  }
-
-  Widget buildFriendList() {
-    return Container(
-      height: 120.h,
-      padding: EdgeInsets.symmetric(horizontal: 10.w),
-      child: ListView(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          children: <Widget>[
-            for (int i = 0; i < friendList.length - 1; i++) buildFriendItem(i),
-            Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w),
-                child: Column(children: <Widget>[
-                  Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      gradient: LinearGradient(
-                        begin: const Alignment(-0.5, 0),
-                        colors: <Color>[
-                          AppColorConstants.artyClickPurple,
-                          AppColorConstants.lemon
-                        ],
-                      ),
                     ),
-                    child: Center(
-                        child: Text(
-                      '8+',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22.sp,
-                          fontWeight: FontWeight.w800),
-                    )),
-                  ),
-                ]))
-          ]),
+                    SizedBox(
+                      height: 6.h,
+                    ),
+                    Text(friendList[index].name,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w600))
+                  ],
+                ),
+              );
+            }
+        }
+      },
     );
-  }
-
-  Widget buildFriendItem(int index) {
-    return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8.w),
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  image: DecorationImage(
-                    image: AssetImage(friendList[index].profileImageUrl),
-                    fit: BoxFit.fitHeight,
-                  )),
-            ),
-            SizedBox(
-              height: 6.h,
-            ),
-            Text(friendList[index].name,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.w600))
-          ],
-        ));
   }
 
   @override

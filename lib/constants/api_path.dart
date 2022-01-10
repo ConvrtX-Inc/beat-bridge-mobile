@@ -22,6 +22,12 @@ class AppAPIPath {
   /// Returns user queues url
   static String userQueues = 'api/v1/user-queues';
 
+  /// Returns queue members url
+  static String queueMembers = 'api/v1/queue-members/list/';
+
+  /// Returns get user by id url
+  static String userDetails = 'api/v1/users/';
+
   /// Returns register url
   static String registerUrl = 'api/v1/auth/username/register';
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: curly_braces_in_flow_control_structures, always_specify_types, unnecessary_lambdas
 
 import 'dart:convert';
 
@@ -8,7 +8,8 @@ import 'package:beatbridge/models/apis/api_standard_return.dart';
 import 'package:beatbridge/models/people_model.dart';
 import 'package:beatbridge/models/recent_queue_model.dart';
 import 'package:beatbridge/models/recently_played_model.dart';
-import 'package:beatbridge/models/users/user_queue_model.dart';
+import 'package:beatbridge/models/users/user_model.dart';
+import 'package:beatbridge/models/users/queue_model.dart';
 import 'package:beatbridge/utils/services/rest_api_service.dart';
 import 'package:beatbridge/utils/services/spotify_api_service.dart';
 import 'package:beatbridge/utils/services/static_data_service.dart';
@@ -90,9 +91,6 @@ class _RecentQueuesState extends State<RecentQueues> {
             height: 12.h,
           ),
           buildRecentQueuesList(),
-          SizedBox(
-            height: 22.h,
-          ),
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 11.w),
               child: Row(
@@ -122,7 +120,7 @@ class _RecentQueuesState extends State<RecentQueues> {
                 case ConnectionState.done:
                   print(snapshot.data);
                   return FutureBuilder<Iterable<spot.Track>>(
-                    future: SpotifyApiService.getTopTracks(snapshot.data!),
+                    future: SpotifyApiService.getTopTracks(),
                     builder: (BuildContext context,
                         AsyncSnapshot<Iterable<spot.Track>> recentPlayed) {
                       switch (recentPlayed.connectionState) {
@@ -218,19 +216,18 @@ class _RecentQueuesState extends State<RecentQueues> {
             else if (snapshot.data!.status == 'error') {
               return Text('Error: ${snapshot.error}');
             } else {
-              // final UserQueueModel userQueues = UserQueueModel.fromJson(
+              // final QueueModel userQueues = QueueModel.fromJson(
               //     json.decode(snapshot.data!.successResponse));
               final dynamic jsonData =
                   jsonDecode(snapshot.data!.successResponse);
-              final List<UserQueueModel> userQueues = <UserQueueModel>[];
+              print(jsonData);
+              final List<QueueModel> userQueues = <QueueModel>[];
               final qs = (jsonData as List)
-                  .map((i) => UserQueueModel.fromJson(i))
+                  .map((i) => QueueModel.fromJson(i))
                   .toList();
               userQueues.addAll(qs);
-
-              return Container(
+              return SizedBox(
                 height: 120.h,
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
                 child: ListView.builder(
                   itemCount: userQueues.length,
                   shrinkWrap: true,
@@ -246,78 +243,64 @@ class _RecentQueuesState extends State<RecentQueues> {
     );
   }
 
-  Widget buildRecentQueueItem(UserQueueModel queue, int index) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 2.w),
-      child: Column(
-        children: <Widget>[
-          InkWell(
-              onTap: () {
-                setState(() {
-                  selectedQueueIndex = index;
-                });
-              },
+  Widget buildRecentQueueItem(QueueModel queue, int index) {
+    return Column(
+      children: <Widget>[
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushNamed('/queue-details', arguments: queue);
+          },
+          child: SizedBox(
+            height: 60,
+            width: 60,
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppColorConstants.mirage,
+                borderRadius: BorderRadius.circular(50),
+              ),
               child: Container(
-                decoration: selectedQueueIndex == index
-                    ? BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: const Alignment(-0.5, 0),
-                          colors: <Color>[
-                            AppColorConstants.artyClickPurple,
-                            AppColorConstants.rubberDuckyYellow
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(50),
-                      )
-                    : const BoxDecoration(),
-                height: 60,
-                width: 60,
-                child: Padding(
-                  padding: const EdgeInsets.all(1.5),
-                  child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColorConstants.mirage,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: Container(
-                          padding: const EdgeInsets.all(6),
-                          child: ClipOval(
-                              child: Image.asset(
-                                  recentQueueList[index].thumbnailUrl,
-                                  height: 70.h)))),
+                padding: const EdgeInsets.all(6),
+                child: ClipOval(
+                  child: Image.asset(recentQueueList[index].thumbnailUrl,
+                      height: 70.h),
                 ),
-              )),
-          SizedBox(
-            height: 10.h,
+              ),
+            ),
           ),
-          SizedBox(
-              width: 60.w,
-              child: Text(
-                queue.name,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 10.sp),
-              ))
-        ],
-      ),
+        ),
+        SizedBox(
+          height: 10.h,
+        ),
+        SizedBox(
+            width: 60.w,
+            child: Text(
+              queue.name,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 10.sp),
+            ))
+      ],
     );
   }
 
   Widget buildTopPlayedItemList(Iterable<spot.Track> rPlayed) {
     final Iterable<spot.Track> firstFour = rPlayed.take(4);
-    // return ListView(children: firstFour.map(buildTopPlayedItem).toList());
-    return ListView.builder(
-      shrinkWrap: true,
-      key: const Key('topList'),
-      itemCount: firstFour.length,
-      itemBuilder: (BuildContext context, int index) {
-        // return Text(rPlayed.elementAt(index).id.toString());
-        return buildTopPlayedItem(firstFour.elementAt(index), index);
-      },
+    //*scrollable top played items*//
+    // return ListView.builder(
+    //   shrinkWrap: true,
+    //   key: const Key('topList'),
+    //   itemCount: firstFour.length,
+    //   itemBuilder: (BuildContext context, int index) {
+    //     // return Text(rPlayed.elementAt(index).id.toString());
+    //     return buildTopPlayedItem(firstFour.elementAt(index), index);
+    //   },
+    // );
+    return Column(
+      children: List.generate(firstFour.length,
+          (int index) => buildTopPlayedItem(firstFour.elementAt(index), index)),
     );
   }
 
   Widget buildTopPlayedItem(spot.Track item, int index) {
-    // print(item.artists!.last.name!);
     return ListTile(
       contentPadding: EdgeInsets.zero,
       key: Key(item.id.toString()),
@@ -349,10 +332,6 @@ class _RecentQueuesState extends State<RecentQueues> {
                           image: NetworkImage(
                               snapshot.data!.images!.first.url.toString()),
                           fit: BoxFit.cover),
-                      // image: DecorationImage(
-                      //   image: AssetImage(topPlayedItems[index].songImageUrl),
-                      //   fit: BoxFit.fitHeight,
-                      // ),
                     ),
                     child: Align(
                       child: Image.asset(

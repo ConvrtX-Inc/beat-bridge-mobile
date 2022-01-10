@@ -7,8 +7,8 @@ import 'dart:io';
 
 import 'package:beatbridge/constants/api_path.dart';
 import 'package:beatbridge/models/apis/api_standard_return.dart';
+import 'package:beatbridge/models/apis/response_to_user.dart';
 import 'package:beatbridge/models/users/user_model.dart';
-import 'package:beatbridge/models/users/user_queue_model.dart';
 import 'package:beatbridge/utils/services/global_api_service.dart';
 import 'package:http/http.dart' as http;
 
@@ -61,13 +61,6 @@ class APIServices {
 
   /// API service for user Queues
   Future<APIStandardReturnFormat> getUserQueues() async {
-    print('$apiBaseUrl/${AppAPIPath.userQueues}');
-    // final http.Response response = await http.get(
-    //     Uri.http(apiBaseMode, '$apiBaseUrl/${AppAPIPath.userQueues}'),
-    //     headers: {
-    //       HttpHeaders.authorizationHeader:
-    //           'Bearer ${UserSingleton.instance.user.token}',
-    //     });
     final http.Response response =
         await http.get(Uri.http(apiBaseUrl, AppAPIPath.userQueues), headers: {
       HttpHeaders.authorizationHeader:
@@ -75,5 +68,26 @@ class APIServices {
     });
     print(response.body);
     return GlobalAPIServices().formatResponseToStandardFormat(response);
+  }
+
+  /// API service for Queue Members
+  Future<APIStandardReturnFormat> getQueueMember(String queueId) async {
+    final http.Response response = await http.get(
+        Uri.http(apiBaseUrl, '${AppAPIPath.queueMembers}$queueId'),
+        headers: {
+          HttpHeaders.authorizationHeader:
+              'Bearer ${UserSingleton.instance.user.token}',
+        });
+    return GlobalAPIServices().formatResponseToStandardFormat(response);
+  }
+
+  /// API service for User Details
+  Future<APIResponsedToUserObject> getUserDetailsById(String id) async {
+    final http.Response response = await http
+        .get(Uri.http(apiBaseUrl, '${AppAPIPath.userDetails}$id'), headers: {
+      HttpHeaders.authorizationHeader:
+          'Bearer ${UserSingleton.instance.user.token}',
+    });
+    return UserModel.formatResponseToStandardFormat(response);
   }
 }

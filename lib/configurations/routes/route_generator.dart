@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_classes_with_only_static_members
+import 'package:beatbridge/models/users/queue_model.dart';
 import 'package:beatbridge/screens/auths/forgot_password/screens/new_password.dart';
 import 'package:beatbridge/screens/auths/forgot_password/screens/verification_code.dart';
 import 'package:beatbridge/screens/auths/forgot_password/screens/verify_email.dart';
@@ -71,7 +72,10 @@ class RouteGenerator {
         return MaterialPageRoute<dynamic>(
             builder: (_) => const ProfileSettigs());
       case '/queue-details':
-        return MaterialPageRoute<dynamic>(builder: (_) => const QueueDetails());
+        return MaterialPageRoute<dynamic>(builder: (_) {
+          QueueModel article = args as QueueModel;
+          return QueueDetails(article);
+        });
       default:
         return _errorRoute();
     }
