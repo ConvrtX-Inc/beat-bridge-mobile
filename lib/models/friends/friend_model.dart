@@ -40,13 +40,14 @@ class FriendModel {
   ///initialization for tracks
   int tracks;
 
+
   ///Serialize data
   static FriendModel fromJson(Map<String, dynamic> json) => FriendModel(
       id: json['id'] ?? '',
       fromUserId: json['from_user_id'] ?? '',
       toUserId: json['to_user_id'] ?? '',
-      username: json['username'] ?? '',
-      email: json['email'] ?? '',
+      username: json['to_user']['username'] ?? '',
+      email: json['to_user']['email'] ?? '',
       isAccepted: json['is_accepted'],
       createdDate: json['created_date']);
 }

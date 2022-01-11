@@ -80,6 +80,31 @@ class AppColorConstants {
 
   /// get Lavender color
   static Color get lavender => _lavender;
+
+  /// Returns violet color
+  static const Color _violet = Color(0xFF241B33);
+
+  /// get violet color
+  static Color get violet => _violet;
+
+  /// Returns neon carrot color
+  static const Color _neonCarrot = Color(0xFFFF993C);
+
+  /// get neon carrot color
+  static Color get neonCarrot => _neonCarrot;
+
+  /// Returns apple green color
+  static const Color _appleGreen = Color(0xFF5AAE34);
+
+  /// get apple green color
+  static Color get appleGreen => _appleGreen;
+
+  /// Returns silver color
+  static const Color _silver = Color(0xFFC4C4C4);
+
+  /// get silver color
+  static Color get silver => _silver;
+
 }
 
 /// Class for app text constants
@@ -326,4 +351,22 @@ class AppTextConstants {
 
   ///Returns friend request sent text
   static String friendRequestSent = 'Friend Request Sent!';
+
+  ///Returns support text
+  static String support = 'Support';
+
+  ///Returns create new ticket text
+  static String createNewTicket = 'Create New Ticket';
+
+  ///Returns subject text
+ static String subject = 'Subject';
+
+  ///Returns ticket no  text
+  static String ticketNo = 'Ticket No.';
+
+  ///Returns description text
+  static String description = 'Description';
+
+  ///Returns write here text
+  static String writeHere = 'Write here...';
 }

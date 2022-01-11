@@ -1,3 +1,5 @@
+import 'package:beatbridge/models/profile_settings_model.dart';
+
 /// Class for app constant list
 class AppListConstants {
   /// Constructor
@@ -23,6 +25,40 @@ class AppListConstants {
     'FAQ’s',
     'Contact',
     'Settings'
+  ];
+
+  ///Profile Settings List
+  final List<ProfileSettingsModel> profileSettings = <ProfileSettingsModel>[
+    ProfileSettingsModel(
+      name: 'Profile Details',
+      icon: 'profile.png',
+     ),
+    ProfileSettingsModel(
+      name: 'Friends',
+      icon: 'friends.png',
+      routePath: '/friends'
+    ),
+    ProfileSettingsModel(
+      name: 'Playlist',
+      icon: 'playlist.png',
+    ),
+    ProfileSettingsModel(
+      name: 'Subscribe',
+      icon: 'subscribe.png',
+    ),
+    ProfileSettingsModel(
+      name: "FAQ's",
+      icon: 'faq.png',
+    ),
+    ProfileSettingsModel(
+      name: 'Contact',
+      icon: 'contact.png',
+      routePath: '/support'
+    ),
+    ProfileSettingsModel(
+      name: 'Settings',
+      icon: 'settings.png',
+    ),
   ];
 
   /// use in profile settings screen

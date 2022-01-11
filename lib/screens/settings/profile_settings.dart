@@ -157,36 +157,44 @@ class _ProfileSettigsState extends State<ProfileSettigs> {
         SizedBox(height: 15.h),
         Column(
           children: List<Widget>.generate(
-              AppListConstants().profileSettingsIcons.length, (int index) {
+              AppListConstants().profileSettings.length, (int index) {
             return Column(
               children: <Widget>[
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                  child: ListTile(
-                    leading: Container(
-                      height: 18.h,
-                      width: 18.w,
-                      transform: Matrix4.translationValues(0, 2, 0),
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          // AppListConstants.profileSettingsIcons[index]
-                          image: AssetImage(
-                              '${AssetsPathConstants.assetsPNGPath}/${AppListConstants().profileSettingsIcons[index]}'),
-                          fit: BoxFit.fitHeight,
+                InkWell(
+                  onTap: () {
+                    if(AppListConstants().profileSettings[index].routePath !=''){
+                      Navigator.pushNamed(context,
+                          AppListConstants().profileSettings[index].routePath);
+                    }
+
+                  },
+                  child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 10.w, vertical: 10.h),
+                      child: ListTile(
+                        leading: Container(
+                          height: 18.h,
+                          width: 18.w,
+                          transform: Matrix4.translationValues(0, 2, 0),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              // AppListConstants.profileSettingsIcons[index]
+                              image: AssetImage(
+                                  '${AssetsPathConstants.assetsPNGPath}/${AppListConstants().profileSettings[index].icon}'),
+                              fit: BoxFit.fitHeight,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    title: Text(
-                      AppListConstants().profileSettingsText[index],
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: AppColorConstants.roseWhite,
-                          fontSize: 14),
-                    ),
-                    trailing: Icon(Icons.chevron_right,
-                        color: Colors.white, size: 15.w),
-                  ),
+                        title: Text(
+                          AppListConstants().profileSettings[index].name,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppColorConstants.roseWhite,
+                              fontSize: 14),
+                        ),
+                        trailing: Icon(Icons.chevron_right,
+                            color: Colors.white, size: 15.w),
+                      )),
                 ),
                 if (index < AppListConstants().profileSettingsIcons.length - 1)
                   const Divider(

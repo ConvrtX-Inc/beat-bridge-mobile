@@ -6,6 +6,8 @@ import 'package:beatbridge/models/my_devices_model.dart';
 import 'package:beatbridge/models/people_model.dart';
 import 'package:beatbridge/models/recent_queue_model.dart';
 import 'package:beatbridge/models/recently_played_model.dart';
+import 'package:beatbridge/models/support_model.dart';
+import 'package:beatbridge/models/support_thread_model.dart';
 import 'package:beatbridge/models/walk_through_model.dart';
 
 /// Static walk through data
@@ -376,7 +378,6 @@ class StaticDataService {
   }
 
   ///Static Data for Music Platforms
-
   static List<MusicPlatformModel> getMusicPlatformsUsed() {
     return <MusicPlatformModel>[
       MusicPlatformModel(
@@ -393,6 +394,53 @@ class StaticDataService {
           name: AppTextConstants.itunes,
           logoImagePath:
               '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.itunesLogoImage}'),
+    ];
+  }
+
+  /// Static data for Support Messages
+  static List<SupportModel> getSupportMessages() {
+    return <SupportModel>[
+      SupportModel(
+          id: '1235CA2B2',
+          createdDate: '12/30/2021',
+          message:
+              'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+          status: 'Pending'),
+      SupportModel(
+          id: '1235CA2B3',
+          createdDate: '12/31/2021',
+          message:
+              'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+          status: 'Pending'),
+      SupportModel(
+          id: '1235CA2B4',
+          createdDate: '01/01/2022',
+          message:
+              'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+          status: 'Pending'),
+      SupportModel(
+          id: '1235CA2B5',
+          createdDate: '01/02/2022',
+          message:
+              'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+          status: 'Completed')
+    ];
+  }
+
+  /// Static data for Support Thread Messages
+  static List<SupportThreadModel> getSupportMessageThread() {
+    return <SupportThreadModel>[
+      SupportThreadModel(
+          name: 'David',
+          createdDate: 'Nov 18, 2021 | 10:32 am',
+          message:
+              'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Amet minim mollit non deserunt ullamco est sit aliqua dolor do. Velit officia consequat duis enim velit mollit minim mollit non Amet minim mollit non deserunt ullamco est sit aliqua dolor do.Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Amet minim mollit non deserunt ullamco est sit aliqua dolor do. Velit officia consequat duis enim velit mollit minim mollit non.'),
+      SupportThreadModel(
+          name: 'Nexus One Admin',
+          createdDate: 'Nov 18, 2021 | 10:32 am',
+          fromAdmin: true,
+          message:
+              'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Amet minim mollit non deserunt ullamco est sit aliqua dolor do. Velit officia consequat duis enim velit mollit minim mollit non Amet minim mollit non deserunt ullamco est sit aliqua dolor do.Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Amet minim mollit non deserunt ullamco est sit aliqua dolor do. Velit officia consequat duis enim velit mollit minim mollit non.'),
     ];
   }
 }
