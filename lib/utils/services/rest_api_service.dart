@@ -111,4 +111,26 @@ class APIServices {
 
     return GlobalAPIServices().formatResponseToStandardFormat(response);
   }
+
+  ///API service for Payment
+  Future<APIStandardReturnFormat> pay(int amount , String paymentMethodID) async {
+    final String? token = await secureStorage.read(key: 'token');
+
+
+    final http.Response response = await http.post(
+        Uri.parse('$apiBaseMode$apiBaseUrl/${AppAPIPath.paymentApiUrl}'),
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+          'content-type':'application/json'
+        },
+        body: jsonEncode(
+            {
+              'payment_method_id': paymentMethodID,
+              'amount': amount,
+            }
+        ));
+
+
+    return GlobalAPIServices().formatResponseToStandardFormat(response);
+  }
 }

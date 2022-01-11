@@ -1,10 +1,12 @@
 // ignore_for_file: avoid_classes_with_only_static_members
+import 'package:beatbridge/models/subscription_model.dart';
 import 'package:beatbridge/screens/auths/forgot_password/screens/new_password.dart';
 import 'package:beatbridge/screens/auths/forgot_password/screens/verification_code.dart';
 import 'package:beatbridge/screens/auths/forgot_password/screens/verify_email.dart';
 import 'package:beatbridge/screens/auths/logins/screens/login.dart';
 import 'package:beatbridge/screens/auths/logins/screens/login_input.dart';
 import 'package:beatbridge/screens/auths/registers/screens/register.dart';
+import 'package:beatbridge/screens/cards/card_input.dart';
 import 'package:beatbridge/screens/main_navigations/friends/screens/friend.dart';
 import 'package:beatbridge/screens/main_navigations/friends/screens/near_you.dart';
 import 'package:beatbridge/screens/main_navigations/links/screens/link_landing_page.dart';
@@ -17,7 +19,10 @@ import 'package:beatbridge/screens/main_navigations/queues/screens/queue_playing
 import 'package:beatbridge/screens/main_navigations/queues/screens/recent_queue.dart';
 import 'package:beatbridge/screens/main_navigations/queues/screens/test_spotify.dart';
 import 'package:beatbridge/screens/settings/profile_settings.dart';
+import 'package:beatbridge/screens/sources/bluetooth_source.dart';
+import 'package:beatbridge/screens/sources/music_source.dart';
 import 'package:beatbridge/screens/splashes/screens/splash_screen.dart';
+import 'package:beatbridge/screens/subscriptions/subscribe.dart';
 import 'package:beatbridge/screens/supports/create_ticket.dart';
 import 'package:beatbridge/screens/supports/support.dart';
 import 'package:beatbridge/screens/supports/support_thread.dart';
@@ -71,8 +76,7 @@ class RouteGenerator {
         return MaterialPageRoute<dynamic>(
             builder: (_) => const SelectPlatformToLink());
       case '/friends':
-        return MaterialPageRoute<dynamic>(
-            builder: (_) => const FriendScreen());
+        return MaterialPageRoute<dynamic>(builder: (_) => const FriendScreen());
       case '/near_you':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const NearYouScreen());
@@ -84,12 +88,27 @@ class RouteGenerator {
       case '/queue-details':
         return MaterialPageRoute<dynamic>(builder: (_) => const QueueDetails());
       case '/support':
-        return MaterialPageRoute<dynamic>(builder: (_) => const SupportScreen());
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const SupportScreen());
       case '/support-thread':
-        return MaterialPageRoute<dynamic>(builder: (_) => const SupportThreadScreen());
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const SupportThreadScreen());
       case '/create-ticket':
-        return MaterialPageRoute<dynamic>(builder: (_) => const CreateTicketScreen());
-
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const CreateTicketScreen());
+      case '/subscribe':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const SubscribeScreen());
+      case '/card_input':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => CardInputScreen(
+                selectedSubscription: args! as SubscriptionModel));
+      case '/music_source':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const MusicSourceScreen());
+      case '/bluetooth_source':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const BluetoothSourceScreen());
       default:
         return _errorRoute();
     }

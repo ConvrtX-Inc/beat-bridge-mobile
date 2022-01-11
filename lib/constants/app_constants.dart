@@ -104,7 +104,6 @@ class AppColorConstants {
 
   /// get silver color
   static Color get silver => _silver;
-
 }
 
 /// Class for app text constants
@@ -359,7 +358,7 @@ class AppTextConstants {
   static String createNewTicket = 'Create New Ticket';
 
   ///Returns subject text
- static String subject = 'Subject';
+  static String subject = 'Subject';
 
   ///Returns ticket no  text
   static String ticketNo = 'Ticket No.';
@@ -369,4 +368,66 @@ class AppTextConstants {
 
   ///Returns write here text
   static String writeHere = 'Write here...';
+
+  ///Returns Subscribe Screen
+  static String subscribe = 'Subscribe';
+
+  ///Returns subscribe description text
+  static String subscribeDescriptionText =
+      'Access to all features. Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat .';
+
+  ///Returns monthly subscription price text
+  static String monthlySubscriptionPrice = r'$2.99/1MONTH';
+
+  ///Returns quarterly subscription price text
+  static String quarterlySubscriptionPrice = r'$5.99/QUARTER';
+
+  ///Returns yearly subscription price text
+  static String yearlySubscriptionPrice = r'$7.99/YEAR';
+
+  ///Returns card details text
+  static String cardDetails = 'Card details';
+
+  ///Returns card information text
+ static String cardInfo = 'Card Information';
+
+  ///Returns billing information text
+  static String enterYourBillingInfo = 'Billing Information';
+
+ ///Returns Card Number Text
+static String cardNumber = 'Card Number';
+
+  ///Returns Expiry Date text
+  static String expiryDate = 'Expiry Date';
+
+  ///Returns  Cvv text
+  static String cvv = 'CVV';
+
+  ///Returns enter country or region text
+  static String countryOrRegion = 'Country or Region';
+
+  ///Returns postal code text
+  static String postalCode = 'Postal Code';
+
+  ///Returns postal code text
+  static String nameOnCard = 'Postal Code';
+
+  ///Returns full name text
+  static String fullName = 'Full Name';
+
+  ///Returns address text
+  static String address = 'Address';
+
+  ///Returns city text
+  static String city = 'City';
+
+  ///Returns edit music source text
+  static String editMusicSource = 'Edit Music Source';
+
+  ///Returns add more text
+  static String addMore = 'Add More';
+
+  ///Returns  bluetooth source text
+  static String bluetoothSource = 'Bluetooth Source';
+
 }

@@ -1,4 +1,6 @@
+import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/models/profile_settings_model.dart';
+import 'package:beatbridge/models/subscription_model.dart';
 
 /// Class for app constant list
 class AppListConstants {
@@ -32,29 +34,21 @@ class AppListConstants {
     ProfileSettingsModel(
       name: 'Profile Details',
       icon: 'profile.png',
-     ),
-    ProfileSettingsModel(
-      name: 'Friends',
-      icon: 'friends.png',
-      routePath: '/friends'
     ),
+    ProfileSettingsModel(
+        name: 'Friends', icon: 'friends.png', routePath: '/friends'),
     ProfileSettingsModel(
       name: 'Playlist',
       icon: 'playlist.png',
     ),
     ProfileSettingsModel(
-      name: 'Subscribe',
-      icon: 'subscribe.png',
-    ),
+        name: 'Subscribe', icon: 'subscribe.png', routePath: '/subscribe'),
     ProfileSettingsModel(
       name: "FAQ's",
       icon: 'faq.png',
     ),
     ProfileSettingsModel(
-      name: 'Contact',
-      icon: 'contact.png',
-      routePath: '/support'
-    ),
+        name: 'Contact', icon: 'contact.png', routePath: '/support'),
     ProfileSettingsModel(
       name: 'Settings',
       icon: 'settings.png',
@@ -79,5 +73,20 @@ class AppListConstants {
     'avatar14.png',
     'avatar15.png',
     'avatar16.png'
+  ];
+
+  /// use in profile settings screen
+  final List<SubscriptionModel> subscriptions = <SubscriptionModel>[
+    SubscriptionModel(
+      price:  AppTextConstants.monthlySubscriptionPrice,
+      value: 2.99,
+    ),
+    SubscriptionModel(
+      price:  AppTextConstants.quarterlySubscriptionPrice,
+      value: 5.99,
+    ), SubscriptionModel(
+      price:  AppTextConstants.yearlySubscriptionPrice,
+      value: 7.99,
+    )
   ];
 }

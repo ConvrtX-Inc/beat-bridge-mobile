@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   await dotenv.load(fileName: '.env');
+
   runApp(const MyApp());
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
       overlays: <SystemUiOverlay>[]);
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
               },
             ),
           ),
-          initialRoute: '/profile-settings',
+          initialRoute: '/bluetooth_source',
           onGenerateRoute: RouteGenerator.generateRoute),
       designSize: const Size(375, 812),
     );
