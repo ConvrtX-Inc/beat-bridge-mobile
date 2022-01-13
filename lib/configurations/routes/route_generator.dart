@@ -7,6 +7,7 @@ import 'package:beatbridge/screens/auths/logins/screens/login.dart';
 import 'package:beatbridge/screens/auths/logins/screens/login_input.dart';
 import 'package:beatbridge/screens/auths/registers/screens/register.dart';
 import 'package:beatbridge/screens/cards/card_input.dart';
+import 'package:beatbridge/screens/contacts/contact_us.dart';
 import 'package:beatbridge/screens/main_navigations/friends/screens/friend.dart';
 import 'package:beatbridge/screens/main_navigations/friends/screens/near_you.dart';
 import 'package:beatbridge/screens/main_navigations/links/screens/link_landing_page.dart';
@@ -19,6 +20,7 @@ import 'package:beatbridge/screens/main_navigations/queues/screens/queue_playing
 import 'package:beatbridge/screens/main_navigations/queues/screens/recent_queue.dart';
 import 'package:beatbridge/screens/main_navigations/queues/screens/test_spotify.dart';
 import 'package:beatbridge/screens/settings/profile_settings.dart';
+import 'package:beatbridge/screens/settings/system_setting.dart';
 import 'package:beatbridge/screens/sources/bluetooth_source.dart';
 import 'package:beatbridge/screens/sources/music_source.dart';
 import 'package:beatbridge/screens/splashes/screens/splash_screen.dart';
@@ -109,6 +111,12 @@ class RouteGenerator {
       case '/bluetooth_source':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const BluetoothSourceScreen());
+      case '/contact_us':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const ContactUsScreen());
+      case '/system_settings':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const SystemSettingScreen());
       default:
         return _errorRoute();
     }

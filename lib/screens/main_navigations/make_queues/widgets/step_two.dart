@@ -1,6 +1,9 @@
 import 'package:beatbridge/constants/app_constants.dart';
+import 'package:beatbridge/constants/app_list.dart';
+import 'package:beatbridge/constants/asset_path.dart';
 import 'package:beatbridge/models/music_platform_model.dart';
 import 'package:beatbridge/screens/main_navigations/make_queues/screens/make_queue_screen.dart';
+import 'package:beatbridge/utils/preferences/shared_preferences.dart';
 import 'package:beatbridge/utils/services/static_data_service.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded_gradient.dart';
 import 'package:flutter/foundation.dart';
@@ -27,135 +30,152 @@ class StepTwo extends StatefulWidget {
 }
 
 class _StepTwoState extends State<StepTwo> {
+  List<MusicPlatformModel> musicPlatforms = <MusicPlatformModel>[];
+  String selectedPlatform = '';
 
-  final List<MusicPlatformModel> musicPlatforms =
-      StaticDataService.getMusicPlatformModel();
-      String selectedPlatform ='';
+  @override
+  void initState() {
+    super.initState();
+    getMusicPlatforms();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColorConstants.mirage,
-        body: SingleChildScrollView( child: Stack(children: <Widget>[
-          Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 11.w),
-                          child: Text(AppTextConstants.letsAddMusic,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColorConstants.roseWhite,
-                                  fontSize: 22)),
-                        ),
-                        SizedBox(
-                          height: 40.h,
-                        ),
-                      ],
-                    )),
-                Column(
-                    children: musicPlatforms.map((p) {
-                  return _musicPlatformItems(context, p.index);
-                }).toList()),
-
-                Padding(
-                  padding:
-                  EdgeInsets.symmetric(horizontal: 27.w, vertical: 16.h),
-                  child: ButtonRoundedGradient(
-                    buttonText: AppTextConstants.continueTxt,
-                    buttonCallback: () {
-                      widget.onStepTwoDone();
-                    },
-                  ),
+        body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 11.w),
+                        child: Text(AppTextConstants.letsAddMusic,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: AppColorConstants.roseWhite,
+                                fontSize: 22)),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                    ],
+                  )),
+              for (int i = 0; i < musicPlatforms.length; i++)
+                Column(children: <Widget>[
+                  buildMusicSource(i),
+                  Divider(
+                    color: AppColorConstants.paleSky,
+                  )
+                ]),
+              buildAddYourOwnItem(),
+              SizedBox(
+                height: 10.h,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 27.w, vertical: 16.h),
+                child: ButtonRoundedGradient(
+                  buttonText: AppTextConstants.continueTxt,
+                  buttonCallback: () {
+                    widget.onStepTwoDone();
+                  },
                 ),
-              ]),
-        ])));
+              ),
+            ]));
   }
 
-  Widget _musicPlatformItems(BuildContext context, int index) {
-    Color getColor(Set<MaterialState> states) {
-      const Set<MaterialState> interactiveStates = <MaterialState>{
-        MaterialState.pressed,
-        MaterialState.hovered,
-        MaterialState.focused,
-      };
-      if (states.any(interactiveStates.contains)) {
-        return AppColorConstants.roseWhite;
-      }
-      return AppColorConstants.artyClickPurple;
-    }
 
-    return Column(children: <Widget>[
-      Row(
-        children: <Widget>[
-          Expanded(
-              flex: 3,
-              child: Container(
-                  padding: EdgeInsets.all(20.h),
-                  child: Image.asset(
-                    musicPlatforms[index].logoImagePath,
-                    width: 34,
-                    height: 34,
-                  ))),
-          Expanded(
-              flex: 3,
+  Widget buildMusicSource(int index) => Padding(
+      padding: EdgeInsets.all(12.w),
+      child: ListTile(
+        leading: Image.asset(
+          musicPlatforms[index].logoImagePath,
+          width: 34,
+          height: 34,
+        ),
+        title: Padding(
+            padding: EdgeInsets.fromLTRB(22.w, 0, 0, 0),
+            child: Text(
+              musicPlatforms[index].name,
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                  color: AppColorConstants.roseWhite,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600),
+            )),
+        trailing: Transform.scale(
+            scale: 1.5,
+            child: Checkbox(
+                value: musicPlatforms[index].name ==
+                    MakeYourQueueScreen.of(context)
+                        .selectedPlatform
+                        .name,
+                onChanged: (bool? value) {
+                  setState(() {
+                    MakeYourQueueScreen.of(context)
+                        .selectedPlatform = musicPlatforms[index];
+                  });
+                },
+                checkColor: AppColorConstants.roseWhite,
+                activeColor: AppColorConstants.artyClickPurple,
+                side: MaterialStateBorderSide.resolveWith(
+                  (Set<MaterialState> states) => BorderSide(
+                    width: 2,
+                    color: AppColorConstants.paleSky,
+                  ),
+                ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5)))),
+      ));
+
+  Widget buildAddYourOwnItem() => Padding(
+      padding: EdgeInsets.all(12.w),
+      child: ListTile(
+          leading: Image.asset(
+            '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.ownMusicLogoImage}',
+            width: 34,
+            height: 34,
+          ),
+          title: Padding(
+              padding: EdgeInsets.fromLTRB(22.w, 0, 0, 0),
               child: Text(
-                musicPlatforms[index].name,
+                AppTextConstants.addYourOwn,
+                textAlign: TextAlign.left,
                 style: TextStyle(
                     color: AppColorConstants.roseWhite,
                     fontSize: 18,
                     fontWeight: FontWeight.w600),
               )),
-          Expanded(
-              flex: 3,
-              child: Column(
-                children: <Widget>[
-                  if (musicPlatforms[index].name == AppTextConstants.addYourOwn)
-                    Transform.scale(
-                        scale: 1.5,
-                        child: Icon(
-                          Icons.create_new_folder_outlined,
-                          color: AppColorConstants.roseWhite,
-                        ))
-                  else
-                    Transform.scale(
-                        scale: 1.5,
-                        child: Checkbox(
-                            value: musicPlatforms[index].name ==
-                                MakeYourQueueScreen.of(context)
-                                    .selectedPlatform
-                                    .name,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                MakeYourQueueScreen.of(context)
-                                    .selectedPlatform = musicPlatforms[index];
-                              });
-                            },
-                            checkColor: AppColorConstants.rubberDuckyYellow,
-                            fillColor:
-                                MaterialStateProperty.resolveWith(getColor),
-                            side: MaterialStateBorderSide.resolveWith(
-                              (Set<MaterialState> states) => BorderSide(
-                                width: 2,
-                                color: AppColorConstants.paleSky,
-                              ),
-                            ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5))))
-                ],
-              )),
-        ],
-      ),
-      if (index < musicPlatforms.length - 1)
-        Divider(
-          color: AppColorConstants.paleSky,
-        )
-    ]);
+          trailing: Transform.scale(
+              scale: 1.5,
+              child: Icon(
+                Icons.create_new_folder_outlined,
+                color: AppColorConstants.roseWhite,
+              ))));
+
+
+
+  Future<void> getMusicPlatforms() async {
+    final String musicsString =
+        SharedPreferencesRepository.getString('musicSource');
+    if (musicsString == '') {
+      final List<MusicPlatformModel> musicSourceList =
+          AppListConstants().musicSourceList;
+      final String value = MusicPlatformModel.encode(musicSourceList);
+      SharedPreferencesRepository.putString('musicSource', value);
+      setState(() {
+        musicPlatforms = musicSourceList;
+      });
+    } else {
+      setState(() {
+        musicPlatforms = MusicPlatformModel.decode(musicsString);
+        musicPlatforms = musicPlatforms.where((MusicPlatformModel musicSource) => musicSource.isSelected).toList();
+
+      });
+    }
   }
 
   @override

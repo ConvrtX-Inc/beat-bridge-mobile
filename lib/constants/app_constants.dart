@@ -389,13 +389,13 @@ class AppTextConstants {
   static String cardDetails = 'Card details';
 
   ///Returns card information text
- static String cardInfo = 'Card Information';
+  static String cardInfo = 'Card Information';
 
   ///Returns billing information text
   static String enterYourBillingInfo = 'Billing Information';
 
- ///Returns Card Number Text
-static String cardNumber = 'Card Number';
+  ///Returns Card Number Text
+  static String cardNumber = 'Card Number';
 
   ///Returns Expiry Date text
   static String expiryDate = 'Expiry Date';
@@ -430,4 +430,27 @@ static String cardNumber = 'Card Number';
   ///Returns  bluetooth source text
   static String bluetoothSource = 'Bluetooth Source';
 
+  ///Returns contact us text
+  static String contactUs = 'Contact Us';
+
+  ///Returns email us text
+  static String emailUs = 'Email us!';
+
+  ///Returns call us text
+  static String callUs = 'Call us!';
+
+  ///Returns settings text
+  static String settings = 'Settings';
+}
+
+/// Class for app contact details
+class AppContactDetails {
+  /// Constructor
+  AppContactDetails();
+
+  ///Returns app email
+  static String email = 'email.beatbridge@email.com';
+
+  ///Returns app phone number
+  static String phoneNumber = '1234567890';
 }
