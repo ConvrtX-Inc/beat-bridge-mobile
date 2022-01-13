@@ -16,6 +16,9 @@ class AppAPIPath {
   /// Returns API base url
   static String apiBaseUrl = 'dev-beatbridge-convrtx.herokuapp.com';
 
+  /// Returns Spotify API base url
+  static String spotifyApiBaseUrl = 'api.spotify.com/v1';
+
   /// Returns login url
   static String loginUrl = 'api/v1/auth/username/login';
 
@@ -27,6 +30,9 @@ class AppAPIPath {
 
   /// Returns get user by id url
   static String userDetails = 'api/v1/users/';
+
+  /// Returns get user spotify play list
+  static String userPlayList = 'me/playlists';
 
   /// Returns register url
   static String registerUrl = 'api/v1/auth/username/register';

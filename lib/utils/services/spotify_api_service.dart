@@ -111,4 +111,19 @@ class SpotifyApiService {
       return art;
     }
   }
+
+  static Future<Iterable<PlaylistSimple>> getFeaturedPlayList() async {
+    final Iterable<PlaylistSimple> playList = [];
+    // Read value
+    final String? token = await storage.read(key: 'spotifyAuthToken');
+    try {
+      final SpotifyApi spotify = SpotifyApi.withAccessToken(token!);
+      return await spotify.playlists.featured.all();
+      // return await spotify.me.topTracks();
+    } on PlatformException catch (e) {
+      return playList;
+    } on MissingPluginException {
+      return playList;
+    }
+  }
 }

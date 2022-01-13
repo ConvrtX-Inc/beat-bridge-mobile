@@ -44,7 +44,9 @@ dependencies:
   flutter_dotenv: ^5.0.2 #store spotify credentials in .env file
   bs_flutter_modal: ^1.0.6 #use in selecting avatars
   flutter_secure_storage: ^4.2.1 #storing oauth token
+  intl: ^0.17.0 #date formater
   cupertino_icons: ^1.0.2
+  get: ^4.6.1
   spotify:
     git:
       url: https://github.com/rinukkusu/spotify-dart.git

@@ -10,6 +10,7 @@ import 'package:beatbridge/models/apis/api_standard_return.dart';
 import 'package:beatbridge/models/apis/response_to_user.dart';
 import 'package:beatbridge/models/users/user_model.dart';
 import 'package:beatbridge/utils/services/global_api_service.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 /// App API services
@@ -22,6 +23,9 @@ class APIServices {
 
   /// API base url
   final String apiBaseUrl = AppAPIPath.apiBaseUrl;
+
+  /// API base url
+  final String spotifyApiBaseUrl = AppAPIPath.spotifyApiBaseUrl;
 
   /// API service for register
   Future<APIStandardReturnFormat> register(UserModel userParams) async {
@@ -66,7 +70,6 @@ class APIServices {
       HttpHeaders.authorizationHeader:
           'Bearer ${UserSingleton.instance.user.token}',
     });
-    print(response.body);
     return GlobalAPIServices().formatResponseToStandardFormat(response);
   }
 
@@ -89,5 +92,39 @@ class APIServices {
           'Bearer ${UserSingleton.instance.user.token}',
     });
     return UserModel.formatResponseToStandardFormat(response);
+  }
+
+  /// API service for User playlist in spotify
+  Future<APIStandardReturnFormat> getUserPlayList() async {
+    print(spotifyApiBaseUrl + AppAPIPath.userPlayList);
+    const FlutterSecureStorage storage = FlutterSecureStorage();
+    final String? token = await storage.read(key: 'spotifyAuthToken');
+    final http.Response response = await http
+        .get(Uri.http(spotifyApiBaseUrl, AppAPIPath.userPlayList), headers: {
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+    });
+    print(response.body);
+    print(response.headers);
+    return GlobalAPIServices().formatResponseToStandardFormat(response);
+  }
+
+  Future<APIStandardReturnFormat> fetchAlbum() async {
+    const FlutterSecureStorage storage = FlutterSecureStorage();
+    final String? token = await storage.read(key: 'spotifyAuthToken');
+    final response = await http.get(
+        Uri.parse('$apiBaseMode$spotifyApiBaseUrl/${AppAPIPath.userPlayList}'),
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        });
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      return GlobalAPIServices().formatResponseToStandardFormat(response);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
   }
 }

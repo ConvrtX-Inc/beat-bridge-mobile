@@ -58,8 +58,10 @@ class RouteGenerator {
       case '/recent_queues':
         return MaterialPageRoute<dynamic>(builder: (_) => const RecentQueues());
       case '/all_queues':
-        return MaterialPageRoute<dynamic>(
-            builder: (_) => const AllQueueScreen());
+        return MaterialPageRoute<dynamic>(builder: (_) {
+          BuildContext context = args as BuildContext;
+          return AllQueueScreen(context);
+        });
       case '/test_spotify':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const TestSpotifyScreen());
