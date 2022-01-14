@@ -24,4 +24,7 @@ class AppAPIPath {
 
   /// Returns payment api url
   static String paymentApiUrl = 'api/v1/charge';
+
+  /// Returns user subscription api url
+  static String userSubscriptionApiUrl = 'api/v1/user-subscription';
 }

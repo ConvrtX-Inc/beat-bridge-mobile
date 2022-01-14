@@ -82,14 +82,17 @@ class AppListConstants {
     SubscriptionModel(
       price: AppTextConstants.monthlySubscriptionPrice,
       value: 2.99,
+      code: 'MONTHLY'
     ),
     SubscriptionModel(
       price: AppTextConstants.quarterlySubscriptionPrice,
       value: 5.99,
+      code: 'QUARTERLY'
     ),
     SubscriptionModel(
       price: AppTextConstants.yearlySubscriptionPrice,
       value: 7.99,
+        code: 'YEARLY'
     )
   ];
 

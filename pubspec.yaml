@@ -47,6 +47,8 @@ dependencies:
   flutter_stripe: ^2.1.0 # For payment integration
   flutter_bluetooth_serial: ^0.4.0 #plugin for detecting bluetooth devices
   shared_preferences: ^2.0.12
+  intl: ^0.17.0
+
 
 
 

@@ -74,8 +74,6 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
                   style: TextStyle(
                       color: AppColorConstants.paleSky, fontSize: 14.sp),
                 ),
-
-
               ]),
         ));
   }

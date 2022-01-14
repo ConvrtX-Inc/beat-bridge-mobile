@@ -83,15 +83,13 @@ class APIServices {
 
     debugPrint('latitude $latitude longitude $longitude');
 
-    final http.Response response = await http.post(
-        Uri.http(apiBaseUrl, '/api/v1/users/nearest-users'),
-        headers: {
-          HttpHeaders.authorizationHeader: 'Bearer $token',
-        },
-        body: {
-          'latitude': latitude,
-          'longitude': longitude
-        });
+    final http.Response response = await http
+        .post(Uri.http(apiBaseUrl, '/api/v1/users/nearest-users'), headers: {
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+    }, body: {
+      'latitude': latitude,
+      'longitude': longitude
+    });
 
     return GlobalAPIServices().formatResponseToStandardFormat(response);
   }
@@ -113,23 +111,44 @@ class APIServices {
   }
 
   ///API service for Payment
-  Future<APIStandardReturnFormat> pay(int amount , String paymentMethodID) async {
+  Future<APIStandardReturnFormat> pay(
+      int amount, String paymentMethodID) async {
     final String? token = await secureStorage.read(key: 'token');
-
 
     final http.Response response = await http.post(
         Uri.parse('$apiBaseMode$apiBaseUrl/${AppAPIPath.paymentApiUrl}'),
         headers: {
           HttpHeaders.authorizationHeader: 'Bearer $token',
-          'content-type':'application/json'
+          'content-type': 'application/json'
         },
-        body: jsonEncode(
-            {
-              'payment_method_id': paymentMethodID,
-              'amount': amount,
-            }
-        ));
+        body: jsonEncode({
+          'payment_method_id': paymentMethodID,
+          'amount': amount,
+        }));
 
+    return GlobalAPIServices().formatResponseToStandardFormat(response);
+  }
+
+  ///API service for saving user subscription
+  Future<APIStandardReturnFormat> addUserSubscription(
+      String startDate, String endDate, String code, double price) async {
+    final String? token = await secureStorage.read(key: 'token');
+    final String? user_id = await secureStorage.read(key: 'user_id');
+
+
+    final http.Response response = await http.post(
+        Uri.parse('$apiBaseMode$apiBaseUrl/${AppAPIPath.userSubscriptionApiUrl}'),
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+          'content-type': 'application/json'
+        },
+        body: jsonEncode({
+          'user_id':user_id,
+          'start_date': startDate,
+          'end_date': endDate,
+          'code' : code,
+          'cost': price
+        }));
 
     return GlobalAPIServices().formatResponseToStandardFormat(response);
   }

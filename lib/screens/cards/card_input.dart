@@ -2,12 +2,14 @@ import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/models/apis/api_standard_return.dart';
 import 'package:beatbridge/models/subscription_model.dart';
 import 'package:beatbridge/utils/helpers/form_helper.dart';
+import 'package:beatbridge/utils/helpers/validator_helper.dart';
 import 'package:beatbridge/utils/services/rest_api_service.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded_gradient.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:intl/intl.dart';
 
 ///Card Input Screen
 class CardInputScreen extends StatefulWidget {
@@ -41,12 +43,14 @@ class _CardInputScreenState extends State<CardInputScreen> {
   static final GlobalKey<FormState> cardFormGlobalKey = GlobalKey<FormState>();
 
   late double subscriptionPrice;
+  String subscriptionCode = '';
   bool isPaymentInProgress = false;
   String _email = '';
   String _fullName = '';
   String _address = '';
-  String _postalCode ='';
+  String _postalCode = '';
   String _city = '';
+  final ValidatorHelper _globalValidator = ValidatorHelper();
   final ThemeData theme = ThemeData.light().copyWith(
     inputDecorationTheme: InputDecorationTheme(
         filled: true,
@@ -61,6 +65,7 @@ class _CardInputScreenState extends State<CardInputScreen> {
     super.initState();
     WidgetsFlutterBinding.ensureInitialized();
     subscriptionPrice = widget.selectedSubscription!.value;
+    subscriptionCode = widget.selectedSubscription!.code;
   }
 
   @override
@@ -124,7 +129,9 @@ class _CardInputScreenState extends State<CardInputScreen> {
               if (onValidateValue.isEmpty) {
                 return '${AppTextConstants.email} cannot be empty';
               }
-
+              if (!_globalValidator.isValidEmail(onValidateValue)) {
+                return AppTextConstants.invalidEmailFormat;
+              }
               return null;
             },
             (String onSavedValue) {
@@ -194,9 +201,7 @@ class _CardInputScreenState extends State<CardInputScreen> {
             data: theme,
             child: Container(
               alignment: Alignment.center,
-
               child: CardField(
-
                 style: const TextStyle(color: Colors.white),
                 onCardChanged: (_) {},
                 decoration: InputDecoration(
@@ -220,53 +225,75 @@ class _CardInputScreenState extends State<CardInputScreen> {
 
   //Function for payment
   Future<void> handlePayment() async {
-    if (validateAndSave()) {
-      debugPrint('Details ${_cardFormController.details}');
-      setState(() {
-        isPaymentInProgress = !isPaymentInProgress;
-      });
-      // 1. Initialize customer billing detail
-      final BillingDetails billingDetails =
-          BillingDetails(email: _email, name: _fullName,
-          address: Address(
-            city: _city,
-            country: '',
-            postalCode: _postalCode,
-            line1: _address,
-            line2:  '',
-            state: ''
-          )
-          );
+    try {
+      if (validateAndSave()) {
+        debugPrint('Details ${_cardFormController.details}');
+        setState(() {
+          isPaymentInProgress = !isPaymentInProgress;
+        });
+        // 1. Initialize customer billing detail
+        final BillingDetails billingDetails = BillingDetails(
+            email: _email,
+            name: _fullName,
+            address: Address(
+                city: _city,
+                country: '',
+                postalCode: _postalCode,
+                line1: _address,
+                line2: '',
+                state: ''));
 
-      //2. Create payment method
-      final PaymentMethod paymentMethod =
-          await Stripe.instance.createPaymentMethod(PaymentMethodParams.card(
-        billingDetails: billingDetails,
-      ));
+        //2. Create payment method
+        final PaymentMethod paymentMethod =
+            await Stripe.instance.createPaymentMethod(PaymentMethodParams.card(
+          billingDetails: billingDetails,
+        ));
 
-      //3. Call Payment API for payment intent
-      /*
+        //3. Call Payment API for payment intent
+        /*
       Stripe only allows integer value for price so
       we need to change the price (amount) into cent by (*100)
       See: https://stripe.com/docs/api/charges
      */
-      final int amount = (subscriptionPrice * 100).round();
+        final int amount = (subscriptionPrice * 100).round();
 
-      final APIStandardReturnFormat result =
-          await APIServices().pay(amount, paymentMethod.id);
-      if (result.statusCode == 201) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content:
-                Text('Success!: The payment was confirmed successfully!')));
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(
-                'Unable to process the payment!: ${AppTextConstants.anErrorOccurred}')));
+        final APIStandardReturnFormat result =
+            await APIServices().pay(amount, paymentMethod.id);
+        if (result.statusCode == 201) {
+          await addSubscription();
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(
+                  'Unable to process the payment!: ${AppTextConstants.anErrorOccurred}')));
+        }
+        setState(() {
+          isPaymentInProgress = false;
+        });
       }
-
+    } on Exception catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+              'Unable to process the payment!: ${AppTextConstants.anErrorOccurred}')));
       setState(() {
         isPaymentInProgress = false;
       });
+    }
+  }
+
+  Future<void> addSubscription() async {
+    final DateTime startDate = DateTime.now();
+    final String endDate =
+        DateFormat('yyyy-MM-dd').format(getEndDate(startDate));
+    final APIStandardReturnFormat result = await APIServices()
+        .addUserSubscription(DateFormat('yyyy-MM-dd').format(startDate),
+            endDate, subscriptionCode, subscriptionPrice);
+    if (result.statusCode == 201) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Success!: The payment was confirmed successfully!')));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+              'Unable to Create User Subscription!: ${AppTextConstants.anErrorOccurred}')));
     }
   }
 
@@ -279,6 +306,22 @@ class _CardInputScreenState extends State<CardInputScreen> {
     return false;
   }
 
+  DateTime getEndDate(DateTime date) {
+    DateTime endDate = DateTime.now();
+    switch (subscriptionCode) {
+      case 'MONTHLY':
+        endDate = DateTime(date.year, date.month + 1, date.day);
+        break;
+      case 'QUARTERLY':
+        endDate = DateTime(date.year, date.month + 3, date.day);
+        break;
+      case 'YEARLY':
+        endDate = DateTime(date.year, date.month + 12, date.day);
+    }
+
+    return endDate;
+  }
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -286,6 +329,7 @@ class _CardInputScreenState extends State<CardInputScreen> {
       ..add(DoubleProperty('subscriptionPrice', subscriptionPrice))
       ..add(
           DiagnosticsProperty<bool>('isPaymentInProgress', isPaymentInProgress))
-      ..add(DiagnosticsProperty<ThemeData>('theme', theme));
+      ..add(DiagnosticsProperty<ThemeData>('theme', theme))
+      ..add(StringProperty('subscriptionCode', subscriptionCode));
   }
 }
