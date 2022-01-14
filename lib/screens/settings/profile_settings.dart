@@ -160,30 +160,6 @@ class _ProfileSettigsState extends State<ProfileSettigs> {
               AppListConstants().profileSettings.length, (int index) {
             return Column(
               children: <Widget>[
-// <<<<<<< HEAD
-//                 Padding(
-//                   padding:
-//                       EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-//                   child: ListTile(
-//                     onTap: () {
-//                       switch (AppListConstants().profileSettingsText[index]) {
-//                         case 'Playlist':
-//                           Navigator.of(context).pushNamed('/play-list');
-//                           break;
-//                         default:
-//                       }
-//                     },
-//                     leading: Container(
-//                       height: 18.h,
-//                       width: 18.w,
-//                       transform: Matrix4.translationValues(0, 2, 0),
-//                       decoration: BoxDecoration(
-//                         image: DecorationImage(
-//                           // AppListConstants.profileSettingsIcons[index]
-//                           image: AssetImage(
-//                               '${AssetsPathConstants.assetsPNGPath}/${AppListConstants().profileSettingsIcons[index]}'),
-//                           fit: BoxFit.fitHeight,
-
                 InkWell(
                   onTap: () {
                     if (AppListConstants().profileSettings[index].routePath !=
@@ -220,7 +196,6 @@ class _ProfileSettigsState extends State<ProfileSettigs> {
                             color: Colors.white, size: 15.w),
                       )),
                 ),
-
                 if (index < AppListConstants().profileSettingsIcons.length - 1)
                   const Divider(
                     color: Colors.white,

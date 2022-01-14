@@ -42,9 +42,7 @@ class AppListConstants {
     ProfileSettingsModel(
         name: 'Friends', icon: 'friends.png', routePath: '/friends'),
     ProfileSettingsModel(
-      name: 'Playlist',
-      icon: 'playlist.png',
-    ),
+        name: 'Playlist', icon: 'playlist.png', routePath: '/play-list'),
     ProfileSettingsModel(
         name: 'Subscribe', icon: 'subscribe.png', routePath: '/subscribe'),
     ProfileSettingsModel(
@@ -80,20 +78,17 @@ class AppListConstants {
   /// use in profile settings screen
   final List<SubscriptionModel> subscriptions = <SubscriptionModel>[
     SubscriptionModel(
-      price: AppTextConstants.monthlySubscriptionPrice,
-      value: 2.99,
-      code: 'MONTHLY'
-    ),
+        price: AppTextConstants.monthlySubscriptionPrice,
+        value: 2.99,
+        code: 'MONTHLY'),
     SubscriptionModel(
-      price: AppTextConstants.quarterlySubscriptionPrice,
-      value: 5.99,
-      code: 'QUARTERLY'
-    ),
+        price: AppTextConstants.quarterlySubscriptionPrice,
+        value: 5.99,
+        code: 'QUARTERLY'),
     SubscriptionModel(
-      price: AppTextConstants.yearlySubscriptionPrice,
-      value: 7.99,
-        code: 'YEARLY'
-    )
+        price: AppTextConstants.yearlySubscriptionPrice,
+        value: 7.99,
+        code: 'YEARLY')
   ];
 
   ///Profile Settings List
@@ -116,11 +111,10 @@ class AppListConstants {
   ///Music Source List
   final List<MusicPlatformModel> musicSourceList = <MusicPlatformModel>[
     MusicPlatformModel(
-      name: AppTextConstants.spotify,
-      logoImagePath:
-      '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.spotifyLogoImage}',
-      isSelected:true
-    ),
+        name: AppTextConstants.spotify,
+        logoImagePath:
+            '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.spotifyLogoImage}',
+        isSelected: true),
     MusicPlatformModel(
       name: AppTextConstants.soundCloud,
       logoImagePath:
