@@ -1,4 +1,6 @@
 // ignore_for_file: avoid_classes_with_only_static_members
+import 'package:beatbridge/models/spotify/play_list.dart';
+import 'package:beatbridge/models/users/queue_model.dart';
 import 'package:beatbridge/models/subscription_model.dart';
 import 'package:beatbridge/screens/auths/forgot_password/screens/new_password.dart';
 import 'package:beatbridge/screens/auths/forgot_password/screens/verification_code.dart';
@@ -19,6 +21,8 @@ import 'package:beatbridge/screens/main_navigations/queues/screens/queue_details
 import 'package:beatbridge/screens/main_navigations/queues/screens/queue_playing_screen.dart';
 import 'package:beatbridge/screens/main_navigations/queues/screens/recent_queue.dart';
 import 'package:beatbridge/screens/main_navigations/queues/screens/test_spotify.dart';
+import 'package:beatbridge/screens/play_list/play_list.dart';
+import 'package:beatbridge/screens/play_list/play_list_details.dart';
 import 'package:beatbridge/screens/settings/profile_settings.dart';
 import 'package:beatbridge/screens/settings/system_setting.dart';
 import 'package:beatbridge/screens/sources/bluetooth_source.dart';
@@ -69,8 +73,10 @@ class RouteGenerator {
       case '/recent_queues':
         return MaterialPageRoute<dynamic>(builder: (_) => const RecentQueues());
       case '/all_queues':
-        return MaterialPageRoute<dynamic>(
-            builder: (_) => const AllQueueScreen());
+        return MaterialPageRoute<dynamic>(builder: (_) {
+          BuildContext context = args as BuildContext;
+          return AllQueueScreen(context);
+        });
       case '/test_spotify':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const TestSpotifyScreen());
@@ -88,6 +94,18 @@ class RouteGenerator {
         return MaterialPageRoute<dynamic>(
             builder: (_) => const ProfileSettigs());
       case '/queue-details':
+        return MaterialPageRoute<dynamic>(builder: (_) {
+          QueueModel queue = args as QueueModel;
+          return QueueDetails(queue);
+        });
+      case '/play-list':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const PlayListScreen());
+      case '/play-list-details':
+        return MaterialPageRoute<dynamic>(builder: (_) {
+          PlayList playList = args as PlayList;
+          return PlayListDetailsScreen(playList);
+        });
         return MaterialPageRoute<dynamic>(builder: (_) => const QueueDetails());
       case '/support':
         return MaterialPageRoute<dynamic>(

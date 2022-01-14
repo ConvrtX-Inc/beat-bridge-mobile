@@ -44,19 +44,17 @@ dependencies:
   flutter_dotenv: ^5.0.2 #store spotify credentials in .env file
   bs_flutter_modal: ^1.0.6 #use in selecting avatars
   flutter_secure_storage: ^4.2.1 #storing oauth token
+  intl: ^0.17.0 #date formater
   flutter_stripe: ^2.1.0 # For payment integration
   flutter_bluetooth_serial: ^0.4.0 #plugin for detecting bluetooth devices
   shared_preferences: ^2.0.12
-  intl: ^0.17.0
-
-
-
-
   # oauth2_client: ^2.3.1
   # flutter_web_auth: ^0.4.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+
   cupertino_icons: ^1.0.2
+  get: ^4.6.1
   spotify:
     git:
       url: https://github.com/rinukkusu/spotify-dart.git

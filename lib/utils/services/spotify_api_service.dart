@@ -13,6 +13,8 @@ import 'package:spotify_sdk/spotify_sdk.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+final storage = new FlutterSecureStorage();
+
 class SpotifyApiService {
   SpotifyApiService(this.context);
   BuildContext context;
@@ -58,7 +60,7 @@ class SpotifyApiService {
               'user-read-private, '
               'user-read-email, '
               'user-top-read');
-      final storage = new FlutterSecureStorage();
+
       await storage.write(key: 'spotifyAuthToken', value: authenticationToken);
       return authenticationToken;
     } on PlatformException catch (e) {
@@ -68,10 +70,12 @@ class SpotifyApiService {
     }
   }
 
-  static Future<Iterable<PlayHistory>> getRecentPlayed(String token) async {
+  static Future<Iterable<PlayHistory>> getRecentPlayed() async {
     final Iterable<PlayHistory> rPlayed = [];
+    // Read value
+    final String? token = await storage.read(key: 'spotifyAuthToken');
     try {
-      final SpotifyApi spotify = SpotifyApi.withAccessToken(token);
+      final SpotifyApi spotify = SpotifyApi.withAccessToken(token!);
       return await spotify.me.recentlyPlayed();
     } on PlatformException catch (e) {
       return rPlayed;
@@ -80,10 +84,12 @@ class SpotifyApiService {
     }
   }
 
-  static Future<Iterable<Track>> getTopTracks(String token) async {
+  static Future<Iterable<Track>> getTopTracks() async {
     final Iterable<Track> topTrack = [];
+    // Read value
+    final String? token = await storage.read(key: 'spotifyAuthToken');
     try {
-      final SpotifyApi spotify = SpotifyApi.withAccessToken(token);
+      final SpotifyApi spotify = SpotifyApi.withAccessToken(token!);
       return await spotify.me.topTracks();
     } on PlatformException catch (e) {
       return topTrack;
@@ -103,6 +109,37 @@ class SpotifyApiService {
       return art;
     } on MissingPluginException {
       return art;
+    }
+  }
+
+  static Future<Paging<Track>> getPlayListTracks(String playlistId) async {
+    const FlutterSecureStorage storage = FlutterSecureStorage();
+    final String? token = await storage.read(key: 'spotifyAuthToken');
+    final Paging<Track> pl = Paging<Track>();
+    try {
+      final SpotifyApi spotify = SpotifyApi.withAccessToken(token!);
+      final Playlist playlist = await spotify.playlists.get(playlistId);
+      return playlist.tracks!;
+      // return await spotify.playlists.get(playlistId);
+    } on PlatformException catch (e) {
+      return pl;
+    } on MissingPluginException {
+      return pl;
+    }
+  }
+
+  static Future<Iterable<PlaylistSimple>> getFeaturedPlayList() async {
+    final Iterable<PlaylistSimple> playList = [];
+    // Read value
+    final String? token = await storage.read(key: 'spotifyAuthToken');
+    try {
+      final SpotifyApi spotify = SpotifyApi.withAccessToken(token!);
+      return await spotify.playlists.featured.all();
+      // return await spotify.me.topTracks();
+    } on PlatformException catch (e) {
+      return playList;
+    } on MissingPluginException {
+      return playList;
     }
   }
 }
