@@ -156,7 +156,7 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
                   await storage.write(key: 'token', value: UserSingleton.instance.user.token);
                   await storage.write(key: 'user_id', value: UserSingleton.instance.user.id);
                   await Navigator.pushReplacementNamed(
-                      context, '/friends');
+                      context, '/recent_queues');
                 }
               });
             }
