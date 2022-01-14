@@ -14,7 +14,7 @@ class AppAPIPath {
   static String apiBaseMode = isStaging ? 'http://' : 'https://';
 
   /// Returns API base url
-  static String apiBaseUrl = '192.168.100.55:8000';
+  static String apiBaseUrl = 'dev-beatbridge-convrtx.herokuapp.com';
 
   /// Returns Spotify API base url
   static String spotifyApiBaseUrl = 'api.spotify.com/v1';

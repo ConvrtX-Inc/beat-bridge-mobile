@@ -106,7 +106,6 @@ class RouteGenerator {
           PlayList playList = args as PlayList;
           return PlayListDetailsScreen(playList);
         });
-        return MaterialPageRoute<dynamic>(builder: (_) => const QueueDetails());
       case '/support':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const SupportScreen());
