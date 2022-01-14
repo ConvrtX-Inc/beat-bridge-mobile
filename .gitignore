@@ -1,3 +1,4 @@
+
 # Miscellaneous
 *.class
 *.log
@@ -8,6 +9,7 @@
 .buildlog/
 .history
 .svn/
+
 
 # IntelliJ related
 *.iml
@@ -44,3 +46,5 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+*.env

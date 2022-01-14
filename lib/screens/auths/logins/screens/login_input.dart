@@ -12,6 +12,7 @@ import 'package:beatbridge/widgets/buttons/app_button_rounded_gradient.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 ///Login input screen
 class LoginInputScreen extends StatefulWidget {
@@ -33,6 +34,8 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
 
   final GlobalKey<FormState> loginFormGlobalKey = GlobalKey<FormState>();
   TextServices textServices = TextServices();
+  FlutterSecureStorage storage = const FlutterSecureStorage();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -149,8 +152,10 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
                 } else {
                   final UserModel user =
                       UserModel.fromJson(json.decode(response.successResponse));
-                  UserSingleton.instance.user = user;
-
+                  await storage.write(
+                      key: 'token', value: UserSingleton.instance.user.token);
+                  await storage.write(
+                      key: 'user_id', value: UserSingleton.instance.user.id);
                   await Navigator.pushReplacementNamed(
                       context, '/recent_queues');
                   // await Navigator.pushReplacementNamed(context, '/all_queues',
@@ -187,6 +192,8 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
     properties
       ..add(DiagnosticsProperty<GlobalKey<FormState>>(
           'loginFormGlobalKey', loginFormGlobalKey))
-      ..add(IterableProperty<String>('errorMessages', errorMessages));
+      ..add(IterableProperty<String>('errorMessages', errorMessages))
+      ..add(DiagnosticsProperty<TextServices>('textServices', textServices))
+      ..add(DiagnosticsProperty<FlutterSecureStorage>('storage', storage));
   }
 }

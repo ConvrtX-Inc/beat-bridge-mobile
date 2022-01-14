@@ -27,4 +27,28 @@ class TextHelper {
       ),
     );
   }
+
+  ///Widget for no available data text
+  static Widget noAvailableDataTextDisplay() {
+    return Center(
+        child: Padding(
+      padding: EdgeInsets.symmetric(vertical: 5.h),
+      child: Text(
+        AppTextConstants.noAvailableData,
+        style: const TextStyle(color: Colors.grey),
+      ),
+    ));
+  }
+
+  ///Widget for  an error occurred  text
+  static Widget anErrorOccurredTextDisplay() {
+    return Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 5.h),
+          child: Text(
+            AppTextConstants.anErrorOccurred,
+            style: const TextStyle(color: Colors.red),
+          ),
+        ));
+  }
 }

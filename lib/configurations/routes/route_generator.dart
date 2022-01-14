@@ -1,12 +1,17 @@
 // ignore_for_file: avoid_classes_with_only_static_members
 import 'package:beatbridge/models/spotify/play_list.dart';
 import 'package:beatbridge/models/users/queue_model.dart';
+import 'package:beatbridge/models/subscription_model.dart';
 import 'package:beatbridge/screens/auths/forgot_password/screens/new_password.dart';
 import 'package:beatbridge/screens/auths/forgot_password/screens/verification_code.dart';
 import 'package:beatbridge/screens/auths/forgot_password/screens/verify_email.dart';
 import 'package:beatbridge/screens/auths/logins/screens/login.dart';
 import 'package:beatbridge/screens/auths/logins/screens/login_input.dart';
 import 'package:beatbridge/screens/auths/registers/screens/register.dart';
+import 'package:beatbridge/screens/cards/card_input.dart';
+import 'package:beatbridge/screens/contacts/contact_us.dart';
+import 'package:beatbridge/screens/main_navigations/friends/screens/friend.dart';
+import 'package:beatbridge/screens/main_navigations/friends/screens/near_you.dart';
 import 'package:beatbridge/screens/main_navigations/links/screens/link_landing_page.dart';
 import 'package:beatbridge/screens/main_navigations/links/screens/select_platform_to_link.dart';
 import 'package:beatbridge/screens/main_navigations/links/screens/test_spot.dart';
@@ -19,7 +24,14 @@ import 'package:beatbridge/screens/main_navigations/queues/screens/test_spotify.
 import 'package:beatbridge/screens/play_list/play_list.dart';
 import 'package:beatbridge/screens/play_list/play_list_details.dart';
 import 'package:beatbridge/screens/settings/profile_settings.dart';
+import 'package:beatbridge/screens/settings/system_setting.dart';
+import 'package:beatbridge/screens/sources/bluetooth_source.dart';
+import 'package:beatbridge/screens/sources/music_source.dart';
 import 'package:beatbridge/screens/splashes/screens/splash_screen.dart';
+import 'package:beatbridge/screens/subscriptions/subscribe.dart';
+import 'package:beatbridge/screens/supports/create_ticket.dart';
+import 'package:beatbridge/screens/supports/support.dart';
+import 'package:beatbridge/screens/supports/support_thread.dart';
 import 'package:flutter/material.dart';
 
 /// Route generator configuration
@@ -71,6 +83,11 @@ class RouteGenerator {
       case '/select_platform':
         return MaterialPageRoute<dynamic>(
             builder: (_) => const SelectPlatformToLink());
+      case '/friends':
+        return MaterialPageRoute<dynamic>(builder: (_) => const FriendScreen());
+      case '/near_you':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const NearYouScreen());
       case '/test_spotify_sdk':
         return MaterialPageRoute<dynamic>(builder: (_) => const TestSpot());
       case '/profile-settings':
@@ -89,6 +106,35 @@ class RouteGenerator {
           PlayList playList = args as PlayList;
           return PlayListDetailsScreen(playList);
         });
+        return MaterialPageRoute<dynamic>(builder: (_) => const QueueDetails());
+      case '/support':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const SupportScreen());
+      case '/support-thread':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const SupportThreadScreen());
+      case '/create-ticket':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const CreateTicketScreen());
+      case '/subscribe':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const SubscribeScreen());
+      case '/card_input':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => CardInputScreen(
+                selectedSubscription: args! as SubscriptionModel));
+      case '/music_source':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const MusicSourceScreen());
+      case '/bluetooth_source':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const BluetoothSourceScreen());
+      case '/contact_us':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const ContactUsScreen());
+      case '/system_settings':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const SystemSettingScreen());
       default:
         return _errorRoute();
     }

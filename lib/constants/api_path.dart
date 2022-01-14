@@ -14,7 +14,7 @@ class AppAPIPath {
   static String apiBaseMode = isStaging ? 'http://' : 'https://';
 
   /// Returns API base url
-  static String apiBaseUrl = 'dev-beatbridge-convrtx.herokuapp.com';
+  static String apiBaseUrl = '192.168.100.55:8000';
 
   /// Returns Spotify API base url
   static String spotifyApiBaseUrl = 'api.spotify.com/v1';
@@ -36,4 +36,10 @@ class AppAPIPath {
 
   /// Returns register url
   static String registerUrl = 'api/v1/auth/username/register';
+
+  /// Returns payment api url
+  static String paymentApiUrl = 'api/v1/charge';
+
+  /// Returns user subscription api url
+  static String userSubscriptionApiUrl = 'api/v1/user-subscription';
 }

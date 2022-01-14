@@ -170,18 +170,14 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
           buttonText: AppTextConstants.submit,
           isLoading: _isAPICallInProgress,
           buttonCallback: () async {
-            // setState(() {
-            //   _isAPICallInProgress = true;
-            //   errorMessages = <String>[];
-            // });
-            if (validateAndSave()) {
 
+            if (validateAndSave()) {
               setState(() {
                 _isAPICallInProgress = true;
                 errorMessages = <String>[];
               });
 
-              /*final UserModel userModelParams = UserModel(
+              final UserModel userModelParams = UserModel(
                   username: _username,
                   email: _emailOrPhoneNumber,
                   password: _password,
@@ -203,25 +199,13 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
               } else {
                 await Navigator.pushNamedAndRemoveUntil(
                     context, '/link_landing_page', (Route<dynamic> route) => false);
-              }*/
-
-              /// for testing only
-              Timer(
-                  const Duration(seconds: 1),
-                      () async => {
-                    setState(() {
-                      _isAPICallInProgress = false;
-                    }),
-                      await Navigator.pushNamedAndRemoveUntil(
-                      context, '/link_landing_page', (Route<dynamic> route) => false)
-                  });
-
+              }
 
             }
 
-            // setState(() {
-            //   _isAPICallInProgress = false;
-            // });
+            setState(() {
+              _isAPICallInProgress = false;
+            });
           },
 
         ),
