@@ -281,6 +281,9 @@ class AppTextConstants {
   ///Returns all queues string
   static String allQueues = 'All Queues';
 
+  ///Returns play List string
+  static String playList = 'Playlists';
+
   ///Returns start new queue text
   static String startNewQueue = 'Start New Queue';
 

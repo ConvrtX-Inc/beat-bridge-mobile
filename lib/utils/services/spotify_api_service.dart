@@ -112,6 +112,22 @@ class SpotifyApiService {
     }
   }
 
+  static Future<Paging<Track>> getPlayListTracks(String playlistId) async {
+    const FlutterSecureStorage storage = FlutterSecureStorage();
+    final String? token = await storage.read(key: 'spotifyAuthToken');
+    final Paging<Track> pl = Paging<Track>();
+    try {
+      final SpotifyApi spotify = SpotifyApi.withAccessToken(token!);
+      final Playlist playlist = await spotify.playlists.get(playlistId);
+      return playlist.tracks!;
+      // return await spotify.playlists.get(playlistId);
+    } on PlatformException catch (e) {
+      return pl;
+    } on MissingPluginException {
+      return pl;
+    }
+  }
+
   static Future<Iterable<PlaylistSimple>> getFeaturedPlayList() async {
     final Iterable<PlaylistSimple> playList = [];
     // Read value

@@ -121,29 +121,25 @@ class _RecentQueuesState extends State<RecentQueues> {
                 case ConnectionState.done:
                   print('spotify token ${snapshot.data}');
 
-                  return FutureBuilder<APIStandardReturnFormat>(
-                    future: APIServices().fetchAlbum(),
+                  return FutureBuilder<Iterable<spot.Track>>(
+                    future: SpotifyApiService.getTopTracks(),
                     builder: (BuildContext context,
-                        AsyncSnapshot<APIStandardReturnFormat> response) {
-                      switch (response.connectionState) {
+                        AsyncSnapshot<Iterable<spot.Track>> recentPlayed) {
+                      switch (recentPlayed.connectionState) {
                         case ConnectionState.waiting:
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
                         case ConnectionState.done:
-                          if (response.hasError) {
-                            return Text(response.error.toString());
+                          if (recentPlayed.hasError) {
+                            return Text(recentPlayed.error.toString());
                           } else {
-                            final dynamic jsonData =
-                                jsonDecode(response.data!.successResponse);
-                            print(jsonData['items']);
-                            final List<PlayList> playList = <PlayList>[];
-                            final pl = (jsonData['items'] as List)
-                                .map((i) => PlayList.fromJson(i))
-                                .toList();
-                            playList.addAll(pl);
-                            print(playList.length);
-                            return Container();
+                            return Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 11.w,
+                                ),
+                                child:
+                                    buildTopPlayedItemList(recentPlayed.data!));
                           }
                         // ignore: no_default_cases
                         default:
@@ -151,32 +147,6 @@ class _RecentQueuesState extends State<RecentQueues> {
                       }
                     },
                   );
-                // return FutureBuilder<Iterable<spot.Track>>(
-                //   future: SpotifyApiService.getTopTracks(),
-                //   builder: (BuildContext context,
-                //       AsyncSnapshot<Iterable<spot.Track>> recentPlayed) {
-                //     switch (recentPlayed.connectionState) {
-                //       case ConnectionState.waiting:
-                //         return const Center(
-                //           child: CircularProgressIndicator(),
-                //         );
-                //       case ConnectionState.done:
-                //         if (recentPlayed.hasError) {
-                //           return Text(recentPlayed.error.toString());
-                //         } else {
-                //           return Padding(
-                //               padding: EdgeInsets.symmetric(
-                //                 horizontal: 11.w,
-                //               ),
-                //               child:
-                //                   buildTopPlayedItemList(recentPlayed.data!));
-                //         }
-                //       // ignore: no_default_cases
-                //       default:
-                //         return const Text('Unhandle State');
-                //     }
-                //   },
-                // );
                 // ignore: no_default_cases
                 default:
                   return snapshot.hasError

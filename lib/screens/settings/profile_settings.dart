@@ -164,6 +164,14 @@ class _ProfileSettigsState extends State<ProfileSettigs> {
                   padding:
                       EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
                   child: ListTile(
+                    onTap: () {
+                      switch (AppListConstants().profileSettingsText[index]) {
+                        case 'Playlist':
+                          Navigator.of(context).pushNamed('/play-list');
+                          break;
+                        default:
+                      }
+                    },
                     leading: Container(
                       height: 18.h,
                       width: 18.w,

@@ -151,10 +151,10 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
                       UserModel.fromJson(json.decode(response.successResponse));
                   UserSingleton.instance.user = user;
 
-                  // await Navigator.pushReplacementNamed(
-                  //     context, '/recent_queues');
-                  await Navigator.pushReplacementNamed(context, '/all_queues',
-                      arguments: context);
+                  await Navigator.pushReplacementNamed(
+                      context, '/recent_queues');
+                  // await Navigator.pushReplacementNamed(context, '/all_queues',
+                  //     arguments: context);
                 }
               });
             }

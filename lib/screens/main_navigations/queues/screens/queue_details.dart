@@ -557,15 +557,15 @@ class _QueueDetailsState extends State<QueueDetails> {
                   .map((i) => QueueMemberModel.fromJson(i))
                   .toList();
               members.addAll(qMembers);
-
+              // return Container();
               return Container(
                 height: 120.h,
                 child: ListView(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     children: <Widget>[
-                      for (int i = 0; i < members.length; i++)
-                        buildFriendItem(members[i], i),
+                      for (int i = 0; i < qMembers.length; i++)
+                        buildFriendItem(qMembers[i], i),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.w),
                         child: Column(
@@ -585,7 +585,7 @@ class _QueueDetailsState extends State<QueueDetails> {
                               ),
                               child: Center(
                                   child: Text(
-                                '8+',
+                                '${qMembers.length}+',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 22.sp,
@@ -604,53 +604,31 @@ class _QueueDetailsState extends State<QueueDetails> {
   }
 
   Widget buildFriendItem(QueueMemberModel member, int index) {
-    return FutureBuilder<APIResponsedToUserObject>(
-      future: APIServices().getUserDetailsById(member.id), // async work
-      builder: (BuildContext context,
-          AsyncSnapshot<APIResponsedToUserObject> snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            return const SizedBox(
-              height: 50,
-              width: 50,
-              child: Center(child: CircularProgressIndicator()),
-            );
-
-          // ignore: no_default_cases
-          default:
-            if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          image: DecorationImage(
-                            image:
-                                AssetImage(friendList[index].profileImageUrl),
-                            fit: BoxFit.fitHeight,
-                          )),
-                    ),
-                    SizedBox(
-                      height: 6.h,
-                    ),
-                    Text(friendList[index].name,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.w600))
-                  ],
-                ),
-              );
-            }
-        }
-      },
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8.w),
+      child: Column(
+        children: <Widget>[
+          Container(
+            height: 50,
+            width: 50,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                image: DecorationImage(
+                  image: AssetImage(friendList[index].profileImageUrl),
+                  fit: BoxFit.fitHeight,
+                )),
+          ),
+          SizedBox(
+            height: 6.h,
+          ),
+          Text(member.user.username,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w600))
+        ],
+      ),
     );
   }
 

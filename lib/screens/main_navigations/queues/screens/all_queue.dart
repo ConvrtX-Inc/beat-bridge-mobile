@@ -22,8 +22,6 @@ class AllQueueScreen extends StatelessWidget {
   final BuildContext context;
   AllQueueScreen(this.context);
   final allQueuesController = Get.put(AllQueuesController());
-
-  @override
   final List<RecentQueueModel> queueList = StaticDataService.getRecentQueues();
   int selectedQueueIndex = 0;
   @override
@@ -111,10 +109,11 @@ class AllQueueScreen extends StatelessWidget {
   }
 
   Widget buildQueueItem(BuildContext context, QueueModel queue, int index) {
+    print(queue.createdDate);
     final DateTime parseDate =
         DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(queue.createdDate);
     final DateTime inputDate = DateTime.parse(parseDate.toString());
-    final DateFormat outputFormat = DateFormat('h:mm:a  | dd/mm/yy');
+    final DateFormat outputFormat = DateFormat('h:mm:a  | dd/MM/yy');
     final String outputDate = outputFormat.format(inputDate);
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{

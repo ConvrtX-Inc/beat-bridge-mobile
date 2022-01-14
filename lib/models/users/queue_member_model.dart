@@ -1,3 +1,5 @@
+import 'package:beatbridge/models/users/user_model.dart';
+
 /// Model for user
 class QueueMemberModel {
   /// Constructor
@@ -9,7 +11,11 @@ class QueueMemberModel {
     this.createdDate = '',
     this.updatedDate = '',
     this.entity = '',
+    this.user = const UserModel(),
   });
+
+  ///user details
+  final UserModel user;
 
   /// Initialization
   final String id;
@@ -42,5 +48,6 @@ class QueueMemberModel {
         createdDate: json['created_date'],
         updatedDate: json['updated_date'] ?? '',
         entity: json['__entity'],
+        user: UserModel.fromJson(json),
       );
 }

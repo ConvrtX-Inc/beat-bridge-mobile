@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_classes_with_only_static_members
+import 'package:beatbridge/models/spotify/play_list.dart';
 import 'package:beatbridge/models/users/queue_model.dart';
 import 'package:beatbridge/screens/auths/forgot_password/screens/new_password.dart';
 import 'package:beatbridge/screens/auths/forgot_password/screens/verification_code.dart';
@@ -15,6 +16,8 @@ import 'package:beatbridge/screens/main_navigations/queues/screens/queue_details
 import 'package:beatbridge/screens/main_navigations/queues/screens/queue_playing_screen.dart';
 import 'package:beatbridge/screens/main_navigations/queues/screens/recent_queue.dart';
 import 'package:beatbridge/screens/main_navigations/queues/screens/test_spotify.dart';
+import 'package:beatbridge/screens/play_list/play_list.dart';
+import 'package:beatbridge/screens/play_list/play_list_details.dart';
 import 'package:beatbridge/screens/settings/profile_settings.dart';
 import 'package:beatbridge/screens/splashes/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -75,8 +78,16 @@ class RouteGenerator {
             builder: (_) => const ProfileSettigs());
       case '/queue-details':
         return MaterialPageRoute<dynamic>(builder: (_) {
-          QueueModel article = args as QueueModel;
-          return QueueDetails(article);
+          QueueModel queue = args as QueueModel;
+          return QueueDetails(queue);
+        });
+      case '/play-list':
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const PlayListScreen());
+      case '/play-list-details':
+        return MaterialPageRoute<dynamic>(builder: (_) {
+          PlayList playList = args as PlayList;
+          return PlayListDetailsScreen(playList);
         });
       default:
         return _errorRoute();

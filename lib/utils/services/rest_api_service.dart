@@ -96,23 +96,32 @@ class APIServices {
 
   /// API service for User playlist in spotify
   Future<APIStandardReturnFormat> getUserPlayList() async {
-    print(spotifyApiBaseUrl + AppAPIPath.userPlayList);
-    const FlutterSecureStorage storage = FlutterSecureStorage();
-    final String? token = await storage.read(key: 'spotifyAuthToken');
-    final http.Response response = await http
-        .get(Uri.http(spotifyApiBaseUrl, AppAPIPath.userPlayList), headers: {
-      HttpHeaders.authorizationHeader: 'Bearer $token',
-    });
-    print(response.body);
-    print(response.headers);
-    return GlobalAPIServices().formatResponseToStandardFormat(response);
-  }
-
-  Future<APIStandardReturnFormat> fetchAlbum() async {
     const FlutterSecureStorage storage = FlutterSecureStorage();
     final String? token = await storage.read(key: 'spotifyAuthToken');
     final response = await http.get(
         Uri.parse('$apiBaseMode$spotifyApiBaseUrl/${AppAPIPath.userPlayList}'),
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        });
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      return GlobalAPIServices().formatResponseToStandardFormat(response);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+
+  /// API service for User playlist tracls in spotify
+  Future<APIStandardReturnFormat> getTracksInPlayList(String playListId) async {
+    const FlutterSecureStorage storage = FlutterSecureStorage();
+    final String? token = await storage.read(key: 'spotifyAuthToken');
+    final response = await http.get(
+        Uri.parse(
+            '$apiBaseMode$spotifyApiBaseUrl/playlists/$playListId/tracks'),
         headers: {
           HttpHeaders.authorizationHeader: 'Bearer $token',
         });

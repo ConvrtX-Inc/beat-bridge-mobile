@@ -13,7 +13,7 @@ class PlayList {
   Tracks? tracks;
   String? type;
   String? uri;
-
+  List<Images>? images;
   PlayList(
       {this.collaborative,
       this.description,
@@ -32,6 +32,12 @@ class PlayList {
     description = json['description'];
     href = json['href'];
     id = json['id'];
+    if (json['images'] != null) {
+      images = <Images>[];
+      json['images'].forEach((v) {
+        images!.add(new Images.fromJson(v));
+      });
+    }
     name = json['name'];
     owner = json['owner'] != null ? new Owner.fromJson(json['owner']) : null;
     public = json['public'];
@@ -60,6 +66,22 @@ class PlayList {
     }
     data['type'] = this.type;
     data['uri'] = this.uri;
+    return data;
+  }
+}
+
+class Images {
+  String? url;
+
+  Images({this.url});
+
+  Images.fromJson(Map<String, dynamic> json) {
+    url = json['url'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['url'] = this.url;
     return data;
   }
 }
