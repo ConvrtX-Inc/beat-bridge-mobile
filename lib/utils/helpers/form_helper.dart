@@ -18,7 +18,8 @@ class FormHelper {
       String inputPlaceholder = '',
       double separatorHeight = 16,
       dynamic minLines,
-      dynamic maxLines = 1}) {
+      dynamic maxLines = 1,
+      TextInputType keyType = TextInputType.multiline}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -33,7 +34,7 @@ class FormHelper {
         SizedBox(height: separatorHeight.h),
         TextFormField(
           controller: controller,
-          keyboardType: TextInputType.multiline,
+          keyboardType: keyType,
           minLines: minLines,
           maxLines: maxLines,
           key: Key(keyName),

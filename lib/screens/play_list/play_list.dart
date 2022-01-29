@@ -43,18 +43,19 @@ class _PlayListScreenState extends State<PlayListScreen> {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          SizedBox(height: 41.h),
-          Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
-              child: IconButton(
-                icon: Icon(
-                  Icons.arrow_back_ios,
-                  color: AppColorConstants.roseWhite,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )),
+          SizedBox(height: 22.h),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 11.w),
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: AppColorConstants.roseWhite,
+              ),
+            ),
+          ),
           SizedBox(height: 36.h),
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 11.w),

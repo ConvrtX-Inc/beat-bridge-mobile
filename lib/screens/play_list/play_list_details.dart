@@ -8,6 +8,7 @@ import 'package:beatbridge/models/apis/api_standard_return.dart';
 import 'package:beatbridge/models/recent_queue_model.dart';
 import 'package:beatbridge/models/spotify/play_list.dart';
 import 'package:beatbridge/models/spotify/track.dart';
+import 'package:beatbridge/screens/play_music/play_music.dart';
 
 import 'package:beatbridge/utils/services/rest_api_service.dart';
 import 'package:beatbridge/utils/services/spotify_api_service.dart';
@@ -45,18 +46,19 @@ class _PlayListDetailsScreenState extends State<PlayListDetailsScreen> {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          SizedBox(height: 41.h),
-          Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
-              child: IconButton(
-                icon: Icon(
-                  Icons.arrow_back_ios,
-                  color: AppColorConstants.roseWhite,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )),
+          SizedBox(height: 22.h),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 11.w),
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: AppColorConstants.roseWhite,
+              ),
+            ),
+          ),
           SizedBox(height: 36.h),
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 11.w),
@@ -107,7 +109,8 @@ class _PlayListDetailsScreenState extends State<PlayListDetailsScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 11.w),
                 itemCount: playList.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return buildQueueItem(context, playList[index], index);
+                  return buildQueueItem(
+                      context, playList[index], playList, index);
                 },
               );
             }
@@ -119,7 +122,8 @@ class _PlayListDetailsScreenState extends State<PlayListDetailsScreen> {
     );
   }
 
-  Widget buildQueueItem(BuildContext context, PlayListTrack track, int index) {
+  Widget buildQueueItem(BuildContext context, PlayListTrack track,
+      List<PlayListTrack> playListItems, int index) {
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -136,43 +140,46 @@ class _PlayListDetailsScreenState extends State<PlayListDetailsScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(height: 24.h),
-        Row(
-          children: <Widget>[
-            Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 20.h, 0),
-                child: Container(
-                    height: 60,
-                    width: 60,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      image: DecorationImage(
-                          image: NetworkImage(
-                              track.track!.album!.images!.first.url.toString()),
-                          fit: BoxFit.cover),
-                    ),
-                    child: Align(
-                        child: Image.asset(
-                            '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.playButtonImage}')))),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(track.track!.name!,
-                    style: TextStyle(
-                        color: AppColorConstants.roseWhite,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18.sp)),
-                SizedBox(height: 8.h),
-                Text(track.track!.artists!.first.name!,
-                    style: TextStyle(
-                        color: AppColorConstants.paleSky, fontSize: 13)),
-                SizedBox(height: 8.h),
-              ],
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (_) {
+                return PlayMusicScreen(track, playListItems, widget.playList);
+              },
+              settings: const RouteSettings(
+                name: '/play-music',
+              ),
+            ));
+          },
+          leading: Container(
+            height: 60,
+            width: 60,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              image: DecorationImage(
+                  image: NetworkImage(
+                      track.track!.album!.images!.first.url.toString()),
+                  fit: BoxFit.cover),
             ),
-            const Spacer(),
-          ],
+            child: Align(
+              child: Image.asset(
+                  '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.playButtonImage}'),
+            ),
+          ),
+          title: Text(
+            track.track!.name!,
+            style: TextStyle(
+                color: AppColorConstants.roseWhite,
+                fontWeight: FontWeight.w600,
+                fontSize: 18.sp),
+          ),
+          subtitle: Text(
+            track.track!.artists!.first.name!,
+            style: TextStyle(color: AppColorConstants.paleSky, fontSize: 13),
+          ),
         ),
-        SizedBox(height: 14.h),
-        SizedBox(height: 16.h),
+        SizedBox(height: 24.h),
         Divider(
           color: AppColorConstants.paleSky,
         )

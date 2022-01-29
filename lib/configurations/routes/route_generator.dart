@@ -1,5 +1,7 @@
-// ignore_for_file: avoid_classes_with_only_static_members
+// ignore_for_file: avoid_classes_with_only_static_members, prefer_final_locals, cast_nullable_to_non_nullable
 import 'package:beatbridge/models/spotify/play_list.dart';
+import 'package:beatbridge/models/spotify/play_list.dart';
+import 'package:beatbridge/models/spotify/track.dart';
 import 'package:beatbridge/models/users/queue_model.dart';
 import 'package:beatbridge/models/subscription_model.dart';
 import 'package:beatbridge/screens/auths/forgot_password/screens/new_password.dart';
@@ -23,6 +25,7 @@ import 'package:beatbridge/screens/main_navigations/queues/screens/recent_queue.
 import 'package:beatbridge/screens/main_navigations/queues/screens/test_spotify.dart';
 import 'package:beatbridge/screens/play_list/play_list.dart';
 import 'package:beatbridge/screens/play_list/play_list_details.dart';
+import 'package:beatbridge/screens/play_music/play_music.dart';
 import 'package:beatbridge/screens/settings/profile_settings.dart';
 import 'package:beatbridge/screens/settings/system_setting.dart';
 import 'package:beatbridge/screens/sources/bluetooth_source.dart';

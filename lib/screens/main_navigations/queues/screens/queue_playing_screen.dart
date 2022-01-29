@@ -6,6 +6,7 @@ import 'package:beatbridge/utils/constant.dart';
 import 'package:beatbridge/utils/queue_playing_screen_mockdata.dart';
 import 'package:flutter/material.dart';
 
+/// Queue Playing Screen
 class QueuePlayingScreen extends StatefulWidget {
   const QueuePlayingScreen({Key? key}) : super(key: key);
 
@@ -120,7 +121,7 @@ class _QueuePlayingScreenState extends State<QueuePlayingScreen> {
               ),
             ]),
             Constants.heightSpacing30,
-            const AudioFile(),
+            // AudioFile(),
             Constants.heightSpacing30,
             Row(
               // ignore: prefer_const_literals_to_create_immutables

@@ -95,6 +95,7 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
           },
           separatorHeight: 15,
           controller: _usernameController,
+          keyType: TextInputType.name,
         ),
         SizedBox(height: 36.h),
         FormHelper.inputFieldWidgetWithController(
@@ -114,6 +115,7 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
           separatorHeight: 15,
           controller: _passwordController,
           obscureText: true,
+          keyType: TextInputType.name,
         ),
         SizedBox(height: 8.h),
         Align(

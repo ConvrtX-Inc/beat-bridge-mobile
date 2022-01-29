@@ -41,7 +41,7 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
   bool _isAPICallInProgress = false;
   List<String> errorMessages = <String>[];
 
- TextServices textServices = TextServices();
+  TextServices textServices = TextServices();
 
   @override
   Widget build(BuildContext context) {
@@ -99,78 +99,71 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
         },
             separatorHeight: 15,
             controller: _usernameController,
-            inputPlaceholder: AppTextConstants.pasteSongLinkHere),
+            inputPlaceholder: AppTextConstants.pasteSongLinkHere,
+            keyType: TextInputType.name),
         SizedBox(height: 36.h),
         FormHelper.inputFieldWidgetWithController(
-          context,
-          AppTextConstants.emailOrPhoneNumber,
-          AppTextConstants.emailOrPhoneNumber,
-              (String onValidateValue) {
-            if (onValidateValue.isEmpty) {
-              return '${AppTextConstants.emailOrPhoneNumber} cannot be empty';
-            }
-            if (!_globalValidator.isValidEmail(onValidateValue)) {
-              return AppTextConstants.invalidEmailFormat;
-            }
-            return null;
-          },
-          (String onSavedValue) {
-            _emailOrPhoneNumber = onSavedValue.toString().trim();
-          },
-          separatorHeight: 15,
-          controller: _emailOrPhoneNumberController,
-        ),
+            context,
+            AppTextConstants.emailOrPhoneNumber,
+            AppTextConstants.emailOrPhoneNumber, (String onValidateValue) {
+          if (onValidateValue.isEmpty) {
+            return '${AppTextConstants.emailOrPhoneNumber} cannot be empty';
+          }
+          if (!_globalValidator.isValidEmail(onValidateValue)) {
+            return AppTextConstants.invalidEmailFormat;
+          }
+          return null;
+        }, (String onSavedValue) {
+          _emailOrPhoneNumber = onSavedValue.toString().trim();
+        },
+            separatorHeight: 15,
+            controller: _emailOrPhoneNumberController,
+            keyType: TextInputType.emailAddress),
         SizedBox(height: 36.h),
         FormHelper.inputFieldWidgetWithController(
-          context,
-          AppTextConstants.password,
-          AppTextConstants.password,
-              (String onValidateValue) {
-            if (onValidateValue.isEmpty) {
-              return '${AppTextConstants.password} ${AppTextConstants.cannotBeEmpty}';
-            }
-            if (onValidateValue.length < 6) {
-              return '${AppTextConstants.password} ${AppTextConstants.mustBeAtLeast6Chars}';
-            }
-            if (_passwordController.text != _confirmPasswordController.text) {
-              return AppTextConstants.passwordDoesNotMatch;
-            }
-            return null;
-          },
-          (String onSavedValue) {
-            _password = onSavedValue.toString().trim();
-          },
-          separatorHeight: 15,
-          controller: _passwordController,
-          obscureText: true,
-        ),
+            context, AppTextConstants.password, AppTextConstants.password,
+            (String onValidateValue) {
+          if (onValidateValue.isEmpty) {
+            return '${AppTextConstants.password} ${AppTextConstants.cannotBeEmpty}';
+          }
+          if (onValidateValue.length < 6) {
+            return '${AppTextConstants.password} ${AppTextConstants.mustBeAtLeast6Chars}';
+          }
+          if (_passwordController.text != _confirmPasswordController.text) {
+            return AppTextConstants.passwordDoesNotMatch;
+          }
+          return null;
+        }, (String onSavedValue) {
+          _password = onSavedValue.toString().trim();
+        },
+            separatorHeight: 15,
+            controller: _passwordController,
+            obscureText: true,
+            keyType: TextInputType.visiblePassword),
         SizedBox(height: 36.h),
         FormHelper.inputFieldWidgetWithController(
-          context,
-          AppTextConstants.confirmPassword,
-          AppTextConstants.confirmPassword,
-              (String onValidateValue) {
-            if (onValidateValue.isEmpty) {
-              return '${AppTextConstants.confirmPassword} cannot be empty';
-            }
-            if (_passwordController.text != _confirmPasswordController.text) {
-              return AppTextConstants.passwordDoesNotMatch;
-            }
-            return null;
-          },
-          (String onSavedValue) {
-            _confirmPassword = onSavedValue.toString().trim();
-          },
-          separatorHeight: 15,
-          controller: _confirmPasswordController,
-          obscureText: true,
-        ),
+            context,
+            AppTextConstants.confirmPassword,
+            AppTextConstants.confirmPassword, (String onValidateValue) {
+          if (onValidateValue.isEmpty) {
+            return '${AppTextConstants.confirmPassword} cannot be empty';
+          }
+          if (_passwordController.text != _confirmPasswordController.text) {
+            return AppTextConstants.passwordDoesNotMatch;
+          }
+          return null;
+        }, (String onSavedValue) {
+          _confirmPassword = onSavedValue.toString().trim();
+        },
+            separatorHeight: 15,
+            controller: _confirmPasswordController,
+            obscureText: true,
+            keyType: TextInputType.visiblePassword),
         SizedBox(height: 43.h),
         ButtonRoundedGradient(
           buttonText: AppTextConstants.submit,
           isLoading: _isAPICallInProgress,
           buttonCallback: () async {
-
             if (validateAndSave()) {
               setState(() {
                 _isAPICallInProgress = true;
@@ -190,24 +183,19 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
               if (result.status == 'error') {
                 final Map<String, dynamic> decoded =
                     jsonDecode(result.errorResponse);
-                 decoded['errors'].forEach((String k, dynamic v) =>
-                    <dynamic>{
-                      errorMessages..add(textServices
-                          .filterErrorMessage(v))
+                decoded['errors'].forEach((String k, dynamic v) => <dynamic>{
+                      errorMessages..add(textServices.filterErrorMessage(v))
                     });
-
               } else {
-                await Navigator.pushNamedAndRemoveUntil(
-                    context, '/link_landing_page', (Route<dynamic> route) => false);
+                await Navigator.pushNamedAndRemoveUntil(context,
+                    '/link_landing_page', (Route<dynamic> route) => false);
               }
-
             }
 
             setState(() {
               _isAPICallInProgress = false;
             });
           },
-
         ),
         SizedBox(height: 10.h),
         Column(
