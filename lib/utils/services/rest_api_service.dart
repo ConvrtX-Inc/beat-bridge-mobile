@@ -159,9 +159,10 @@ class APIServices {
 
   ///API service for User Near You
   Future<APIStandardReturnFormat> findFriendsNearYou() async {
-    final String? token = await secureStorage.read(key: 'token');
+    // final String? token = await secureStorage.read(key: 'token');
     final String latitude = UserSingleton.instance.user.latitude;
     final String longitude = UserSingleton.instance.user.longitude;
+    final String token = UserSingleton.instance.user.token;
 
     debugPrint('latitude $latitude longitude $longitude');
 
@@ -178,8 +179,8 @@ class APIServices {
 
   ///API service for Add Friend
   Future<APIStandardReturnFormat> addFriend(String email) async {
-    final String? token = await secureStorage.read(key: 'token');
-
+    // final String? token = await secureStorage.read(key: 'token');
+    final String token = UserSingleton.instance.user.token;
     final http.Response response = await http.post(
         Uri.http(apiBaseUrl, '/api/v1/user-connections/send-friend-request'),
         headers: {
@@ -195,8 +196,8 @@ class APIServices {
   ///API service for Payment
   Future<APIStandardReturnFormat> pay(
       int amount, String paymentMethodID) async {
-    final String? token = await secureStorage.read(key: 'token');
-
+    // final String? token = await secureStorage.read(key: 'token');
+    final String token = UserSingleton.instance.user.token;
     final http.Response response = await http.post(
         Uri.parse('$apiBaseMode$apiBaseUrl/${AppAPIPath.paymentApiUrl}'),
         headers: {
@@ -214,9 +215,10 @@ class APIServices {
   ///API service for saving user subscription
   Future<APIStandardReturnFormat> addUserSubscription(
       String startDate, String endDate, String code, double price) async {
-    final String? token = await secureStorage.read(key: 'token');
-    final String? user_id = await secureStorage.read(key: 'user_id');
-
+    // final String? token = await secureStorage.read(key: 'token');
+    // final String? user_id = await secureStorage.read(key: 'user_id');
+    final String token = UserSingleton.instance.user.token;
+    final String userId = UserSingleton.instance.user.id;
     final http.Response response = await http.post(
         Uri.parse(
             '$apiBaseMode$apiBaseUrl/${AppAPIPath.userSubscriptionApiUrl}'),
@@ -225,7 +227,7 @@ class APIServices {
           'content-type': 'application/json'
         },
         body: jsonEncode({
-          'user_id': user_id,
+          'user_id': userId,
           'start_date': startDate,
           'end_date': endDate,
           'code': code,

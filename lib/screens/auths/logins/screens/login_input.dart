@@ -155,10 +155,7 @@ class _LoginInputScreenState extends State<LoginInputScreen> {
                   final UserModel user =
                       UserModel.fromJson(json.decode(response.successResponse));
                   UserSingleton.instance.user = user;
-                  await storage.write(
-                      key: 'token', value: UserSingleton.instance.user.token);
-                  await storage.write(
-                      key: 'user_id', value: UserSingleton.instance.user.id);
+                  
                   await Navigator.pushReplacementNamed(
                       context, '/recent_queues');
                 }
