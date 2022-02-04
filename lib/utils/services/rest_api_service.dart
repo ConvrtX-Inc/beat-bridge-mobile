@@ -43,7 +43,8 @@ class APIServices {
         body: {
           'username': userParams.username,
           'email': userParams.email,
-          'phone_number': userParams.phoneNo
+          'phone_number': userParams.phoneNumber,
+          'password': userParams.password
         });
 
     if (isDebugging) {
@@ -52,7 +53,7 @@ class APIServices {
           '$apiBaseMode$apiBaseUrl${AppAPIPath.registerUrl}',
           response.statusCode,
           response.body,
-          userParams.phoneNo);
+          userParams.phoneNumber);
     }
 
     return GlobalAPIServices().formatResponseToStandardFormat(response);

@@ -48,20 +48,21 @@ class FormHelper {
           },
           style: TextStyle(color: Colors.white, fontSize: 18.r),
           decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                borderSide:
-                    BorderSide(color: AppColorConstants.paleSky, width: 0.1),
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-              filled: true,
-              hintStyle: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColorConstants.roseWhite.withOpacity(0.5)),
-              hintText: inputPlaceholder,
-              fillColor: AppColorConstants.paleSky.withOpacity(0.12),
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 12.w, vertical: 24.h)),
+            enabledBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: AppColorConstants.paleSky, width: 0.1),
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            filled: true,
+            hintStyle: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+                color: AppColorConstants.roseWhite.withOpacity(0.5)),
+            hintText: inputPlaceholder,
+            fillColor: AppColorConstants.paleSky.withOpacity(0.12),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 12.w, vertical: 24.h),
+          ),
         ),
       ],
     );

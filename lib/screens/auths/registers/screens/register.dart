@@ -13,6 +13,8 @@ import 'package:beatbridge/widgets/buttons/app_button_rounded_gradient.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 
 /// Screen for register input
 class RegisterInputScreen extends StatefulWidget {
@@ -27,15 +29,16 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
   static final GlobalKey<FormState> registerGlobalFormKey =
       GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _emailOrPhoneNumberController =
-      TextEditingController();
+  final TextEditingController _emailTextController = TextEditingController();
+  final TextEditingController _phoneTextController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final ValidatorHelper _globalValidator = ValidatorHelper();
 
   String _username = '';
-  String _emailOrPhoneNumber = '';
+  String _email = '';
+  String _phonenumber = '';
   String _password = '';
   String _confirmPassword = '';
   bool _isAPICallInProgress = false;
@@ -99,26 +102,71 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
         },
             separatorHeight: 15,
             controller: _usernameController,
-            inputPlaceholder: AppTextConstants.pasteSongLinkHere,
+            // inputPlaceholder: AppTextConstants.pasteSongLinkHere,
             keyType: TextInputType.name),
         SizedBox(height: 36.h),
         FormHelper.inputFieldWidgetWithController(
-            context,
-            AppTextConstants.emailOrPhoneNumber,
-            AppTextConstants.emailOrPhoneNumber, (String onValidateValue) {
+            context, AppTextConstants.regEmail, AppTextConstants.regEmail,
+            (String onValidateValue) {
           if (onValidateValue.isEmpty) {
-            return '${AppTextConstants.emailOrPhoneNumber} cannot be empty';
+            return '${AppTextConstants.regEmail} cannot be empty';
           }
           if (!_globalValidator.isValidEmail(onValidateValue)) {
             return AppTextConstants.invalidEmailFormat;
           }
           return null;
         }, (String onSavedValue) {
-          _emailOrPhoneNumber = onSavedValue.toString().trim();
+          _email = onSavedValue.toString().trim();
         },
             separatorHeight: 15,
-            controller: _emailOrPhoneNumberController,
+            controller: _emailTextController,
             keyType: TextInputType.emailAddress),
+        SizedBox(height: 36.h),
+        // FormHelper.inputFieldWidgetWithController(
+        //     context, AppTextConstants.regPhone, AppTextConstants.regPhone,
+        //     (String onValidateValue) {
+        //   if (onValidateValue.isEmpty) {
+        //     return '${AppTextConstants.regPhone} cannot be empty';
+        //   }
+        //   return null;
+        // }, (String onSavedValue) {
+        //   _phonenumber = onSavedValue.toString().trim();
+        // },
+        //     separatorHeight: 15,
+        //     controller: _phoneTextController,
+        //     keyType: TextInputType.phone),
+        IntlPhoneField(
+          controller: _phoneTextController,
+          style: TextStyle(color: Colors.white, fontSize: 18.r),
+          dropdownTextStyle: TextStyle(color: Colors.white, fontSize: 18.r),
+          dropdownIcon: const Icon(
+            Icons.arrow_drop_down,
+            color: Colors.white,
+          ),
+          decoration: InputDecoration(
+            counterStyle: const TextStyle(color: Colors.white),
+            enabledBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: AppColorConstants.paleSky, width: 0.1),
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            filled: true,
+            hintStyle: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+                color: AppColorConstants.roseWhite.withOpacity(0.5)),
+            fillColor: AppColorConstants.paleSky.withOpacity(0.12),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 12.w, vertical: 24.h),
+          ),
+          countries: const <String>['PH'],
+          initialCountryCode: 'PH',
+          onChanged: (PhoneNumber phone) {
+            setState(() {
+              _phonenumber = phone.completeNumber;
+            });
+          },
+        ),
         SizedBox(height: 36.h),
         FormHelper.inputFieldWidgetWithController(
             context, AppTextConstants.password, AppTextConstants.password,
@@ -164,17 +212,18 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
           buttonText: AppTextConstants.submit,
           isLoading: _isAPICallInProgress,
           buttonCallback: () async {
+            FocusScope.of(context).requestFocus(FocusNode());
             if (validateAndSave()) {
               setState(() {
                 _isAPICallInProgress = true;
                 errorMessages = <String>[];
               });
-
+              print(_phonenumber);
               final UserModel userModelParams = UserModel(
                   username: _username,
-                  email: _emailOrPhoneNumber,
+                  email: _email,
                   password: _password,
-                  phoneNumber: '+639176291740');
+                  phoneNumber: _phonenumber);
 
               final APIStandardReturnFormat result =
                   await APIServices().register(userModelParams);
