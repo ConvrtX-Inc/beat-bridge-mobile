@@ -19,9 +19,11 @@ class TextHelper {
             style: const TextStyle(color: Colors.red),
           ),
           SizedBox(width: 10.w),
-          Text(
-            errorText,
-            style: const TextStyle(color: Colors.red),
+          Expanded(
+            child: Text(
+              errorText,
+              style: const TextStyle(color: Colors.red),
+            ),
           ),
         ],
       ),
@@ -44,11 +46,11 @@ class TextHelper {
   static Widget anErrorOccurredTextDisplay() {
     return Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 5.h),
-          child: Text(
-            AppTextConstants.anErrorOccurred,
-            style: const TextStyle(color: Colors.red),
-          ),
-        ));
+      padding: EdgeInsets.symmetric(vertical: 5.h),
+      child: Text(
+        AppTextConstants.anErrorOccurred,
+        style: const TextStyle(color: Colors.red),
+      ),
+    ));
   }
 }

@@ -173,8 +173,11 @@ class AppTextConstants {
   /// Returns paste song link here text
   static String pasteSongLinkHere = 'Paste Song Link here';
 
-  /// Returns email or phone number text
-  static String emailOrPhoneNumber = 'Email or Phone Number';
+  /// Returns email
+  static String regEmail = 'Email';
+
+  /// Returns phone number
+  static String regPhone = 'Phone Number';
 
   /// Returns submit text
   static String submit = 'Submit';

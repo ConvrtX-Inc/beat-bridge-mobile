@@ -51,6 +51,7 @@ dependencies:
   audio_video_progress_bar: ^0.10.0 #audio slider
   logger: ^1.1.0 #logger for audio error
   stop_watch_timer: ^1.3.1
+  intl_phone_field: ^3.0.1
   # oauth2_client: ^2.3.1
   # flutter_web_auth: ^0.4.0
   # The following adds the Cupertino Icons font to your application.
