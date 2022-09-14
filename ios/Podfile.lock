@@ -6,11 +6,34 @@ PODS:
   - Flutter (1.0.0)
   - flutter_secure_storage (3.3.1):
     - Flutter
+  - shared_preferences_ios (0.0.1):
+    - Flutter
   - spotify_sdk (0.0.1):
     - Flutter
+  - Stripe (22.7.1):
+    - Stripe/Stripe3DS2 (= 22.7.1)
+    - StripeApplePay (= 22.7.1)
+    - StripeCore (= 22.7.1)
+    - StripeUICore (= 22.7.1)
+  - Stripe/Stripe3DS2 (22.7.1):
+    - StripeApplePay (= 22.7.1)
+    - StripeCore (= 22.7.1)
+    - StripeUICore (= 22.7.1)
+  - stripe_ios (0.0.1):
+    - Flutter
+    - Stripe (~> 22.7.0)
+    - StripeFinancialConnections (~> 22.7.0)
+  - StripeApplePay (22.7.1):
+    - StripeCore (= 22.7.1)
+  - StripeCore (22.7.1)
+  - StripeFinancialConnections (22.7.1):
+    - StripeCore (= 22.7.1)
+    - StripeUICore (= 22.7.1)
+  - StripeUICore (22.7.1):
+    - StripeCore (= 22.7.1)
   - uni_links (0.0.1):
     - Flutter
-  - url_launcher (0.0.1):
+  - url_launcher_ios (0.0.1):
     - Flutter
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
@@ -20,10 +43,20 @@ DEPENDENCIES:
   - bs_flutter_utils (from `.symlinks/plugins/bs_flutter_utils/ios`)
   - Flutter (from `Flutter`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
+  - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
   - spotify_sdk (from `.symlinks/plugins/spotify_sdk/ios`)
+  - stripe_ios (from `.symlinks/plugins/stripe_ios/ios`)
   - uni_links (from `.symlinks/plugins/uni_links/ios`)
-  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
+
+SPEC REPOS:
+  trunk:
+    - Stripe
+    - StripeApplePay
+    - StripeCore
+    - StripeFinancialConnections
+    - StripeUICore
 
 EXTERNAL SOURCES:
   bs_flutter_modal:
@@ -34,25 +67,36 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
+  shared_preferences_ios:
+    :path: ".symlinks/plugins/shared_preferences_ios/ios"
   spotify_sdk:
     :path: ".symlinks/plugins/spotify_sdk/ios"
+  stripe_ios:
+    :path: ".symlinks/plugins/stripe_ios/ios"
   uni_links:
     :path: ".symlinks/plugins/uni_links/ios"
-  url_launcher:
-    :path: ".symlinks/plugins/url_launcher/ios"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
   webview_flutter_wkwebview:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
   bs_flutter_modal: 50aa51450caaa7e31f1b770dc307471d6c1d5183
   bs_flutter_utils: 8f7e9550c45adfa0d9b77d5ac395bc33b6d18eb3
-  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
+  shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
   spotify_sdk: 63cc13896c9ff93c4d023e03bb4b9b516602f355
+  Stripe: fb29a476e4866fec4ef22fb76207363dd32795aa
+  stripe_ios: a0caca0ef103a32909183c62a652a91a0773b443
+  StripeApplePay: 09955cdf3f49b367af2feadd9c5b3bddb35446c0
+  StripeCore: 39ea580c26ccc324fb9671288a2ae21114e54dca
+  StripeFinancialConnections: 0e1d638388572d52ce829416fbc7b0af2bde3865
+  StripeUICore: eed17e95a4517fc02482e250a6422c2a81a14ce8
   uni_links: d97da20c7701486ba192624d99bffaaffcfc298a
-  url_launcher: b6e016d912f04be9f5bf6e8e82dc599b7ba59649
-  webview_flutter_wkwebview: 005fbd90c888a42c5690919a1527ecc6649e1162
+  url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
+  webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: 4e8f8b2be68aeea4c0d5beb6ff1e79fface1d048
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

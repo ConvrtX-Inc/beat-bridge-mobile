@@ -13,7 +13,7 @@ import 'package:spotify_sdk/spotify_sdk.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-final storage = new FlutterSecureStorage();
+const storage = FlutterSecureStorage();
 
 class SpotifyApiService {
   SpotifyApiService(this.context);
@@ -71,30 +71,29 @@ class SpotifyApiService {
   }
 
   static Future<Iterable<PlayHistory>> getRecentPlayed() async {
-    final Iterable<PlayHistory> rPlayed = [];
     // Read value
     final String? token = await storage.read(key: 'spotifyAuthToken');
     try {
       final SpotifyApi spotify = SpotifyApi.withAccessToken(token!);
-      return await spotify.me.recentlyPlayed();
+      final recentlyPlayed = spotify.me.recentlyPlayed();
+      return await recentlyPlayed.all();
     } on PlatformException catch (e) {
-      return rPlayed;
+      return [];
     } on MissingPluginException {
-      return rPlayed;
+      return [];
     }
   }
 
   static Future<Iterable<Track>> getTopTracks() async {
-    final Iterable<Track> topTrack = [];
     // Read value
     final String? token = await storage.read(key: 'spotifyAuthToken');
     try {
       final SpotifyApi spotify = SpotifyApi.withAccessToken(token!);
       return await spotify.me.topTracks();
-    } on PlatformException catch (e) {
-      return topTrack;
+    } on PlatformException {
+      return [];
     } on MissingPluginException {
-      return topTrack;
+      return [];
     }
   }
 
