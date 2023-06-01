@@ -18,6 +18,7 @@ class FormHelper {
       String inputPlaceholder = '',
       double separatorHeight = 16,
       dynamic minLines,
+      bool enabled = true,
       dynamic maxLines = 1,
       TextInputType keyType = TextInputType.multiline}) {
     return Column(
@@ -38,6 +39,7 @@ class FormHelper {
           minLines: minLines,
           maxLines: maxLines,
           key: Key(keyName),
+          enabled: enabled,
           obscureText: obscureText,
           obscuringCharacter: AppTextConstants.asterisk,
           validator: (String? val) {

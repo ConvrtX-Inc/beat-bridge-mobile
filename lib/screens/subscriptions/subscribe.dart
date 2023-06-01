@@ -28,8 +28,7 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
     WidgetsFlutterBinding.ensureInitialized();
 
     super.initState();
-    Stripe.publishableKey =
-    dotenv.env['STRIPE_PUBLISHABLE_KEY'].toString();
+    Stripe.publishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY'].toString();
   }
 
   @override
@@ -79,32 +78,31 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
   }
 
   Widget buildSubscribeButton(int index) => Column(children: <Widget>[
-        if (selectedIndex == index)
-          ButtonRoundedGradient(
-              buttonText: subscriptions[index].price,
-              buttonCallback: () async {
-                setState(() {
-                  selectedIndex = index;
-                });
-                await Navigator.pushNamed(context, '/card_input', arguments:
-                subscriptions[selectedIndex]
-                );
-              })
-        else
-          ButtonAppRoundedButton(
-              firstBGColor: AppColorConstants.paleSky.withOpacity(0.12),
-              secondBGColor: AppColorConstants.paleSky.withOpacity(0.12),
-              buttonColor: Colors.white,
-              buttonCallback: () {
-                setState(() {
-                  selectedIndex = index;
-                });
-                Navigator.pushNamed(context, '/card_input', arguments:
-                subscriptions[selectedIndex]
-                );
+        // if (selectedIndex == index)
+        ButtonRoundedGradient(
+            buttonText: subscriptions[index].price,
+            buttonCallback: () async {
+              setState(() {
+                selectedIndex = index;
+              });
+              await Navigator.pushNamed(context, '/card_input',
+                  arguments: subscriptions[selectedIndex]);
+            }),
+        // else
+        //   ButtonAppRoundedButton(
+        //       firstBGColor: AppColorConstants.paleSky.withOpacity(0.12),
+        //       secondBGColor: AppColorConstants.paleSky.withOpacity(0.12),
+        //       buttonColor: Colors.white,
+        //       buttonCallback: () {
+        //         setState(() {
+        //           selectedIndex = index;
+        //         });
+        //         Navigator.pushNamed(context, '/card_input', arguments:
+        //         subscriptions[selectedIndex]
+        //         );
 
-              },
-              buttonText: subscriptions[index].price),
+        //       },
+        //       buttonText: subscriptions[index].price),
         SizedBox(height: 20.h),
       ]);
 

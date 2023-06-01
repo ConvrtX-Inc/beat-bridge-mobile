@@ -1,13 +1,18 @@
+import 'dart:developer';
+
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/models/music_platform_model.dart';
 import 'package:beatbridge/screens/main_navigations/make_queues/widgets/step_five.dart';
 import 'package:beatbridge/screens/main_navigations/make_queues/widgets/step_four.dart';
 import 'package:beatbridge/screens/main_navigations/make_queues/widgets/step_one.dart';
+import 'package:beatbridge/screens/main_navigations/make_queues/widgets/step_six.dart';
 import 'package:beatbridge/screens/main_navigations/make_queues/widgets/step_three.dart';
 import 'package:beatbridge/screens/main_navigations/make_queues/widgets/step_two.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../utils/logout_helper.dart';
 
 ///Make your queue
 class MakeYourQueueScreen extends StatefulWidget {
@@ -28,6 +33,7 @@ class _MakeYourQueueScreenState extends State<MakeYourQueueScreen> {
   int currentStep = 1;
   int finalStep = 5;
   String queueName = '';
+  bool featuredImage = false;
   MusicPlatformModel selectedPlatform = MusicPlatformModel();
   final PageController controller = PageController();
 
@@ -46,15 +52,18 @@ class _MakeYourQueueScreenState extends State<MakeYourQueueScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 11.w),
                     child: IconButton(
                       icon: Icon(Icons.arrow_back_ios,
-                          color: Colors.white, size: 15.w),
+                          color: Colors.white, size: 20.w),
                       onPressed: navigateBack,
                     )),
                 SizedBox(height: 26.h),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 27.w),
                   child: Text(
-                    AppTextConstants.makeYourQueue,
+                    currentStep == 5
+                        ? AppTextConstants.featuredImage
+                        : AppTextConstants.makeYourQueue,
                     style: TextStyle(
+                        fontFamily: 'Gilroy-Bold',
                         fontWeight: FontWeight.w700,
                         color: AppColorConstants.roseWhite,
                         fontSize: 30),
@@ -85,9 +94,9 @@ class _MakeYourQueueScreenState extends State<MakeYourQueueScreen> {
               children: <Widget>[
                 StepOne(onStepOneDone: onStepOneComplete),
                 StepTwo(onStepTwoDone: onStepTwoComplete),
-                StepThree(onStepThreeDone: onStepThreeComplete),
                 StepFour(onStepFourDone: onStepFourComplete),
-                StepFive(onStepFiveDone: onStepFiveComplete)
+                StepFive(onStepFiveDone: onStepFiveComplete),
+                StepSix(onStepSixDone: onStepSixComplete),
               ],
             ),
           ),
@@ -98,6 +107,7 @@ class _MakeYourQueueScreenState extends State<MakeYourQueueScreen> {
 
   /// function to call when step one is completed
   void onStepOneComplete(String queueName) {
+    log('onStepOneComplete');
     switchPage();
   }
 
@@ -118,6 +128,10 @@ class _MakeYourQueueScreenState extends State<MakeYourQueueScreen> {
 
   /// function to call when step five is completed
   void onStepFiveComplete() {
+    switchPage();
+  }
+
+  void onStepSixComplete() {
     Navigator.of(context).pop();
   }
 
@@ -133,10 +147,11 @@ class _MakeYourQueueScreenState extends State<MakeYourQueueScreen> {
   }
 
   ///function when pressing back icon and navigating back
+  ///
   void navigateBack() {
-    if(currentStep == 1){
+    if (currentStep == 1) {
       Navigator.pop(context);
-    }else{
+    } else {
       setState(() {
         if (currentStep > 1) {
           currentStep--;
@@ -145,7 +160,6 @@ class _MakeYourQueueScreenState extends State<MakeYourQueueScreen> {
       controller.animateToPage(currentIndex - 1,
           duration: const Duration(milliseconds: 200), curve: Curves.linear);
     }
-
   }
 
   @override
@@ -159,5 +173,6 @@ class _MakeYourQueueScreenState extends State<MakeYourQueueScreen> {
       ..add(DiagnosticsProperty<MusicPlatformModel>(
           'selectedPlatform', selectedPlatform))
       ..add(DiagnosticsProperty<PageController>('controller', controller));
+    properties.add(DiagnosticsProperty<bool>('featuredImage', featuredImage));
   }
 }

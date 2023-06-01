@@ -3,16 +3,17 @@ class PeopleModel {
   /// Constructor
   PeopleModel(
       {required this.id,
+      this.id2 = '',
       required this.name,
       required this.profileImageUrl,
       required this.isSelected,
       required this.isAdmin,
       required this.totalTrackCount,
-      required this.musicPlatformsUsed
-      });
+      required this.musicPlatformsUsed});
 
   /// Initialization for id
   int id;
+  String id2;
 
   /// Initialization for total tracks
   int totalTrackCount;
@@ -30,7 +31,7 @@ class PeopleModel {
   bool isSelected;
 
   /// Initialization for music platforms used
-  List<MusicPlatformsUsedModel> musicPlatformsUsed =[];
+  List<MusicPlatformsUsedModel> musicPlatformsUsed = [];
 }
 
 /// model for music platforms used

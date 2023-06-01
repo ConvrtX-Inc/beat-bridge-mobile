@@ -1,3 +1,4 @@
+import 'package:beatbridge/utils/approutes.dart';
 import 'package:flutter/material.dart';
 import 'package:spotify/spotify.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,7 +27,7 @@ class _TestSpotState extends State<TestSpot> {
   //Request a token using the Client Credentials flow...
   Future<void> getToken() async {
     var credentials = SpotifyApiCredentials(
-        'c26466a1b28745a6ab684c2ba28f6b52', 'eabffc89312a4a9f93ef46412f1a4e04');
+        '2e522304863a47b49febbb598d524472', '540aa17a76224bdebc8e25cf3c24951b');
     final grant = SpotifyApi.authorizationCodeGrant(credentials);
 
 // The URI to redirect to after the user grants or denies permission. It must
@@ -81,18 +82,25 @@ class WebViewWid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WebView(
-      javascriptMode: JavascriptMode.unrestricted,
-      initialUrl: initialUrl,
-      navigationDelegate: (navReq) {
-        if (navReq.url.startsWith(redirectUri)) {
-          onCountChanged(navReq.url);
-          Navigator.pop(context);
-          return NavigationDecision.prevent;
-        }
+    return Scaffold(
+      appBar: AppBar(leading: InkWell(
+        onTap: () {
+          AppRoutes.pop(context);
+        },
+      )),
+      body: WebView(
+        javascriptMode: JavascriptMode.unrestricted,
+        initialUrl: initialUrl,
+        navigationDelegate: (navReq) {
+          if (navReq.url.startsWith(redirectUri)) {
+            onCountChanged(navReq.url);
+            Navigator.pop(context);
+            return NavigationDecision.prevent;
+          }
 
-        return NavigationDecision.navigate;
-      },
+          return NavigationDecision.navigate;
+        },
+      ),
     );
   }
 }

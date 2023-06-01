@@ -1,5 +1,12 @@
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:beatbridge/constants/app_constants.dart';
+import 'package:beatbridge/models/spotify/playlist_body.dart';
+import 'package:beatbridge/models/spotify/playlists.dart';
 import 'package:beatbridge/models/walk_through_model.dart';
+import 'package:beatbridge/screens/auths/logins/screens/login.dart';
 import 'package:beatbridge/screens/walk_throughs/widgets/slider_paginator.dart';
 import 'package:beatbridge/screens/walk_throughs/widgets/slider_tile.dart';
 import 'package:beatbridge/utils/services/static_data_service.dart';
@@ -7,6 +14,9 @@ import 'package:beatbridge/widgets/buttons/app_button_rounded.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:permission_handler/permission_handler.dart';
 
 /// Screen for walk through
 class WalkThroughScreen extends StatefulWidget {
@@ -23,6 +33,19 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
   PageController sliderController = PageController();
 
   int currentIndex = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getpermission();
+  }
+
+  getpermission() async {
+    var permission = await Permission.location.request();
+    if (permission.isDenied) {
+      getpermission();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,16 +89,26 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
             child: SizedBox(
               width: MediaQuery.of(context).size.width - 58,
               child: ButtonAppRoundedButton(
+                // buttonColor: Colors.black,
+                buttonColor: Colors.black,
                 buttonText: currentIndex == walkThroughData.length - 1
                     ? AppTextConstants.getStarted
-                    : AppTextConstants.next,
-                buttonCallback: () {
+                    : AppTextConstants.getStarted,
+                buttonCallback: () async {
                   if (currentIndex == walkThroughData.length - 1) {
-                    Navigator.of(context).pushNamed('/login');
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                        ModalRoute.withName("/login"));
+                    // Navigator.of(context).pushNamedAndRemoveUntil(
+                    //     '/login', (Route<dynamic> route) => false);
+                    // Navigator.of(context).pushNamed('/login');
                   } else {
-                    sliderController.animateToPage(currentIndex + 1,
-                        duration: const Duration(milliseconds: 200),
-                        curve: Curves.linear);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                        ModalRoute.withName("/login"));
+                    ;
                   }
                 },
               ),

@@ -30,6 +30,29 @@ class TextHelper {
     );
   }
 
+  static Widget stableTextDisplay(
+    String stableText,
+  ) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 5.h),
+      child: Row(
+        children: <Widget>[
+          Text(
+            AppTextConstants.biggerBullet,
+            style: const TextStyle(color: Colors.green),
+          ),
+          SizedBox(width: 10.w),
+          Expanded(
+            child: Text(
+              stableText,
+              style: const TextStyle(color: Colors.green),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   ///Widget for no available data text
   static Widget noAvailableDataTextDisplay() {
     return Center(

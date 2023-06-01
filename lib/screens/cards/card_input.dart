@@ -245,11 +245,13 @@ class _CardInputScreenState extends State<CardInputScreen> {
 
         //2. Create payment method
         final PaymentMethod paymentMethod =
-            await Stripe.instance.createPaymentMethod(PaymentMethodParams.card(
+            await Stripe.instance.createPaymentMethod(
+                params: PaymentMethodParams.card(
           paymentMethodData: PaymentMethodData(
             billingDetails: billingDetails,
           ),
-        ));
+        )
+            );
 
         //3. Call Payment API for payment intent
         /*

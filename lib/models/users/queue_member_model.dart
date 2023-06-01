@@ -3,7 +3,7 @@ import 'package:beatbridge/models/users/user_model.dart';
 /// Model for user
 class QueueMemberModel {
   /// Constructor
-  const QueueMemberModel({
+  QueueMemberModel({
     this.id = '',
     this.userQueueId = '',
     this.userId = '',
@@ -11,11 +11,11 @@ class QueueMemberModel {
     this.createdDate = '',
     this.updatedDate = '',
     this.entity = '',
-    this.user = const UserModel(),
+    this.user = const UserModelTwo(),
   });
 
   ///user details
-  final UserModel user;
+  final UserModelTwo user;
 
   /// Initialization
   final String id;
@@ -27,7 +27,7 @@ class QueueMemberModel {
   final String userId;
 
   /// Initialization
-  final bool isAdmin;
+  bool isAdmin;
 
   /// Initialization
   final String createdDate;
@@ -41,13 +41,13 @@ class QueueMemberModel {
   /// A good thing.
   static QueueMemberModel fromJson(Map<String, dynamic> json) =>
       QueueMemberModel(
-        id: json['id'],
-        userQueueId: json['user_queue_id'],
-        userId: json['user_id'],
+        id: json['id'] ?? 0,
+        userQueueId: json['user_queue_id'] ?? 0,
+        userId: json['user_id'] ?? 0,
         isAdmin: json['is_admin'],
         createdDate: json['created_date'],
         updatedDate: json['updated_date'] ?? '',
         entity: json['__entity'],
-        user: UserModel.fromJson(json),
+        user: UserModelTwo.fromJson(json),
       );
 }

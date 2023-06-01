@@ -10,8 +10,7 @@ class FriendModel {
       this.profileImage = '',
       this.createdDate = '',
       this.email = '',
-      this.tracks = 0
-      });
+      this.tracks = 0});
 
   ///Initialization for id
   String id;
@@ -39,7 +38,6 @@ class FriendModel {
 
   ///initialization for tracks
   int tracks;
-
 
   ///Serialize data
   static FriendModel fromJson(Map<String, dynamic> json) => FriendModel(

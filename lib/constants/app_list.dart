@@ -3,8 +3,11 @@ import 'package:beatbridge/constants/asset_path.dart';
 import 'package:beatbridge/models/music_platform_model.dart';
 import 'package:beatbridge/models/settings_model.dart';
 import 'package:beatbridge/models/subscription_model.dart';
+import 'package:beatbridge/screens/auths/logins/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../utils/logout_helper.dart';
 
 /// Class for app constant list
 class AppListConstants {
@@ -38,21 +41,39 @@ class AppListConstants {
     ProfileSettingsModel(
       name: 'Profile Details',
       icon: 'profile.png',
+      routePath: 'profile_details',
     ),
     ProfileSettingsModel(
-        name: 'Friends', icon: 'friends.png', routePath: '/friends'),
-    ProfileSettingsModel(
-        name: 'Playlist', icon: 'playlist.png', routePath: '/play-list'),
-    ProfileSettingsModel(
-        name: 'Subscribe', icon: 'subscribe.png', routePath: '/subscribe'),
-    ProfileSettingsModel(
-      name: "FAQ's",
-      icon: 'faq.png',
+      name: 'Friends',
+      icon: 'friends.png',
+      routePath: '/friends',
     ),
     ProfileSettingsModel(
-        name: 'Contact', icon: 'contact.png', routePath: '/contact_us'),
+      name: 'My Queues',
+      icon: 'playlist.png',
+      routePath: '/play-list',
+    ),
+    // ProfileSettingsModel(
+    //   name: 'Subscribe',
+    //   icon: 'subscribe.png',
+    //   routePath: '/subscribe',
+    // ),
+    ProfileSettingsModel(name: "FAQ's", icon: 'faq.png', routePath: 'faq'),
     ProfileSettingsModel(
-        name: 'Settings', icon: 'settings.png', routePath: '/system_settings'),
+      name: 'Contact',
+      icon: 'contact.png',
+      routePath: '/contact_us',
+    ),
+    ProfileSettingsModel(
+      name: 'Settings',
+      icon: 'settings.png',
+      routePath: '/system_settings',
+    ),
+    ProfileSettingsModel(
+      name: 'Logout',
+      icon: 'logout.png',
+      routePath: '',
+    ),
   ];
 
   /// use in profile settings screen
@@ -105,6 +126,24 @@ class AppListConstants {
         name: 'Support',
         icon: SvgPicture.asset(
             '${AssetsPathConstants.assetsSVGPath}/support.svg'),
+        routePath: '/support'),
+    SystemSettingsModel(
+        name: 'Terms & Condition',
+        icon: Image.asset(
+          '${AssetsNameConstants.termsCondition}',
+          width: 20,
+          height: 20,
+          color: AppColorConstants.roseWhite,
+        ),
+        routePath: '/support'),
+    SystemSettingsModel(
+        name: 'Privacy Policy',
+        icon: Image.asset(
+          '${AssetsNameConstants.privacyPolicy}',
+          width: 20,
+          height: 20,
+          color: AppColorConstants.roseWhite,
+        ),
         routePath: '/support'),
   ];
 

@@ -11,7 +11,7 @@ class ButtonAppRoundedButton extends StatelessWidget {
       Color secondBGColor = Colors.white,
       double radius = 12,
       String buttonText = '',
-      Color buttonColor = Colors.black,
+      Color buttonColor = Colors.transparent,
       bool showIcon = false,
       IconData icon = Icons.mail,
       Color iconColor = Colors.black,
@@ -49,7 +49,7 @@ class ButtonAppRoundedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 60.h,
+      height: 61.h,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
@@ -68,9 +68,9 @@ class ButtonAppRoundedButton extends StatelessWidget {
             ),
           ),
           // minimumSize: MaterialStateProperty.all(Size(width, 50)),
-          backgroundColor: MaterialStateProperty.all(Colors.transparent),
+          backgroundColor: MaterialStateProperty.all(Colors.white),
           // elevation: MaterialStateProperty.all(3),
-          shadowColor: MaterialStateProperty.all(Colors.transparent),
+          // shadowColor: MaterialStateProperty.all(Colors.transparent),
         ),
         onPressed: buttonCallback,
         child: _isLoading

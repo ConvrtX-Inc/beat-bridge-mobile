@@ -40,7 +40,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       trackChangeController.setTrack(widget.track);
     });
   }
@@ -66,7 +66,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                     style: TextStyle(
                         color: AppColorConstants.roseWhite, fontSize: 15));
               } else {
-                // play();
+                play();
                 return getBody(context);
               }
             // ignore: no_default_cases
@@ -319,6 +319,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
     try {
       await SpotifySdk.play(
           spotifyUri: 'spotify:track:${widget.track.track!.id}');
+      SpotifySdk.seekTo(positionedMilliseconds: 0);
     } on PlatformException catch (e) {
       setStatus(e.code, message: e.message);
     } on MissingPluginException {

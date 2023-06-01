@@ -4,15 +4,38 @@ import 'package:beatbridge/widgets/buttons/app_button_rounded_gradient.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../main.dart';
+import '../../../../utils/logout_helper.dart';
 
 /// Screen for link landing page
-class LinkLandingPageScreen extends StatelessWidget {
+class LinkLandingPageScreen extends StatefulWidget {
+  
   /// Constructor
-  const LinkLandingPageScreen({Key? key, this.name = 'David'})
+ const  LinkLandingPageScreen({Key? key, this.name = 'Shariq'})
       : super(key: key);
 
   /// Name of the logged in user
   final String name;
+
+  @override
+  State<LinkLandingPageScreen> createState() => _LinkLandingPageScreenState();
+}
+
+class _LinkLandingPageScreenState extends State<LinkLandingPageScreen> {
+
+String? userName;
+@override
+void initState() {
+  super.initState();
+  nameGetting();
+}
+var Name;
+nameGetting()async{
+final SharedPreferences pref = await SharedPreferences.getInstance();
+     Name = pref.getString('username');      
+}
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +45,7 @@ class LinkLandingPageScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Column(
           children: <Widget>[
+              
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,7 +57,7 @@ class LinkLandingPageScreen extends StatelessWidget {
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),
                       icon: Icon(Icons.arrow_back_ios,
-                          color: Colors.white, size: 15.w),
+                          color: AppColorConstants.mirage, size: 15.w),
                       onPressed: () {
                         // Navigator.of(context).pop();
                       },
@@ -46,12 +70,13 @@ class LinkLandingPageScreen extends StatelessWidget {
                       width: 221.w,
                       height: 142.h,
                       fit: BoxFit.cover,
+                      //git commit is here
                     ),
                   ),
                   SizedBox(height: 33.h),
                   Center(
                       child: Text(
-                    '${AppTextConstants.hey} $name!'.toUpperCase(),
+                    "${AppTextConstants.hey}  ${Global.username}!".toUpperCase(),
                     style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 14.sp,
@@ -78,7 +103,8 @@ class LinkLandingPageScreen extends StatelessWidget {
                         fontSize: 18.sp,
                         color: Colors.white,
                         height: 1.5,
-                        letterSpacing: 2),
+                        fontFamily: 'Gilory',
+                        letterSpacing: 1),
                   )),
                 ],
               ),
@@ -98,6 +124,7 @@ class LinkLandingPageScreen extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                     color: Colors.white,
                     fontSize: 12.sp,
+                    fontFamily: 'Gilory'
                   ),
                 ),
                 onPressed: () {
@@ -114,6 +141,6 @@ class LinkLandingPageScreen extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('name', name));
+    properties.add(StringProperty('name', widget.name));
   }
 }

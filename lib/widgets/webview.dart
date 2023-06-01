@@ -1,5 +1,6 @@
 // ignore_for_file: always_put_required_named_parameters_first, public_member_api_docs, diagnostic_describe_all_properties
 
+import 'package:beatbridge/utils/approutes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -20,6 +21,16 @@ class WebViewWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          leading: InkWell(
+        child: Icon(
+          Icons.arrow_back_ios,
+          size: 30,
+        ),
+        onTap: () {
+          AppRoutes.pop(context);
+        },
+      )),
       body: WebView(
         javascriptMode: JavascriptMode.unrestricted,
         initialUrl: initialUrl,

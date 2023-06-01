@@ -38,6 +38,9 @@ class NearYouModel {
   ///Serialize data
   static NearYouModel fromJson(Map<String, dynamic> json) => NearYouModel(
       username: json['username'],
+      profileImage: json['image'] ?? "",
+      id: json['id'] ?? "",
+      totalTracks: json['total_track'] ?? "0",
       email: json['email'],
       phoneNo: json['phone_no'],
       latitude: json['latitude'],

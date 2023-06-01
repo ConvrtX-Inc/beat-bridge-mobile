@@ -9,6 +9,7 @@ import 'package:beatbridge/models/recently_played_model.dart';
 import 'package:beatbridge/models/support_model.dart';
 import 'package:beatbridge/models/support_thread_model.dart';
 import 'package:beatbridge/models/walk_through_model.dart';
+import 'package:flutter/material.dart';
 
 /// Static walk through data
 class StaticDataService {
@@ -21,7 +22,8 @@ class StaticDataService {
         backgroundImagePath:
             '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.walkThroughBackground1}',
         topHeaderText: AppTextConstants.hassleFree,
-        bottomHeaderText: AppTextConstants.oneDeviceMillionSongs,
+        bottomHeaderText: AppTextConstants.everyOne,
+        //text is an image
         headerImagePath:
             '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.walkThroughColoredText1}',
       ),
@@ -71,12 +73,12 @@ class StaticDataService {
           logoImagePath:
               '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.itunesLogoImage}',
           isSelected: false),
-      MusicPlatformModel(
-          name: AppTextConstants.addYourOwn,
-          index: 3,
-          logoImagePath:
-              '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.ownMusicLogoImage}',
-          isSelected: false)
+      // MusicPlatformModel(
+      //     name: AppTextConstants.addYourOwn,
+      //     index: 3,
+      //     logoImagePath:
+      //         '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.ownMusicLogoImage}',
+      //     isSelected: false)
     ];
   }
 
@@ -270,20 +272,20 @@ class StaticDataService {
           thumbnailUrl:
               '${AssetsPathConstants.assetsPNGPath}/queue_thumbnail_2.png',
           musicPlatformsUsed: <MusicPlatformModel>[
-            MusicPlatformModel(
-              name: AppTextConstants.soundCloud,
-              logoImagePath:
-                  '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.soundCloudLogoImage}',
-            ),
+            // MusicPlatformModel(
+            //   name: AppTextConstants.soundCloud,
+            //   logoImagePath:
+            //       '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.soundCloudLogoImage}',
+            // ),
             MusicPlatformModel(
               name: AppTextConstants.spotify,
               logoImagePath:
                   '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.spotifyLogoImage}',
             ),
-            MusicPlatformModel(
-                name: AppTextConstants.itunes,
-                logoImagePath:
-                    '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.itunesLogoImage}'),
+            // MusicPlatformModel(
+            //     name: AppTextConstants.itunes,
+            //     logoImagePath:
+            //         '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.itunesLogoImage}'),
           ]),
       RecentQueueModel(
           id: '2',
@@ -294,11 +296,11 @@ class StaticDataService {
           thumbnailUrl:
               '${AssetsPathConstants.assetsPNGPath}/queue_thumbnail_3.png',
           musicPlatformsUsed: <MusicPlatformModel>[
-            MusicPlatformModel(
-              name: AppTextConstants.soundCloud,
-              logoImagePath:
-                  '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.soundCloudLogoImage}',
-            ),
+            // MusicPlatformModel(
+            //   name: AppTextConstants.soundCloud,
+            //   logoImagePath:
+            //       '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.soundCloudLogoImage}',
+            // ),
             MusicPlatformModel(
               name: AppTextConstants.spotify,
               logoImagePath:
@@ -314,20 +316,20 @@ class StaticDataService {
           thumbnailUrl:
               '${AssetsPathConstants.assetsPNGPath}/queue_thumbnail_4.png',
           musicPlatformsUsed: <MusicPlatformModel>[
-            MusicPlatformModel(
-              name: AppTextConstants.soundCloud,
-              logoImagePath:
-                  '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.soundCloudLogoImage}',
-            ),
+            // MusicPlatformModel(
+            //   name: AppTextConstants.soundCloud,
+            //   logoImagePath:
+            //       '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.soundCloudLogoImage}',
+            // ),
             MusicPlatformModel(
               name: AppTextConstants.spotify,
               logoImagePath:
                   '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.spotifyLogoImage}',
             ),
-            MusicPlatformModel(
-                name: AppTextConstants.itunes,
-                logoImagePath:
-                    '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.itunesLogoImage}'),
+            // MusicPlatformModel(
+            //     name: AppTextConstants.itunes,
+            //     logoImagePath:
+            //         '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.itunesLogoImage}'),
           ]),
       RecentQueueModel(
           id: '4',
@@ -338,11 +340,11 @@ class StaticDataService {
           thumbnailUrl:
               '${AssetsPathConstants.assetsPNGPath}/queue_thumbnail_5.png',
           musicPlatformsUsed: <MusicPlatformModel>[
-            MusicPlatformModel(
-              name: AppTextConstants.soundCloud,
-              logoImagePath:
-                  '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.soundCloudLogoImage}',
-            ),
+            // MusicPlatformModel(
+            //   name: AppTextConstants.soundCloud,
+            //   logoImagePath:
+            //       '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.soundCloudLogoImage}',
+            // ),
             MusicPlatformModel(
               name: AppTextConstants.spotify,
               logoImagePath:
@@ -358,21 +360,21 @@ class StaticDataService {
           thumbnailUrl:
               '${AssetsPathConstants.assetsPNGPath}/queue_thumbnail_1.png',
           musicPlatformsUsed: <MusicPlatformModel>[
-            MusicPlatformModel(
-              name: AppTextConstants.soundCloud,
-              logoImagePath:
-                  '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.soundCloudLogoImage}',
-            ),
+            // MusicPlatformModel(
+            //   name: AppTextConstants.soundCloud,
+            //   logoImagePath:
+            //       '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.soundCloudLogoImage}',
+            // ),
             MusicPlatformModel(
               name: AppTextConstants.spotify,
               logoImagePath:
                   '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.spotifyLogoImage}',
             ),
-            MusicPlatformModel(
-              name: AppTextConstants.itunes,
-              logoImagePath:
-                  '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.itunesLogoImage}',
-            )
+            // MusicPlatformModel(
+            //   name: AppTextConstants.itunes,
+            //   logoImagePath:
+            //       '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.itunesLogoImage}',
+            // )
           ]),
     ];
   }
@@ -380,20 +382,20 @@ class StaticDataService {
   ///Static Data for Music Platforms
   static List<MusicPlatformModel> getMusicPlatformsUsed() {
     return <MusicPlatformModel>[
-      MusicPlatformModel(
-        name: AppTextConstants.soundCloud,
-        logoImagePath:
-            '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.soundCloudLogoImage}',
-      ),
+      // MusicPlatformModel(
+      //   name: AppTextConstants.soundCloud,
+      //   logoImagePath:
+      //       '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.soundCloudLogoImage}',
+      // ),
       MusicPlatformModel(
         name: AppTextConstants.spotify,
         logoImagePath:
             '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.spotifyLogoImage}',
       ),
-      MusicPlatformModel(
-          name: AppTextConstants.itunes,
-          logoImagePath:
-              '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.itunesLogoImage}'),
+      // MusicPlatformModel(
+      //     name: AppTextConstants.itunes,
+      //     logoImagePath:
+      //         '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.itunesLogoImage}'),
     ];
   }
 

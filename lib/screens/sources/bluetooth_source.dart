@@ -19,6 +19,7 @@ class BluetoothSourceScreen extends StatefulWidget {
 class _BluetoothSourceScreenState extends State<BluetoothSourceScreen> {
   BluetoothState _bluetoothState = BluetoothState.UNKNOWN;
   String _myDeviceName = '';
+  bool checkBluetooth = false;
   StreamSubscription<BluetoothDiscoveryResult>? _streamSubscription;
   List<BluetoothDiscoveryResult> devicesFound =
       List<BluetoothDiscoveryResult>.empty(growable: true);
@@ -71,7 +72,7 @@ class _BluetoothSourceScreenState extends State<BluetoothSourceScreen> {
   Widget buildUI() => Scaffold(
       backgroundColor: AppColorConstants.mirage,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        padding: EdgeInsets.symmetric(horizontal: 10.w),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -117,26 +118,75 @@ class _BluetoothSourceScreenState extends State<BluetoothSourceScreen> {
                                     fontSize: 16)),
                           ],
                         ),
-                        FlutterSwitch(
-                          width: 56,
-                          height: 40,
-                          valueFontSize: 15,
-                          toggleSize: 35,
-                          value: _bluetoothState.isEnabled,
-                          borderRadius: 30,
-                          onToggle: (bool val) async {
-                            if (val) {
-                              await FlutterBluetoothSerial.instance
-                                  .requestEnable();
-                            } else {
-                              await FlutterBluetoothSerial.instance
-                                  .requestDisable();
-                            }
+                        // ignore: prefer_if_elements_to_conditional_expressions
+                        checkBluetooth == false
+                            ? FlutterSwitch(
+                                width: 56,
+                                height: 40,
+                                valueFontSize: 15,
+                                toggleSize: 35,
+                                value: _bluetoothState.isEnabled,
+                                borderRadius: 30,
+                                onToggle: (bool val) async {
+                                  if (val) {
+                                    setState(() {
+                                      checkBluetooth = true;
+                                    });
+                                    // ignore: unrelated_type_equality_checks
+                                    if (FlutterBluetoothSerial
+                                            .instance.isEnabled ==
+                                        true) {
+                                      await FlutterBluetoothSerial.instance
+                                          .requestDisable()
+                                          .then((value) {
+                                        setState(() {
+                                          checkBluetooth = false;
+                                        });
+                                      }).catchError((onError) {
+                                        print("bluetooth issue: ${onError}");
+                                        setState(() {
+                                          checkBluetooth = false;
+                                        });
+                                      });
+                                    } else {
+                                      await FlutterBluetoothSerial.instance
+                                          .requestEnable()
+                                          .then((value) {
+                                        setState(() {
+                                          checkBluetooth = false;
+                                        });
+                                      }).catchError((onError) {
+                                        print("bluetooth issue: ${onError}");
+                                        setState(() {
+                                          checkBluetooth = false;
+                                        });
+                                      });
+                                    }
+                                  } else {
+                                    await FlutterBluetoothSerial.instance
+                                        .requestDisable()
+                                        .then((value) {
+                                      setState(() {
+                                        checkBluetooth = false;
+                                      });
+                                    }).catchError((onError) {
+                                      setState(() {
+                                        checkBluetooth = false;
+                                      });
+                                    });
+                                  }
 
-                            setState(() {});
-                          },
-                          activeColor: Colors.green,
-                        )
+                                  setState(() {});
+                                },
+                                activeColor: Colors.green,
+                              )
+                            : Container(
+                                width: 50,
+                                height: 50,
+                                child: CircularProgressIndicator(
+                                  color: Colors.green,
+                                ),
+                              )
                       ])),
 
               Divider(color: AppColorConstants.paleSky),
@@ -178,19 +228,29 @@ class _BluetoothSourceScreenState extends State<BluetoothSourceScreen> {
                 bool bonded = false;
                 if (device.isBonded) {
                   await FlutterBluetoothSerial.instance
-                      .removeDeviceBondWithAddress(address);
+                      .removeDeviceBondWithAddress(device.address);
                 } else {
-                  bonded = (await FlutterBluetoothSerial.instance
-                      .bondDeviceAtAddress(address))!;
+                  (await FlutterBluetoothSerial.instance
+                      .bondDeviceAtAddress(device.address)
+                      .then((value) {
+                    setState(() {
+                      bonded = value!;
+                    });
+                    print("bounded value: $value");
+                  }).catchError((onError) {
+                    print("bluetooth connection issue: ${onError}");
+                    bonded = false;
+                    print("bounded value error: $onError");
+                  }))!;
                 }
                 setState(() {
                   devicesFound[devicesFound.indexOf(result)] =
                       BluetoothDiscoveryResult(
                           device: BluetoothDevice(
                             name: device.name ?? '',
-                            address: address,
+                            address: device.address,
                             type: device.type,
-                            isConnected: bonded,
+                            isConnected: device.isBonded,
                             bondState: bonded
                                 ? BluetoothBondState.bonded
                                 : BluetoothBondState.none,
@@ -233,6 +293,28 @@ class _BluetoothSourceScreenState extends State<BluetoothSourceScreen> {
       );
 
   Future<void> startScanningDevices() async {
+    await FlutterBluetoothSerial.instance.state.then((BluetoothState state) {
+      setState(() {
+        _bluetoothState = state;
+      });
+    });
+
+    //Get device name
+    FlutterBluetoothSerial.instance.name.then((String? name) {
+      setState(() {
+        _myDeviceName = name!;
+        print("my device name: ${name}");
+      });
+    });
+
+    // Listen for further state changes
+    FlutterBluetoothSerial.instance
+        .onStateChanged()
+        .listen((BluetoothState state) {
+      setState(() {
+        _bluetoothState = state;
+      });
+    });
     await FlutterBluetoothSerial.instance
         .getBondedDevices()
         .then((List<BluetoothDevice> bondedDevices) {
@@ -243,22 +325,33 @@ class _BluetoothSourceScreenState extends State<BluetoothSourceScreen> {
                   BluetoothDiscoveryResult(device: device),
             )
             .toList();
+
+        // print("device founded: ${devicesFound.length}");
       });
     });
-
-    _streamSubscription = FlutterBluetoothSerial.instance
-        .startDiscovery()
-        .listen((BluetoothDiscoveryResult r) {
-      debugPrint('DEVICE NAME ${r.device.name} TYPE ${r.device.type} ');
-      setState(() {
-        final int existingIndex = devicesFound.indexWhere(
-            (BluetoothDiscoveryResult element) =>
-                element.device.address == r.device.address);
-        if (existingIndex >= 0) {
-          devicesFound[existingIndex] = r;
-        } else {
-          devicesFound.add(r);
-        }
+// ignore: unawaited_futures
+    FlutterBluetoothSerial.instance.cancelDiscovery().then((value) {
+      _streamSubscription = FlutterBluetoothSerial.instance
+          .startDiscovery()
+          .listen((BluetoothDiscoveryResult r) {
+        print("listening");
+        debugPrint('DEVICE NAME ${r.device.name} TYPE ${r.device.type} ');
+        setState(() {
+          final int existingIndex = devicesFound.indexWhere(
+              (BluetoothDiscoveryResult element) =>
+                  element.device.address == r.device.address);
+          if (existingIndex >= 0) {
+            devicesFound[existingIndex] = r;
+          } else {
+            devicesFound.add(r);
+          }
+          for (int i = 0; i < devicesFound.length; i++) {
+            if (devicesFound[i].device.name == null ||
+                devicesFound[i].device.name.toString() == 'null') {
+              devicesFound.removeAt(i);
+            }
+          }
+        });
       });
     });
 

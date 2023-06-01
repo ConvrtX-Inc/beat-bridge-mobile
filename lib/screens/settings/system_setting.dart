@@ -1,6 +1,9 @@
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/constants/app_list.dart';
 import 'package:beatbridge/models/settings_model.dart';
+import 'package:beatbridge/screens/Privac_Policy/privacy_policy.dart';
+import 'package:beatbridge/screens/Privac_Policy/terms.dart';
+import 'package:beatbridge/utils/approutes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -77,7 +80,13 @@ class _SystemSettingScreenState extends State<SystemSettingScreen> {
         textColor: Colors.white,
         iconColor: Colors.white,
         onTap: () {
-          Navigator.pushNamed(context, setting.routePath);
+          if (setting.name.toString() == "Terms & Condition") {
+            AppRoutes.push(context, terms());
+          } else if (setting.name.toString() == "Privacy Policy") {
+            AppRoutes.push(context, PrivacyScreen());
+          } else {
+            Navigator.pushNamed(context, setting.routePath);
+          }
         },
         trailing: const Icon(Icons.arrow_forward_ios),
       );

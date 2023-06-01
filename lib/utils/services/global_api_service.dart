@@ -26,7 +26,8 @@ class GlobalAPIServices {
   }
 
   /// debugging
-  void debugging(String functionName,String url, int statusCode,dynamic body, dynamic params) {
+  void debugging(String functionName, String url, int statusCode, dynamic body,
+      dynamic params) {
     debugPrint('FUNCTION NAME ---->>>>>>>> $functionName');
     debugPrint('RESPONSE URL ---->>>>>>>> $url');
     debugPrint('RESPONSE STATUS CODE ---->>>>>>>> $statusCode');

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1033922139910-09lbemiv9ho7his2i7014gvr205gu779.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1033922139910-09lbemiv9ho7his2i7014gvr205gu779</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC6ydiXvrDZBMdmWGQAgQhUT7TIAyjc2_c</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1033922139910</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.beeatbridgeeeeee</string>
+	<key>PROJECT_ID</key>
+	<string>beatbridge-71924</string>
+	<key>STORAGE_BUCKET</key>
+	<string>beatbridge-71924.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1033922139910:ios:d40bbbc941b28193bbf087</string>
+</dict>
+</plist>

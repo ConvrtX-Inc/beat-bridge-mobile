@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 ///Model for profile settings
@@ -5,8 +7,10 @@ class ProfileSettingsModel{
   ///Constructor
   ProfileSettingsModel({
     this.icon = '',
-    this.name ='',
-    this.routePath = ''
+    this.name = '',
+    this.routePath = '',
+  
+
 });
 
   ///initialization
@@ -21,6 +25,8 @@ class SystemSettingsModel{
     this.icon = const Icon(Icons.settings),
     this.name ='',
     this.routePath = ''
+    
+    
   });
 
   ///initialization

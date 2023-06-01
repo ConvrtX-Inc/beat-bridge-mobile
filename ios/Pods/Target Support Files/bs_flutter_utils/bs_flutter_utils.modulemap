@@ -1,0 +1,6 @@
+framework module bs_flutter_utils {
+  umbrella header "bs_flutter_utils-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -7,7 +7,7 @@ class APIResponsedToUserObject {
       {this.statusCode = 200,
       this.status = '',
       this.errorResponse = '',
-      this.user = const UserModel()});
+      this.user = const UserModelTwo()});
 
   /// Status code
   final int statusCode;
@@ -19,5 +19,5 @@ class APIResponsedToUserObject {
   final String errorResponse;
 
   /// Success response
-  final UserModel user;
+  final UserModelTwo user;
 }

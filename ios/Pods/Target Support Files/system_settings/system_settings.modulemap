@@ -1,0 +1,6 @@
+framework module system_settings {
+  umbrella header "system_settings-umbrella.h"
+
+  export *
+  module * { export * }
+}

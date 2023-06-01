@@ -16,7 +16,7 @@ import 'package:spotify/spotify.dart' as spot;
 import 'package:spotify_sdk/models/player_state.dart';
 import 'dart:math';
 import 'package:spotify_sdk/spotify_sdk.dart';
-import 'package:stop_watch_timer/stop_watch_timer.dart';
+// import 'package:stop_watch_timer/stop_watch_timer.dart';
 // import 'package:audioplayers/audioplayers.dart';
 
 /// Audio file for queues playing screen
@@ -43,7 +43,7 @@ class _AudioFileState extends State<AudioFile>
   int musicLength = 0;
   final audioController = Get.put(AudioController());
   StreamController<int> audiseeStream = StreamController<int>();
-  late StopWatchTimer stopWatchTimer = StopWatchTimer(); // Create instance.
+  // late StopWatchTimer stopWatchTimer = StopWatchTimer(); // Create instance.
   late PlayerState pState;
   final trackChangeController = Get.put(TrackChangeController());
 
@@ -60,21 +60,22 @@ class _AudioFileState extends State<AudioFile>
       });
     });
     // ignore: unnecessary_lambdas
-    audiseeStream.stream.listen((event) {
-      stopWatchTimer.onExecute.add(StopWatchExecute.reset);
-      stopWatchTimer.clearPresetTime();
+    // audiseeStream.stream.listen((event) {
+    //   stopWatchTimer.onExecute.add(StopWatchExecute.reset);
+    //   stopWatchTimer.clearPresetTime();
 
-      if (event > 0) {
-        stopWatchTimer.setPresetTime(mSec: event);
-        seekTo(event);
-        stopWatchTimer.onExecute.add(StopWatchExecute.start);
-      } else {
-        stopWatchTimer.dispose();
-        play(widget.track);
-        startTimer();
-      }
-    });
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    //   if (event > 0) {
+    //     stopWatchTimer.setPresetTime(mSec: event);
+    //     seekTo(event);
+    //     stopWatchTimer.onExecute.add(StopWatchExecute.start);
+    //   } else {
+    //     stopWatchTimer.dispose();
+    //     play(widget.track);
+    //     startTimer();
+    //   }
+    // });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       play(widget.track);
       startTimer();
     });
@@ -83,24 +84,24 @@ class _AudioFileState extends State<AudioFile>
   @override
   Future<void> dispose() async {
     super.dispose();
-    await stopWatchTimer.dispose();
+    // await stopWatchTimer.dispose();
     await audiseeStream.close();
     // myTimer.cancel();
   }
 
   void startTimer() {
-    stopWatchTimer = StopWatchTimer(
-      onChange: (value) {
-        if (value < musicLength - 500) {
-          audioController.setDuration(value);
-        } else {
-          playnext();
-        }
-      },
-      onChangeRawSecond: (value) => null,
-      onChangeRawMinute: (value) => null,
-    );
-    stopWatchTimer.onExecute.add(StopWatchExecute.start);
+    // stopWatchTimer = StopWatchTimer(
+    //   onChange: (value) {
+    //     if (value < musicLength - 500) {
+    //       audioController.setDuration(value);
+    //     } else {
+    //       playnext();
+    //     }
+    //   },
+    //   onChangeRawSecond: (value) => null,
+    //   onChangeRawMinute: (value) => null,
+    // );
+    // stopWatchTimer.onExecute.add(StopWatchExecute.start);
   }
 
   @override
@@ -224,16 +225,16 @@ class _AudioFileState extends State<AudioFile>
 
     if (nextIndex < widget.playListItems.length) {
       final nextTrack = widget.playListItems[nextIndex];
-      stopWatchTimer.dispose();
+      // stopWatchTimer.dispose();
       play(nextTrack);
       startTimer();
       trackChangeController.setTrack(nextTrack);
     } else {
-      final firstTrack = widget.playListItems[0];
-      stopWatchTimer.dispose();
-      play(firstTrack);
+      // final firstTrack = widget.playListItems[0];
+      // stopWatchTimer.dispose();
+      // play(firstTrack);
       startTimer();
-      trackChangeController.setTrack(firstTrack);
+      // trackChangeController.setTrack(firstTrack);
     }
   }
 
@@ -247,13 +248,13 @@ class _AudioFileState extends State<AudioFile>
     final prevIndex = index - 1;
     if (prevIndex > 0) {
       final nextTrack = widget.playListItems[prevIndex];
-      stopWatchTimer.dispose();
+      // stopWatchTimer.dispose();
       play(nextTrack);
       startTimer();
       trackChangeController.setTrack(nextTrack);
     } else {
       final firstTrack = widget.playListItems[0];
-      stopWatchTimer.dispose();
+      // stopWatchTimer.dispose();
       play(firstTrack);
       startTimer();
       trackChangeController.setTrack(firstTrack);
@@ -358,11 +359,11 @@ class _AudioFileState extends State<AudioFile>
       isAnimated
           ? iconController.forward().then((value) {
               resume();
-              stopWatchTimer.onExecute.add(StopWatchExecute.start);
+              // stopWatchTimer.onExecute.add(StopWatchExecute.start);
             })
           : iconController.reverse().then((value) {
               pause();
-              stopWatchTimer.onExecute.add(StopWatchExecute.stop);
+              // stopWatchTimer.onExecute.add(StopWatchExecute.stop);
             });
     });
   }

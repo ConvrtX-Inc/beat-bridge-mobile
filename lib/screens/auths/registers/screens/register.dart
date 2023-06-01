@@ -1,20 +1,31 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'dart:developer';
+import 'dart:io';
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/models/apis/api_standard_return.dart';
+import 'package:beatbridge/models/users/login_reg_model.dart';
 import 'package:beatbridge/models/users/user_model.dart';
 import 'package:beatbridge/utils/helpers/form_helper.dart';
 import 'package:beatbridge/utils/helpers/text_helper.dart';
 import 'package:beatbridge/utils/helpers/validator_helper.dart';
+import 'package:beatbridge/utils/logout_helper.dart';
 import 'package:beatbridge/utils/services/rest_api_service.dart';
+import 'package:beatbridge/utils/services/shared_preferences_service.dart';
 import 'package:beatbridge/utils/services/text_service.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded_gradient.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:image_picker/image_picker.dart';
+
+const FlutterSecureStorage storage = FlutterSecureStorage();
 
 /// Screen for register input
 class RegisterInputScreen extends StatefulWidget {
@@ -34,17 +45,53 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  final ValidatorHelper _globalValidator = ValidatorHelper();
+  final TextEditingController queueNameTxtController = TextEditingController();
 
+  final ValidatorHelper _globalValidator = ValidatorHelper();
+  String PrefUser = '';
   String _username = '';
   String _email = '';
-  String _phonenumber = '';
+  String _phoneNumber = '';
   String _password = '';
   String _confirmPassword = '';
+  String? UserImage = '';
   bool _isAPICallInProgress = false;
   List<String> errorMessages = <String>[];
 
   TextServices textServices = TextServices();
+
+  /// Variables
+  // ImagePicker picker = ImagePicker();
+  // XFile? image;
+  // File? f = null;
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    queueNameTxtController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    regCheck();
+    checkGps();
+    getpermission();
+    // encoder();
+
+    setValue(_username);
+  }
+
+  void regCheck() {
+    setState(() {});
+  }
+
+  getpermission() async {
+    var permission = await Permission.location.request();
+    if (permission.isDenied) {
+      getpermission();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,29 +114,59 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(height: 41.h),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
-          child: IconButton(
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(),
-            icon: Icon(Icons.arrow_back_ios, color: Colors.white, size: 15.w),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
+        IconButton(
+          padding: EdgeInsets.zero,
+          constraints: const BoxConstraints(),
+          icon: Icon(Icons.arrow_back_ios, color: Colors.white, size: 15.w),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
         SizedBox(height: 26.h),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 11.w),
-          child: Text(
-            AppTextConstants.createAccount,
-            style: TextStyle(
-                fontWeight: FontWeight.w700,
-                color: AppColorConstants.roseWhite,
-                fontSize: 22),
+        Text(
+          AppTextConstants.createAccount,
+          style: TextStyle(
+              fontWeight: FontWeight.w700,
+              color: AppColorConstants.roseWhite,
+              fontSize: 22),
+        ),
+        SizedBox(height: 63.h),
+
+        InkWell(
+          onTap: encoder,
+          child: Center(
+            child: Stack(children: [
+              Container(
+                height: 200,
+                width: 200,
+                child: Card(
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(120))),
+                    elevation: 0.0,
+                    color: const Color.fromARGB(136, 34, 34, 34),
+                    child: Global.imagetemppath != null
+                        ? ClipRRect(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(120)),
+                            child: Image.file(
+                              Global.imagetemppath!,
+                              fit: BoxFit.cover,
+                              height: 150,
+                              width: 150,
+                            ))
+                        : Image.asset("assets/images/Union.png")),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(130, 150, 0, 0),
+                child: IconButton(
+                    onPressed: encoder,
+                    icon: Image.asset("assets/images/camera.png")),
+              )
+            ]),
           ),
         ),
         SizedBox(height: 63.h),
+
         FormHelper.inputFieldWidgetWithController(
             context, AppTextConstants.username, AppTextConstants.username,
             (String onValidateValue) {
@@ -102,8 +179,10 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
         },
             separatorHeight: 15,
             controller: _usernameController,
+
             // inputPlaceholder: AppTextConstants.pasteSongLinkHere,
             keyType: TextInputType.name),
+
         SizedBox(height: 36.h),
         FormHelper.inputFieldWidgetWithController(
             context, AppTextConstants.regEmail, AppTextConstants.regEmail,
@@ -135,6 +214,17 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
         //     separatorHeight: 15,
         //     controller: _phoneTextController,
         //     keyType: TextInputType.phone),
+        Text(
+          'Phone Number',
+          style: TextStyle(
+            color: AppColorConstants.roseWhite,
+            // fontWeight: FontWeight.bold,
+            fontSize: 16,
+            fontFamily: 'GilroyBold',
+          ),
+        ),
+        SizedBox(height: 20.h),
+
         IntlPhoneField(
           controller: _phoneTextController,
           style: TextStyle(color: Colors.white, fontSize: 18.r),
@@ -159,11 +249,11 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
             contentPadding:
                 EdgeInsets.symmetric(horizontal: 12.w, vertical: 24.h),
           ),
-          countries: const <String>['PH'],
+          // countries: const <String>['PH'],
           initialCountryCode: 'PH',
           onChanged: (PhoneNumber phone) {
             setState(() {
-              _phonenumber = phone.completeNumber;
+              _phoneNumber = phone.completeNumber;
             });
           },
         ),
@@ -191,10 +281,10 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
         SizedBox(height: 36.h),
         FormHelper.inputFieldWidgetWithController(
             context,
-            AppTextConstants.confirmPassword,
-            AppTextConstants.confirmPassword, (String onValidateValue) {
+            AppTextConstants.ConfirmPassword,
+            AppTextConstants.ConfirmPassword, (String onValidateValue) {
           if (onValidateValue.isEmpty) {
-            return '${AppTextConstants.confirmPassword} cannot be empty';
+            return '${AppTextConstants.reTypeNewPassword} cannot be empty';
           }
           if (_passwordController.text != _confirmPasswordController.text) {
             return AppTextConstants.passwordDoesNotMatch;
@@ -208,36 +298,129 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
             obscureText: true,
             keyType: TextInputType.visiblePassword),
         SizedBox(height: 43.h),
+
         ButtonRoundedGradient(
           buttonText: AppTextConstants.submit,
           isLoading: _isAPICallInProgress,
           buttonCallback: () async {
+            Global.username = _usernameController.text;
+            setValue(AppTextConstants.username.toString());
             FocusScope.of(context).requestFocus(FocusNode());
             if (validateAndSave()) {
               setState(() {
                 _isAPICallInProgress = true;
                 errorMessages = <String>[];
               });
-              print(_phonenumber);
-              final UserModel userModelParams = UserModel(
-                  username: _username,
-                  email: _email,
-                  password: _password,
-                  phoneNumber: _phonenumber);
+              // print(_phonenumber);
+              if (_imageBase64 == null) {
+                _imageBase64 = "";
+                log('""""  $_imageBase64 """"""');
 
-              final APIStandardReturnFormat result =
-                  await APIServices().register(userModelParams);
+                final UserModelTwo userModelParams = UserModelTwo(
+                    username: _username,
+                    email: _email,
+                    image: _imageBase64,
+                    password: _password,
+                    phoneNumber: _phoneNumber,
+                    latitude: '$lat',
+                    longitude: '$long');
+                print(
+                    "registration model: ${userModelParams.latitude} : ${userModelParams.longitude}");
+                final APIStandardReturnFormat result =
+                    await APIServices().register(userModelParams);
 
-              // ERROR HANDLING
-              if (result.status == 'error') {
-                final Map<String, dynamic> decoded =
-                    jsonDecode(result.errorResponse);
-                decoded['errors'].forEach((String k, dynamic v) => <dynamic>{
-                      errorMessages..add(textServices.filterErrorMessage(v))
-                    });
+                // ERROR HANDLING
+                if (result.status == 'error') {
+                  final Map<String, dynamic> decoded =
+                      jsonDecode(result.errorResponse);
+                  decoded['errors'].forEach((String k, dynamic v) => <dynamic>{
+                        errorMessages..add(textServices.filterErrorMessage(v))
+                      });
+                } else {
+                  final UserModelTwo user = UserModelTwo.fromJson(
+                      json.decode(result.successResponse));
+                  UserSingleton.instance.user = user;
+
+                  await storage.write(
+                      key: 'tempRegResponse',
+                      value: result.successResponse.toString());
+                  log(user.token.toString());
+
+                  await storage.write(
+                      key: 'userAuthToken', value: user.token.toString());
+                  await storage.write(
+                      key: 'username', value: user!.username.toString());
+                  await storage.write(
+                      key: 'email', value: user!.email.toString());
+                  await storage.write(
+                      key: 'phone_no', value: user!.phoneNo.toString());
+                  await storage.write(
+                      key: 'userID', value: user!.id.toString());
+                  await storage.write(
+                      key: 'password', value: user!.password.toString());
+                  await storage.write(
+                      key: 'profileimage', value: user!.image.toString());
+
+                  await Navigator.pushNamedAndRemoveUntil(context,
+                      '/link_landing_page', (Route<dynamic> route) => false);
+                }
               } else {
-                await Navigator.pushNamedAndRemoveUntil(context,
-                    '/link_landing_page', (Route<dynamic> route) => false);
+                print('""""  image 64 not null""""""');
+                final UserModelTwo userModelParams = UserModelTwo(
+                    username: _username,
+                    email: _email,
+                    image: _imageBase64,
+                    password: _password,
+                    phoneNumber: _phoneNumber,
+                    latitude: lat,
+                    longitude: long);
+                print(
+                    "registration model: ${userModelParams.latitude} : ${userModelParams.longitude}");
+
+                final APIStandardReturnFormat result =
+                    await APIServices().register(userModelParams);
+                print("register response: $result");
+
+                // ERROR HANDLING
+                if (result.status == 'error') {
+                  final Map<String, dynamic> decoded =
+                      jsonDecode(result.errorResponse);
+                  decoded['errors'].forEach((String k, dynamic v) => <dynamic>{
+                        errorMessages..add(textServices.filterErrorMessage(v))
+                      });
+                } else {
+                  // final UserValidResponse user = UserValidResponse.fromJson(
+                  //     json.decode(result.successResponse));
+                  final UserModelTwo user = UserModelTwo.fromJson(
+                      json.decode(result.successResponse));
+                  UserSingleton.instance.user = user;
+
+                  await storage.write(
+                      key: 'tempRegResponse',
+                      value: result.successResponse.toString());
+                  log(user.token.toString());
+
+                  await storage.write(
+                      key: 'userAuthToken', value: user.token.toString());
+                  await storage.write(
+                      key: 'username', value: user!.username.toString());
+                  await storage.write(
+                      key: 'email', value: user!.email.toString());
+                  await storage.write(
+                      key: 'phone_no', value: user!.phoneNo.toString());
+                  await storage.write(
+                      key: 'userID', value: user!.id.toString());
+                  await storage.write(
+                      key: 'password', value: user!.password.toString());
+                  await storage.write(
+                      key: 'profileimage', value: user!.image.toString());
+                  // setState(() {
+                  //                     UserSingleton.instance.user = user;
+                  // });
+
+                  await Navigator.pushNamedAndRemoveUntil(context,
+                      '/link_landing_page', (Route<dynamic> route) => false);
+                }
               }
             }
 
@@ -276,4 +459,112 @@ class _RegisterInputScreenState extends State<RegisterInputScreen> {
       ..add(IterableProperty<String>('errorMessages', errorMessages))
       ..add(DiagnosticsProperty<TextServices>('textServices', textServices));
   }
+
+  Future<void> setValue(value) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString('username', PrefUser);
+  }
+
+  bool servicestatus = false;
+  bool haspermission = false;
+  late LocationPermission permission;
+  late Position position;
+  String long = "", lat = "";
+  late StreamSubscription<Position> positionStream;
+
+  checkGps() async {
+    servicestatus = await Geolocator.isLocationServiceEnabled();
+    permission = await Geolocator.checkPermission();
+    if (servicestatus) {
+      permission = await Geolocator.checkPermission();
+
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          print('Location permissions are denied');
+        } else if (permission == LocationPermission.deniedForever) {
+          print("'Location permissions are permanently denied");
+        } else {
+          haspermission = true;
+        }
+      } else {
+        haspermission = true;
+      }
+
+      if (haspermission) {
+        setState(() {
+          //refresh the UI
+        });
+
+        getLocation();
+      }
+    } else {
+      print("GPS Service is not enabled, turn on GPS location");
+    }
+
+    setState(() {
+      //refresh the UI
+    });
+  }
+
+  getLocation() async {
+    position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    print(position.longitude); //Output: 80.24599079
+    print(position.latitude); //Output: 29.6593457
+
+    long = position.longitude.toString();
+    lat = position.latitude.toString();
+
+    setState(() {
+      //refresh UI
+      long = position.longitude.toString();
+      lat = position.latitude.toString();
+    });
+
+    LocationSettings locationSettings = const LocationSettings(
+      accuracy: LocationAccuracy.high, //accuracy of the location data
+      distanceFilter: 100, //minimum distance (measured in meters) a
+      //device must move horizontally before an update event is generated;
+    );
+
+    StreamSubscription<Position> positionStream =
+        Geolocator.getPositionStream(locationSettings: locationSettings)
+            .listen((Position position) {
+      print(position.longitude); //Output: 80.24599079
+      print(position.latitude); //Output: 29.6593457
+
+      long = position.longitude.toString();
+      lat = position.latitude.toString();
+
+      setState(() {
+        //refresh UI on update
+      });
+    });
+  }
+
+  Future<void> encoder() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image == null) return;
+
+    Uint8List imageByte = await image.readAsBytes();
+    String base64 = base64Encode(imageByte);
+
+    setState(() {
+      _imageBase64 = base64;
+      Global.imagetemppath = File(image.path);
+      ImagePicked = ImageFile;
+      this.ImageFile = Global.imagetemppath;
+      Utility.saveImage(
+          Utility.base64String(Global.imagetemppath.readAsBytesSync()));
+    });
+    print("==============================]]]]]");
+    print(_imageBase64);
+    // Global.imagetemppath =  File(image.path);
+  }
+
+  File? ImageFile;
+  File? ImagePicked;
+  var _imageBase64;
 }

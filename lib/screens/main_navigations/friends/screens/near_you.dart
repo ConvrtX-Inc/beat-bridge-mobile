@@ -13,6 +13,7 @@ import 'package:beatbridge/widgets/music_platforms/music_platform_used.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 
 ///Near you Screen
 class NearYouScreen extends StatefulWidget {
@@ -28,6 +29,34 @@ class _NearYouScreenState extends State<NearYouScreen> {
   void initState() {
     super.initState();
     getFriendsNearYou();
+    checkGps();
+  }
+
+  var servicestatus;
+  checkGps() async {
+    servicestatus = await Geolocator.isLocationServiceEnabled();
+    if (servicestatus) {
+      var permission = await Geolocator.checkPermission();
+
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          print('Location permissions are denied');
+        } else if (permission == LocationPermission.deniedForever) {
+          print("'Location permissions are permanently denied");
+        } else {
+          // haspermission = true;
+        }
+      } else {
+        // haspermission = true;
+      }
+    } else {
+      print("GPS Service is not enabled, turn on GPS location");
+    }
+
+    setState(() {
+      //refresh the UI
+    });
   }
 
   List<NearYouModel> friendsNearYou = <NearYouModel>[];
@@ -46,9 +75,12 @@ class _NearYouScreenState extends State<NearYouScreen> {
               children: <Widget>[
                 SizedBox(height: 41.h),
                 IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
                     icon: Icon(
                       Icons.arrow_back_ios,
                       color: AppColorConstants.roseWhite,
+                      size: 15.w,
                     ),
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -59,7 +91,8 @@ class _NearYouScreenState extends State<NearYouScreen> {
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
                       color: AppColorConstants.roseWhite,
-                      fontSize: 30.sp),
+                      fontFamily: 'Gilroy-Bold',
+                      fontSize: 22.sp),
                 ),
                 SizedBox(height: 16.h),
                 Expanded(child: buildFriendsNearYouUI())
@@ -67,13 +100,14 @@ class _NearYouScreenState extends State<NearYouScreen> {
         ));
   }
 
-
   Widget buildFriendsNearYouUI() => FutureBuilder<List<NearYouModel>>(
-    future: getFriendsNearYou(),
-      builder: (BuildContext context, AsyncSnapshot<List<NearYouModel>> snapshot) {
+      future: getFriendsNearYou(),
+      builder:
+          (BuildContext context, AsyncSnapshot<List<NearYouModel>> snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
             return const Center(child: CircularProgressIndicator());
+
           case ConnectionState.done:
             if (snapshot.data!.isNotEmpty) {
               friendsNearYou = snapshot.data!;
@@ -92,19 +126,29 @@ class _NearYouScreenState extends State<NearYouScreen> {
                 ],
               );
             } else {
-              if(hasError) {
+              if (hasError) {
                 return TextHelper.anErrorOccurredTextDisplay();
               }
               return TextHelper.noAvailableDataTextDisplay();
             }
+          case ConnectionState.active:
+            {
+              return TextHelper.stableTextDisplay('You are connected');
+            }
+          case ConnectionState.none:
+            {
+              return const SizedBox.shrink();
+            }
         }
-        return Container();
+
+        // return Container();
       });
 
   Widget buildFriendNearYouList() {
     return ListView.builder(
       itemCount: friendsNearYou.length,
       itemBuilder: (BuildContext context, int index) {
+        print("friends image: ${friendsNearYou[index].profileImage}");
         return buildFriendNearYouItem(index);
       },
     );
@@ -117,19 +161,43 @@ class _NearYouScreenState extends State<NearYouScreen> {
           children: <Widget>[
             Padding(
                 padding: EdgeInsets.fromLTRB(0, 0, 20.h, 0),
-                child: Container(
-                  height: 60,
-                  width: 60,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      image: DecorationImage(
-                        image: friendsNearYou[index].profileImage != ''
-                            ? AssetImage(friendsNearYou[index].profileImage)
-                            : const AssetImage(
-                                '${AssetsPathConstants.assetsPNGPath}/blank_profile_pic.png'),
-                        fit: BoxFit.fitHeight,
-                      )),
-                )),
+                child: friendsNearYou[index].profileImage.toString().isEmpty
+                    ? Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            image: DecorationImage(
+                              image: AssetImage(
+                                  '${AssetsPathConstants.assetsPNGPath}/blank_profile_pic.png'),
+                              fit: BoxFit.fitHeight,
+                            )),
+                      )
+                    : Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  "https://beat.softwarealliancetest.tk${friendsNearYou[index].profileImage}"),
+                              fit: BoxFit.fitHeight,
+                            )),
+                      )
+                // Container(
+                //   height: 60,
+                //   width: 60,
+                //   decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(8),
+                //       image: DecorationImage(
+                //         image: friendsNearYou[index].profileImage != ''
+                //             ? AssetImage(friendsNearYou[index].profileImage)
+                //             : const AssetImage(
+                //                 '${AssetsPathConstants.assetsPNGPath}/blank_profile_pic.png'),
+                //         fit: BoxFit.fitHeight,
+                //       )),
+                // )
+                ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -174,6 +242,7 @@ class _NearYouScreenState extends State<NearYouScreen> {
 
     if (result.statusCode == 200) {
       for (final dynamic res in details) {
+        print("firnedsss response: $res");
         final NearYouModel friend = NearYouModel.fromJson(res);
         friends.add(friend);
       }
@@ -220,8 +289,8 @@ class _NearYouScreenState extends State<NearYouScreen> {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-       ..add(IterableProperty<NearYouModel>('friendsNearYou', friendsNearYou))
-       ..add(DiagnosticsProperty<bool>('hasError', hasError))
+      ..add(IterableProperty<NearYouModel>('friendsNearYou', friendsNearYou))
+      ..add(DiagnosticsProperty<bool>('hasError', hasError))
       ..add(
           DiagnosticsProperty<bool>('isAPICallInProgress', isAPICallInProgress))
       ..add(IntProperty('selectedFriendIndex', selectedFriendIndex));

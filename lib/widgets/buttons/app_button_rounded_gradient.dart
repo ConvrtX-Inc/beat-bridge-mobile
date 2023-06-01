@@ -11,7 +11,14 @@ class ButtonRoundedGradient extends StatelessWidget {
       this.buttonText = 'submit',
       this.buttonCallback,
       this.isLoading = false,
-      this.buttonTextColor = Colors.white})
+      this.custom = false,
+      this.fontFamily = '',
+      this.fontSize = 0,
+      this.fontWeight = FontWeight.normal,
+      this.letterSpacing = 0,
+      this.buttonTextColor = Colors.white,
+      this.buttonColor = Colors.transparent,
+      this.width = double.infinity})
       : super(key: key);
 
   /// Button text
@@ -20,8 +27,19 @@ class ButtonRoundedGradient extends StatelessWidget {
   /// Check if loading
   final bool isLoading;
 
+  /// custom button properties
+  final bool custom;
+  final double fontSize;
+  final FontWeight fontWeight;
+  final String fontFamily;
+  final double letterSpacing;
+  final double width;
+
   /// Button text color
   final Color buttonTextColor;
+
+  /// button background color
+  final Color buttonColor;
 
   /// function to call for navigation between screens
   final VoidCallback? buttonCallback;
@@ -33,21 +51,28 @@ class ButtonRoundedGradient extends StatelessWidget {
       style: ElevatedButton.styleFrom(
           padding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.r))),
+              borderRadius: BorderRadius.circular(11.5.r))),
       child: Ink(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: const Alignment(-0.5, 0),
-              colors: <Color>[
-                AppColorConstants.artyClickPurple,
-                AppColorConstants.rubberDuckyYellow
-              ],
-            ),
-            borderRadius: BorderRadius.circular(10.r)),
+        decoration:
+            // buttonColor ==
+
+            // Colors.transparent ?
+            BoxDecoration(
+                gradient: LinearGradient(
+                  begin: const Alignment(-0.5, 0),
+                  colors: <Color>[
+                    AppColorConstants.artyClickPurple,
+                    AppColorConstants.rubberDuckyYellow
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(11.5.r)),
+        // BoxDecoration(
+        //     color: buttonColor,
+        //     borderRadius: BorderRadius.circular(11.5.r)),
         child: isLoading
             ? Container(
-                width: double.infinity,
-                height: 60,
+                width: width,
+                height: 61,
                 alignment: Alignment.center,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -69,17 +94,17 @@ class ButtonRoundedGradient extends StatelessWidget {
                 ),
               )
             : Container(
-                width: double.infinity,
-                height: 60,
+                width: width,
+                height: 61,
                 alignment: Alignment.center,
                 child: Text(
-                  buttonText.toUpperCase(),
+                  custom ? buttonText : buttonText.toUpperCase(),
                   style: TextStyle(
                       color: buttonTextColor,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 1,
-                      fontFamily: 'Gilroy-bold'),
+                      fontSize: custom ? fontSize : 16.sp,
+                      fontWeight: custom ? fontWeight : FontWeight.w800,
+                      letterSpacing: custom ? letterSpacing : 1,
+                      fontFamily: custom ? fontFamily : 'Gilroy-bold'),
                 ),
               ),
       ),

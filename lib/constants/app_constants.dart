@@ -9,6 +9,9 @@ class AppColorConstants {
   /// Constructor
   const AppColorConstants();
 
+  static const Color _verificationFieldColor = Color(0x0f767680);
+  static Color get verificationFieldColor => _verificationFieldColor;
+
   /// Returns blue berry color
   static const Color _darkNavy = Color(0xFF020738);
 
@@ -114,15 +117,20 @@ class AppTextConstants {
   /// Returns one device and million songs sharing text
   static String getStarted = 'Get Started';
 
+  /// Returns Select from playlist
+  static String selectFromPlaylist = 'Select from playlist';
+
   /// Returns hassle free text
-  static String hassleFree = 'hassle free';
+  static String hassleFree = 'HASSLE FREE';
+
+  static String everyOne = 'Everyone has a piece of the\nplaylist';
 
   /// Returns one device and million songs sharing text
   static String oneDeviceMillionSongs =
-      'One device & millions \nof songs sharing';
+      ' One device & millions \n of songs sharing';
 
   /// Returns your text
-  static String your = 'Your';
+  static String your = 'YOUR';
 
   /// Returns next text
   static String next = 'Next';
@@ -147,10 +155,12 @@ class AppTextConstants {
   static String enterEmail = 'Enter your email here...';
 
   /// Returns Enter new Password.
-  static String enterNewPasswordTitle = 'Enter new password';
+  static String enterNewPasswordTitle = 'Create New Password';
 
   /// Returns New Password.
-  static String newPassword = 'New Password';
+  static String newPassword = 'Edit Profile';
+  static String newPasswordd = 'Create New Password';
+
 
   /// Returns login text
   static String login = 'Login';
@@ -163,18 +173,23 @@ class AppTextConstants {
 
   /// Returns username text
   static String username = 'Username';
+  static String emailverify = 'Email';
 
   /// Returns password text
   static String password = 'Password';
+  static String repassword = 'Re-type Password';
 
   /// Returns confirm password text
-  static String confirmPassword = 'Confirm Password';
+  static String reTypeNewPassword = 'Re-type New Password';
+
+  /// Returns confirm password text
+  static String ConfirmPassword = 'Confirm Password';
 
   /// Returns paste song link here text
   static String pasteSongLinkHere = 'Paste Song Link here';
 
   /// Returns email
-  static String regEmail = 'Email';
+  static String regEmail = 'Email Address';
 
   /// Returns phone number
   static String regPhone = 'Phone Number';
@@ -190,11 +205,13 @@ class AppTextConstants {
       'Password and Confirm password does not match';
 
   /// Returns Verification Code text
-  static String verificationCodeTitle = 'Verification Code';
+  static String verificationCodeTitle = 'Verify Verification Code';
 
   /// Returns Check your email for verification code that we sent to you text
-  static String verificationCodeDescription =
-      'Check your email for verification code that we sent to you';
+  static String verificationCodeEmail =
+      'Please enter your verification code sent to your email account.';
+  static String verificationCodePhone =
+      'Please enter your verification code sent to your phone number.';
 
   /// Returns Resend Code? text
   static String resendCode = 'Resend Code?';
@@ -236,6 +253,9 @@ class AppTextConstants {
   /// Returns make your queue text
   static String makeYourQueue = 'Make Your Queue';
 
+  /// Returns featured image
+  static String featuredImage = 'Featured Image';
+
   /// Returns enter your queue name text
   static String enterYourQueueName = 'Enter your queue name';
 
@@ -246,7 +266,10 @@ class AppTextConstants {
   static String continueTxt = 'Continue';
 
   ///Returns let's add music text
-  static String letsAddMusic = "Let's add music";
+  static String letsAddMusic = "Let's add music:";
+
+  ///Return add music
+  static String addMusic = 'Add music:';
 
   ///Returns spotify text
   static String spotify = 'Spotify';
@@ -331,7 +354,7 @@ class AppTextConstants {
 
   ///Returns select music profile you wish to add and dance on text
   static String selectMusicProfile =
-      'select music profile you wish to add and dance on';
+      'Select Music Profile You Wish To Add And Dance On';
 
   ///Returns friends text
   static String friends = 'Friends';
@@ -447,6 +470,18 @@ class AppTextConstants {
 
   ///Returns settings text
   static String settings = 'Settings';
+
+  //create account and login
+  static String createAccountLogin =
+      'By Tapping Login or Create New Account, you agree to BeatBridge';
+
+  //terms and condition
+  static String terms = 'Terms & Conditions';
+
+  //privacy policy
+  static String policy = 'Privacy Policy.';
+  // faq's
+  static String FAQ = 'FAQ';
 }
 
 /// Class for app contact details

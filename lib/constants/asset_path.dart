@@ -27,14 +27,16 @@ class AssetsNameConstants {
   static const String splashScreenBackground = 'splash_screen_background.png';
 
   /// returns app logo colored slogan file name
-  static const String appLogoColoredSlogan = 'app_logo_colored_slogan.png';
+  static const String appLogoColoredSlogan =
+      'assets/images/app_logo_colored_slogan.png';
+  static const String termsCondition = 'assets/images/terms_condition.png';
+  static const String privacyPolicy = 'assets/images/privacy_policy.png';
 
   /// returns app logo white file name
   static const String appLogoWhite = 'app_logo_white.png';
 
   /// returns walk through colored text 1 file name
-  static const String walkThroughColoredText1 =
-      'walk_through_colored_text_1.png';
+  static const String walkThroughColoredText1 = 'favourite.png';
 
   /// returns walk through colored text 2 file name
   static const String walkThroughColoredText2 =

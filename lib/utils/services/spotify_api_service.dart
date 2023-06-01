@@ -1,38 +1,123 @@
-// ignore_for_file: public_member_api_docs
+// ignore_for_file: public_member_api_docs, always_specify_types, avoid_catches_without_on_clauses
 
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart' as Foundation;
+import 'package:beatbridge/constants/api_path.dart';
 import 'package:beatbridge/widgets/webview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart';
+import 'package:oauth2/src/authorization_code_grant.dart';
 import 'package:spotify/spotify.dart';
 import 'package:spotify_sdk/spotify_sdk.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:http/http.dart' as Http;
+import 'package:http/src/response.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
 
-const storage = FlutterSecureStorage();
+const FlutterSecureStorage storage = FlutterSecureStorage();
+const int timeoutInSeconds = 30;
 
 class SpotifyApiService {
   SpotifyApiService(this.context);
   BuildContext context;
 
+  Response handleResponse(Http.Response response, String uri) {
+    dynamic _body;
+    try {
+      _body = jsonDecode(response.body);
+    } catch (e) {}
+    Response _response = Response(
+      _body ?? response.body,
+      response.statusCode,
+    );
+    // Response _response = Response(
+    //   body: _body ?? response.body,
+    //   bodyString: response.body.toString(),
+    //   request: Request(
+    //       headers: response.request.headers,
+    //       method: response.request.method,
+    //       url: response.request.url),
+    //   headers: response.headers,
+    //   statusCode: response.statusCode,
+    //   statusText: response.reasonPhrase,
+    // );
+    if (_response.statusCode != 200 &&
+        _response.body != null &&
+        _response.body is! String) {
+      if (_response.body.toString().startsWith('{errors: [{code:')) {
+        // ErrorResponse _errorResponse = ErrorResponse.fromJson(_response.body);
+        _response = Response(
+          _response.body,
+          _response.statusCode,
+          // statusText: _errorResponse.errors[0].message
+        );
+      } else if (_response.body.toString().startsWith('{message')) {
+        _response = Response(
+          _response.body,
+          _response.statusCode,
+        );
+      }
+    } else if (_response.statusCode != 200 && _response.body == null) {
+      // _response = Response(statusCode: 0, statusText: noInternetMessage);
+    }
+    if (Foundation.kDebugMode) {
+      print(
+          '====> API Response: [${_response.statusCode}] $uri\n${_response.body}');
+    }
+    return _response;
+  }
+
+  Future<Response> getData(String uri,
+      {required Map<String, dynamic> query,
+      required Map<String, String> headers}) async {
+    try {
+      final Http.Response _response = await Http.get(
+        Uri.parse(AppAPIPath.spotifyApiBaseUrl + uri),
+      ).timeout(const Duration(seconds: timeoutInSeconds));
+      return handleResponse(_response, uri);
+    } catch (e) {
+      print('------------${e.toString()}');
+      return Response('', 200);
+    }
+  }
+
   static SpotifyApiCredentials credentials = SpotifyApiCredentials(
-      'cb43014c85e945c3b1a4ac2676283ba4', '167cc0d0c2a94c96926ee0107a85e6e5');
+      '2e522304863a47b49febbb598d524472', '540aa17a76224bdebc8e25cf3c24951b');
   SpotifyApi spotify = SpotifyApi(credentials);
-  authorizeCodeFlow() async {
-    final grant = SpotifyApi.authorizationCodeGrant(credentials);
-    final redirectUri = 'https://oauth.pstmn.io/v1/browser-callback';
+
+  Future<void> authorizeCodeFlow() async {
+    final AuthorizationCodeGrant grant =
+        SpotifyApi.authorizationCodeGrant(credentials);
+    String redirectUri = Platform.isIOS
+        ? "hellospotify1"
+        // "spotify-ios-quick-start://spotify-login-callback"
+        : 'https://spotifydata.com/callback';
     final List<String> scopes = [
+      'app-remote-control',
+      'user-modify-playback-state',
+      'playlist-read-private',
+      'playlist-modify-public',
+      'user-read-currently-playing',
+      'playlist-modify-private',
       'user-read-recently-played',
+      'user-read-private',
+      'user-read-email',
+      'user-top-read',
     ];
 
-    final authUri =
+    final Uri authUri =
         grant.getAuthorizationUrl(Uri.parse(redirectUri), scopes: scopes);
 
-    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+    if (Platform.isAndroid) {
+      WebView.platform = SurfaceAndroidWebView();
+    }
 
     await Navigator.push(
         context,
@@ -47,9 +132,12 @@ class SpotifyApiService {
 
   static Future<String> getAuthenticationToken() async {
     try {
-      final authenticationToken = await SpotifySdk.getAuthenticationToken(
-          clientId: dotenv.env['CLIENT_ID'].toString(),
-          redirectUrl: dotenv.env['REDIRECT_URL'].toString(),
+      final String authenticationToken = await SpotifySdk.getAccessToken(
+          clientId: '13aa2f4fc14c4c70aeeac291a0580769',
+          // '7f9bf13747164bbd999f79a1c91eb4b2',
+          // dotenv.env['CLIENT_ID'].toString(),
+          redirectUrl: 'https://spotifydata.com/callback',
+          // dotenv.env['REDIRECT_URL'].toString(),
           scope: 'app-remote-control, '
               'user-modify-playback-state, '
               'playlist-read-private, '
@@ -70,23 +158,45 @@ class SpotifyApiService {
     }
   }
 
+  // Future appRemote() async{
+  //   final String? token = await storage.read(key: 'spotifyAuthToken');
+  //   try{
+
+  //   }on PlatformException catch(e){
+  //     return [];
+  //   }
+  // }
+
   static Future<Iterable<PlayHistory>> getRecentPlayed() async {
     // Read value
     final String? token = await storage.read(key: 'spotifyAuthToken');
     try {
+      final Uri path = Uri.parse('${AppAPIPath.spotifyApiBaseUrl}?limit=50');
+
       final SpotifyApi spotify = SpotifyApi.withAccessToken(token!);
-      final recentlyPlayed = spotify.me.recentlyPlayed();
+      final CursorPages<PlayHistory> recentlyPlayed =
+          spotify.me.recentlyPlayed();
+
       return await recentlyPlayed.all();
     } on PlatformException catch (e) {
-      return [];
+      return Future.error('$e.code: $e.message');
     } on MissingPluginException {
-      return [];
+      return Future.error('no recently songs available');
     }
   }
+  // Future<void> userPlaylist() async {
+  //   final String? token = await storage.read(key: 'spotifyAuthToken');
+  //   try{
+  //     Response response = await
+  //   } on PlatformException catch (e){}
+  // }
 
   static Future<Iterable<Track>> getTopTracks() async {
     // Read value
     final String? token = await storage.read(key: 'spotifyAuthToken');
+
+    if (token == null) return [];
+
     try {
       final SpotifyApi spotify = SpotifyApi.withAccessToken(token!);
       return await spotify.me.topTracks();
@@ -98,11 +208,12 @@ class SpotifyApiService {
   }
 
   static Future<Artist> getArtistDetails(String artistID) async {
-    const FlutterSecureStorage storage = FlutterSecureStorage();
+    // const FlutterSecureStorage storage = FlutterSecureStorage();
     final String? token = await storage.read(key: 'spotifyAuthToken');
     final Artist art = Artist();
     try {
       final SpotifyApi spotify = SpotifyApi.withAccessToken(token!);
+      print(spotify.artists.get(artistID));
       return await spotify.artists.get(artistID);
     } on PlatformException catch (e) {
       return art;
@@ -139,6 +250,22 @@ class SpotifyApiService {
       return playList;
     } on MissingPluginException {
       return playList;
+    }
+  }
+
+  static Future<Iterable<PlaylistSimple>> getUserPlayList() async {
+    final Iterable<PlaylistSimple> userPlaylist = [];
+    // Read value
+    final String? token = await storage.read(key: 'spotifyAuthToken');
+    try {
+      final SpotifyApi spotify = SpotifyApi.withAccessToken(token!);
+      return await spotify.playlists
+          .getUsersPlaylists('31xpmfeoflk5fjj37y3lk5ifze5i')
+          .all();
+    } on PlatformException catch (e) {
+      return userPlaylist;
+    } on MissingPluginException {
+      return userPlaylist;
     }
   }
 }
