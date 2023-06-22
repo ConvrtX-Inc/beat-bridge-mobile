@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:beatbridge/helpers/basehelper.dart';
 import 'package:beatbridge/models/users/new_queue_model.dart';
 import 'package:beatbridge/utils/services/spotify_api_service.dart';
 import 'package:flutter/material.dart';
@@ -166,7 +167,7 @@ class _SeeAllMemeberState extends State<SeeAllMemeber> {
                                                       image: DecorationImage(
                                                         //image: NetworkImage(friendList[index].profileImageUrl),
                                                         image: NetworkImage(
-                                                            "https://beat.softwarealliancetest.tk${qMembers[index].user.image}"),
+                                                            "${BaseHelper().baseUrl}${qMembers[index].user.image}"),
                                                         fit: BoxFit.fill,
                                                       )),
                                                 )

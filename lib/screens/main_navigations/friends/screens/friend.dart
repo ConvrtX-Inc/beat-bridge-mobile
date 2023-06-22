@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/constants/asset_path.dart';
+import 'package:beatbridge/helpers/basehelper.dart';
 import 'package:beatbridge/models/apis/api_standard_return.dart';
 import 'package:beatbridge/models/friends/friend_model.dart';
 import 'package:beatbridge/models/friends/new_friend_model.dart';
@@ -222,7 +223,7 @@ class _FriendScreenState extends State<FriendScreen> {
                                       borderRadius: BorderRadius.circular(8),
                                       image: DecorationImage(
                                         image: NetworkImage(
-                                            "https://beat.softwarealliancetest.tk${friendList[index].fromUser!.image}"),
+                                            "${BaseHelper().baseUrl}${friendList[index].fromUser!.image}"),
                                         fit: BoxFit.fitHeight,
                                       )),
                                 )

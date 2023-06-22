@@ -315,7 +315,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                                           image: NetworkImage(userQueues[index]
                                                       .platform ==
                                                   null
-                                              ? "https://beat.softwarealliancetest.tk${userQueues[index].image}"
+                                              ? "${BaseHelper().baseUrl}${userQueues[index].image}"
                                               : userQueues[index]
                                                       .queueData
                                                       ?.images?[index]

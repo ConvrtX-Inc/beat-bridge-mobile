@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/constants/app_list.dart';
 import 'package:beatbridge/constants/asset_path.dart';
+import 'package:beatbridge/helpers/basehelper.dart';
 import 'package:beatbridge/models/users/user_model.dart';
 import 'package:beatbridge/screens/auths/logins/screens/login.dart';
 import 'package:beatbridge/utils/logout_helper.dart';
@@ -106,7 +107,7 @@ class _ProfileSettigsState extends State<ProfileSettigs> {
                           borderRadius: BorderRadius.circular(10),
                           image: DecorationImage(
                             image: NetworkImage(
-                                'https://beat.softwarealliancetest.tk${UserSingleton.instance.profileImage}'
+                                '${BaseHelper().baseUrl}${UserSingleton.instance.profileImage}'
                                 // Global.imagetemppath,
                                 ),
                             fit: BoxFit.cover,

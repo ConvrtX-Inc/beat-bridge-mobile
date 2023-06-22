@@ -1056,7 +1056,7 @@ class _RecentQueuesState extends State<RecentQueues> {
                         ? queue.image.toString().isNotEmpty ||
                                 queue?.image != null
                             ? Image.network(
-                                "https://beat.softwarealliancetest.tk${queue?.image}",
+                                "${BaseHelper().baseUrl}${queue?.image}",
                                 fit: BoxFit.fill,
                                 height: 70.h)
                             : Image.network(

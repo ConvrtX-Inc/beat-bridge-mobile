@@ -223,6 +223,7 @@ class _SeeAllQueueDataState extends State<SeeAllQueueData> {
           }
         });
   }
+
 ////hererre
   Widget buildRecentQueueItem(NewQueueModel queue, int index) {
     return Padding(
@@ -249,21 +250,21 @@ class _SeeAllQueueDataState extends State<SeeAllQueueData> {
                   child: ClipOval(
                       child: queue.platform == null
                           ? queue.image.toString().isNotEmpty ||
-                          queue?.image != null
-                          ? Image.network(
-                          "https://beat.softwarealliancetest.tk${queue?.image}",
-                          fit: BoxFit.fill,
-                          height: 70.h)
+                                  queue?.image != null
+                              ? Image.network(
+                                  "${BaseHelper().baseUrl}${queue?.image}",
+                                  fit: BoxFit.fill,
+                                  height: 70.h)
+                              : Image.network(
+                                  queue?.image ??
+                                      'https://www.w3schools.com/howto/img_avatar.png',
+                                  height: 70.h)
                           : Image.network(
-                          queue?.image ??
-                              'https://www.w3schools.com/howto/img_avatar.png',
-                          height: 70.h)
-                          : Image.network(
-                          queue.queueData!.images![0].url.toString(),
-                          height: 70.h)
-                    // child: Image.asset(recentQueueList[index].thumbnailUrl,
-                    // height: 70.h),
-                  ),
+                              queue.queueData!.images![0].url.toString(),
+                              height: 70.h)
+                      // child: Image.asset(recentQueueList[index].thumbnailUrl,
+                      // height: 70.h),
+                      ),
                   // child: ClipOval(
                   //     child: queue.image.toString().isNotEmpty ||
                   //         queue.image != null

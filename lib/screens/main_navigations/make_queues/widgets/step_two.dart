@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/constants/app_list.dart';
 import 'package:beatbridge/constants/asset_path.dart';
+import 'package:beatbridge/helpers/basehelper.dart';
 import 'package:beatbridge/models/apis/api_standard_return.dart';
 import 'package:beatbridge/models/music_platform_model.dart';
 import 'package:beatbridge/models/people_model.dart';
@@ -244,7 +245,7 @@ class _StepTwoState extends State<StepTwo> {
                         borderRadius: BorderRadius.circular(8),
                         image: DecorationImage(
                           image: NetworkImage(
-                              "https://beat.softwarealliancetest.tk${friendList[index].profileImageUrl}"),
+                              "${BaseHelper().baseUrl}${friendList[index].profileImageUrl}"),
                           fit: BoxFit.fitHeight,
                         )),
                   ),

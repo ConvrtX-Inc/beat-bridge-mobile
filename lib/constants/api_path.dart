@@ -6,7 +6,6 @@ class AppAPIPath {
   /// Constructor
   const AppAPIPath();
 
-
   /// Returns staging mode (change to false if deploying to live)
   static bool isStaging = false;
 
@@ -16,7 +15,8 @@ class AppAPIPath {
 
   /// Returns API base url production
   // static String apiBaseUrl = 'beat-bridge-api.herokuapp.com';
-  static String apiBaseUrl = 'beat.softwarealliancetest.tk';
+  static String apiBaseUrl = 'api.beatbridge.app';
+  // 'beat.softwarealliancetest.tk';
 
   /// Returns API base url staging
   // static String apiBaseUrl = 'beatbridge-api-staging.herokuapp.com';
@@ -95,6 +95,4 @@ class AppAPIPath {
   static String getPrivacyPolicy = '/api/v1/guidlines/privacyPolicy';
   static String getTermsCondition = '/api/v1/guidlines/termsCondition';
   static String getSupport = '/api/v1/support/';
-
-
 }

@@ -36,29 +36,28 @@ class _CreateTicketScreenState extends State<CreateTicketScreen> {
   static final GlobalKey<FormState> createTicketFormGlobalKey =
       GlobalKey<FormState>();
 
-  void saveMessage(String constTicketId,String message) async{
+  void saveMessage(String constTicketId, String message) async {
     final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
     var userID = await secureStorage.read(key: 'userID');
     var name = await secureStorage.read(key: 'username');
-    var userImage = "https://beat.softwarealliancetest.tk${UserSingleton.instance.profileImage}";
-    if(userImage == "https://beat.softwarealliancetest.tk")
-      {
-        userImage = "";
-      }
-    else{
-      userImage = 'https://beat.softwarealliancetest.tk${UserSingleton.instance.profileImage}';
+    var userImage =
+        "${BaseHelper().baseUrl}${UserSingleton.instance.profileImage}";
+    if (userImage == "${BaseHelper().baseUrl}") {
+      userImage = "";
+    } else {
+      userImage =
+          '${BaseHelper().baseUrl}${UserSingleton.instance.profileImage}';
     }
 
-
-      /////////////
+    /////////////
     FirebaseFirestore.instance
         .collection('messages')
         .doc(constTicketId)
         .set({
-      'name': name,
-      'image': userImage,
-      'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
-    }, SetOptions(merge: true))
+          'name': name,
+          'image': userImage,
+          'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
+        }, SetOptions(merge: true))
         .then((value) => print('New field added to document'))
         .catchError((error) => print('Failed to add new field: $error'));
 
@@ -68,21 +67,22 @@ class _CreateTicketScreenState extends State<CreateTicketScreen> {
         .doc('$constTicketId')
         .collection('texts')
         .add({
-      'receiverAdminId' : 'e3aae445-314b-4acd-9559-e61f3caeb958',
-      'ticketid' : constTicketId,
-      'userid' :userID,
-      'text': message,
-      'description': message,
-      // 'timestamp': FieldValue.serverTimestamp(),
-      //  'timestamp': '${timestamp}'
-      'profilepic': userImage,
-      'username': name,
-      'type': 'in',
-      'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
-    })
+          'receiverAdminId': 'e3aae445-314b-4acd-9559-e61f3caeb958',
+          'ticketid': constTicketId,
+          'userid': userID,
+          'text': message,
+          'description': message,
+          // 'timestamp': FieldValue.serverTimestamp(),
+          //  'timestamp': '${timestamp}'
+          'profilepic': userImage,
+          'username': name,
+          'type': 'in',
+          'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
+        })
         .then((value) => print("Message saved"))
         .catchError((error) => print("Failed to save message: $error"));
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -208,8 +208,9 @@ class _CreateTicketScreenState extends State<CreateTicketScreen> {
         loading = true;
       });
       BaseHelper()
-          .addSupport(_subjectController.text.toString().trim(), _descriptionController.text.toString().trim(), context).then((value) {
-
+          .addSupport(_subjectController.text.toString().trim(),
+              _descriptionController.text.toString().trim(), context)
+          .then((value) {
         if (value.toString().contains("id")) {
           String id = ticketResponseModel.id.toString();
           print('idddddd ticket ' + id);

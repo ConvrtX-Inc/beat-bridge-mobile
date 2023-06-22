@@ -131,7 +131,7 @@ class _MemberProfileState extends State<MemberProfile> {
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(120)),
                                     child: Image.network(
-                                      "https://beat.softwarealliancetest.tk${widget.memberData.user.image}",
+                                      "${BaseHelper().baseUrl}${widget.memberData.user.image}",
                                       fit: BoxFit.cover,
                                       height: 130,
                                       width: 130,

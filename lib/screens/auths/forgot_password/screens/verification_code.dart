@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:beatbridge/constants/app_constants.dart';
+import 'package:beatbridge/helpers/basehelper.dart';
 import 'package:beatbridge/models/verifyEmail.dart';
 import 'package:beatbridge/screens/auths/forgot_password/screens/verify_email.dart';
 import 'package:beatbridge/utils/hexColor.dart';
@@ -17,9 +18,8 @@ import 'dart:convert';
 var code;
 bool isLoading = false;
 
-
 class VerificationCodeScreen extends StatefulWidget {
-const VerificationCodeScreen({super.key});
+  const VerificationCodeScreen({super.key});
 
   @override
   _VerificationCodeScreenState createState() => _VerificationCodeScreenState();
@@ -34,7 +34,8 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: AppColorConstants.mirage,
-        body: SingleChildScrollView(child:Padding(
+        body: SingleChildScrollView(
+            child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Form(child: _verificationCodeUI()),
         )),
@@ -52,92 +53,85 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
           IconButton(
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
-            icon: Icon(Icons.arrow_back_ios,color: AppColorConstants.roseWhite,),onPressed: (){
-                Navigator.of(context).pop();
-              },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: AppColorConstants.roseWhite,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
           SizedBox(height: 36.h),
-           Text(
-              AppTextConstants.verificationCodeTitle,
-              style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  color: AppColorConstants.roseWhite,
-                  fontFamily: 'Gilroy-Bold',
-                  fontSize: 22),
-            ),
-
+          Text(
+            AppTextConstants.verificationCodeTitle,
+            style: TextStyle(
+                fontWeight: FontWeight.w800,
+                color: AppColorConstants.roseWhite,
+                fontFamily: 'Gilroy-Bold',
+                fontSize: 22),
+          ),
           SizedBox(
             height: 31.h,
           ),
           Padding(
-                padding:
-                    const EdgeInsets.only(top: 35),
-                child: PinCodeTextField(
-                  textStyle: TextStyle(color:AppColorConstants.roseWhite),
-                  length: 4,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  controller: _verificationCodeController,
-                  appContext: context,
-                  autoFocus: true,
-
-                  keyboardType: TextInputType.number,
-                  animationType: AnimationType.slide,
-                  pinTheme: PinTheme(
-                    shape: PinCodeFieldShape.box,
-                    fieldHeight: 77,
-
-                    fieldWidth: 78,
-                    borderWidth: 1,
-                    borderRadius:BorderRadius.circular(5),
-                    selectedColor:AppColorConstants.artyClickPurple,
-                    selectedFillColor: AppColorConstants.verificationFieldColor,
-                    inactiveFillColor:AppColorConstants.verificationFieldColor,
-                    inactiveColor:AppColorConstants.verificationFieldColor,
-                    activeColor:AppColorConstants.verificationFieldColor,
-                    activeFillColor:AppColorConstants.verificationFieldColor,
-                  ),
-                  animationDuration: const Duration(milliseconds: 300),
-                  backgroundColor: Colors.transparent,
-                  enableActiveFill: true,
-                  onSaved: (value){
-                    code = _verificationCodeController.value.text;
-                  },
-                  onChanged: (String val){
-                    code = val;
-                  },
-                  beforeTextPaste: (text) => true,
-                ),
+            padding: const EdgeInsets.only(top: 35),
+            child: PinCodeTextField(
+              textStyle: TextStyle(color: AppColorConstants.roseWhite),
+              length: 4,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              controller: _verificationCodeController,
+              appContext: context,
+              autoFocus: true,
+              keyboardType: TextInputType.number,
+              animationType: AnimationType.slide,
+              pinTheme: PinTheme(
+                shape: PinCodeFieldShape.box,
+                fieldHeight: 77,
+                fieldWidth: 78,
+                borderWidth: 1,
+                borderRadius: BorderRadius.circular(5),
+                selectedColor: AppColorConstants.artyClickPurple,
+                selectedFillColor: AppColorConstants.verificationFieldColor,
+                inactiveFillColor: AppColorConstants.verificationFieldColor,
+                inactiveColor: AppColorConstants.verificationFieldColor,
+                activeColor: AppColorConstants.verificationFieldColor,
+                activeFillColor: AppColorConstants.verificationFieldColor,
               ),
-
-          Text(
-              AppTextConstants.verificationCodeEmail,
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: AppColorConstants.roseWhite,
-                  fontSize: 16),
+              animationDuration: const Duration(milliseconds: 300),
+              backgroundColor: Colors.transparent,
+              enableActiveFill: true,
+              onSaved: (value) {
+                code = _verificationCodeController.value.text;
+              },
+              onChanged: (String val) {
+                code = val;
+              },
+              beforeTextPaste: (text) => true,
             ),
+          ),
+          Text(
+            AppTextConstants.verificationCodeEmail,
+            style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: AppColorConstants.roseWhite,
+                fontSize: 16),
+          ),
           SizedBox(
             height: 100.h,
           ),
-              ButtonRoundedGradient(
+          ButtonRoundedGradient(
             buttonCallback: () {
               print('ZAITOOOOOOM111');
               print('----------------');
               setState(() {
-              _verificationCodeController.text.toString();
-
+                _verificationCodeController.text.toString();
               });
               print(_verificationCodeController);
               if (_verificationCodeController.text.isEmpty) {
-                                _showDialog();
-
-
-              }
-              else {
+                _showDialog();
+              } else {
                 print('ZAITOOOOOOM111');
                 verfyOtp();
-
-
               }
             },
           ),
@@ -164,34 +158,32 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
                     color: Colors.white,
                     fontSize: 14),
               ),
-
-                  GestureDetector(
-                    onTap: (){
-                      print('Your press resend button');
-                      setState(() {
-                        isLoading = true; // Set isLoading state to true
-                      });
-                      verfyEmail().then((_) {
-                        // Once the verification is complete, set isLoading state to false
-                        setState(() {
-                          isLoading = false;
-                        });
-                      });
-                    },
-                    child: Text(
-                      ' Resend',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xffAB47AD),
-                          fontSize: 14),
-                    ),
-                  ),
-
+              GestureDetector(
+                onTap: () {
+                  print('Your press resend button');
+                  setState(() {
+                    isLoading = true; // Set isLoading state to true
+                  });
+                  verfyEmail().then((_) {
+                    // Once the verification is complete, set isLoading state to false
+                    setState(() {
+                      isLoading = false;
+                    });
+                  });
+                },
+                child: Text(
+                  ' Resend',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xffAB47AD),
+                      fontSize: 14),
+                ),
+              ),
             ],
           ),
-
         ]);
   }
+
   void _showDialog() {
     // flutter defined function
     showDialog(
@@ -200,12 +192,13 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
         // return object of type Dialog
         return AlertDialog(
           title: Align(
-            alignment: Alignment.centerLeft,
-              child: Text("Enter OTP",)),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Enter OTP",
+              )),
           // content: new Text("Inter OTP"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
-           
           ],
         );
       },
@@ -214,77 +207,64 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
 
   /////////VERIFY OTP
 
-  Future<verifyOtpModel?> verfyOtp() async{
-    var headers = {
-      'Content-Type': 'application/json'
-    };
+  Future<verifyOtpModel?> verfyOtp() async {
+    var headers = {'Content-Type': 'application/json'};
     ///////
     final response = await http.post(
-      Uri.parse("https://beat.softwarealliancetest.tk/api/v1/auth/otp/verify"),
+      Uri.parse("${BaseHelper().baseUrl}/api/v1/auth/otp/verify"),
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       encoding: Encoding.getByName('utf-8'),
-      body: {
-        "hash": _verificationCodeController.value.text
-      },
+      body: {"hash": _verificationCodeController.value.text},
     );
     ////////////////////
-    verifyOtpModel verifyeotpmodel = verifyOtpModel.fromJson(jsonDecode(response.body));
-    if(response.statusCode==200){
-      if(verifyeotpmodel.status == 200){
+    verifyOtpModel verifyeotpmodel =
+        verifyOtpModel.fromJson(jsonDecode(response.body));
+    if (response.statusCode == 200) {
+      if (verifyeotpmodel.status == 200) {
         print('OTP Verified');
         Navigator.pushReplacementNamed(context, '/new_password');
       }
-    }
-    else{
+    } else {
       print('Wrong OTP');
-      final snackBar = SnackBar( content: Text('Wrong Otp'));
+      final snackBar = SnackBar(content: Text('Wrong Otp'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
     }
   }
-  Future<verifyEmailModel?> verfyEmail() async{
-    var headers = {
-      'Content-Type': 'application/json'
-    };
+
+  Future<verifyEmailModel?> verfyEmail() async {
+    var headers = {'Content-Type': 'application/json'};
     ///////
-    try{
+    try {
       final response = await http.post(
-        Uri.parse("https://beat.softwarealliancetest.tk/api/v1/auth/forgot/password"),
+        Uri.parse("${BaseHelper().baseUrl}/api/v1/auth/forgot/password"),
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
         encoding: Encoding.getByName('utf-8'),
-        body: {
-          "email": emailController.text
-        },
+        body: {"email": emailController.text},
       );
       ////////////////////
-      verifyEmailModel verifyemailmodel = verifyEmailModel.fromJson(jsonDecode(response.body));
-      if(response.statusCode==200){
-        if(verifyemailmodel.message == "Email Sent"){
+      verifyEmailModel verifyemailmodel =
+          verifyEmailModel.fromJson(jsonDecode(response.body));
+      if (response.statusCode == 200) {
+        if (verifyemailmodel.message == "Email Sent") {
           print('Email exist');
           Navigator.pushReplacementNamed(context, '/verification_code');
         }
-      }
-      else if(response.statusCode==500){
-        final snackBar = SnackBar( content: Text('Internal server error'));
+      } else if (response.statusCode == 500) {
+        final snackBar = SnackBar(content: Text('Internal server error'));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else if (response.statusCode == 422) {
+        final snackBar = SnackBar(content: Text('User does not exists'));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else {
+        final snackBar = SnackBar(content: Text('Socket exception'));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
-      else if(response.statusCode==422){
-        final snackBar = SnackBar( content: Text('User does not exists'));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
-      else{
-        final snackBar = SnackBar( content: Text('Socket exception'));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
-    }
-    catch(e){
+    } catch (e) {
       print(e);
     }
-
   }
-
 }

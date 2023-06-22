@@ -301,7 +301,7 @@ class _StepTwoState extends State<AddMusic> {
                         borderRadius: BorderRadius.circular(8),
                         image: DecorationImage(
                           image: NetworkImage(
-                              "https://beat.softwarealliancetest.tk${friendList[index].profileImageUrl}"),
+                              "${BaseHelper().baseUrl}${friendList[index].profileImageUrl}"),
                           fit: BoxFit.fitHeight,
                         )),
                   ),

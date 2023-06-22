@@ -677,7 +677,7 @@ class _QueueDetailsState extends State<QueueDetails> {
                             //         widget.queue.image.toString() != 'null'
                             widget.queue.image != null
                                 ? Image.network(
-                                    "https://beat.softwarealliancetest.tk${widget.queue.image}",
+                                    "${BaseHelper().baseUrl}${widget.queue.image}",
                                     fit: BoxFit.cover,
                                     height: 132.h,
                                     width: 132.w,
@@ -1513,7 +1513,7 @@ class _QueueDetailsState extends State<QueueDetails> {
                                               image: DecorationImage(
                                                 //image: NetworkImage(friendList[index].profileImageUrl),
                                                 image: NetworkImage(
-                                                    "https://beat.softwarealliancetest.tk${qMembers[index].user.image}"),
+                                                    "${BaseHelper().baseUrl}${qMembers[index].user.image}"),
                                                 fit: BoxFit.fill,
                                               )),
                                         )

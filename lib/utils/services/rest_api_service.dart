@@ -36,7 +36,8 @@ import '../logout_helper.dart';
 class APIServices {
   /// is debugging
   final bool isDebugging = true;
-  var baseurl = "https://beat.softwarealliancetest.tk";
+  var baseurl = "https://api.beatbridge.app";
+  // "https://beat.softwarealliancetest.tk";
 
   /// API base mode
   final String apiBaseMode = AppAPIPath.apiBaseMode;
@@ -276,13 +277,13 @@ class APIServices {
     var body = json.encode(trackData);
     log(body);
 
-    final http.Response response = await http.post(
-        Uri.parse('https://beat.softwarealliancetest.tk/api/track'),
-        headers: {
-          HttpHeaders.authorizationHeader: 'Bearer $userAuthToken',
-          'content-type': 'application/json'
-        },
-        body: body);
+    final http.Response response =
+        await http.post(Uri.parse('${BaseHelper().baseUrl}/api/track'),
+            headers: {
+              HttpHeaders.authorizationHeader: 'Bearer $userAuthToken',
+              'content-type': 'application/json'
+            },
+            body: body);
 
     print('object queueId : ${userTrackModel.queueId}');
     print('object userId: ${userTrackModel.userId}');
@@ -301,6 +302,8 @@ class APIServices {
       'longitude': '$longitude'
     };
     print("login body: $body");
+    print(
+        "my login url is: ${Uri.parse('$apiBaseMode$apiBaseUrl/${AppAPIPath.loginUrlEmail}')}");
     final http.Response response = await http.post(
         Uri.parse('$apiBaseMode$apiBaseUrl/${AppAPIPath.loginUrlEmail}'),
         body: body);
@@ -427,8 +430,7 @@ class APIServices {
       print('else is : $uriPath');
 
       //uriPath = Uri.https(apiBaseUrl, '${AppAPIPath.userQueues}?limit=5');
-      uriPath =
-          Uri.parse('https://beat.softwarealliancetest.tk/api/v1/user-queues?');
+      uriPath = Uri.parse('${BaseHelper().baseUrl}/api/v1/user-queues?');
     }
 
     print('else is : $uriPath');
@@ -630,10 +632,9 @@ class APIServices {
     final String? userAuthToken =
         await secureStorage.read(key: 'userAuthToken');
     final String? userID = await secureStorage.read(key: 'userID');
-    log('https://beat.softwarealliancetest.tk/api/track/user/$userID');
+    log('${BaseHelper().baseUrl}/api/track/user/$userID');
     final http.Response response = await http.get(
-        Uri.parse(
-            'https://beat.softwarealliancetest.tk/api/track/user/$userID'),
+        Uri.parse('${BaseHelper().baseUrl}/api/track/user/$userID'),
         headers: {
           HttpHeaders.authorizationHeader: 'Bearer $userAuthToken',
         });
@@ -646,8 +647,7 @@ class APIServices {
     final String? userAuthToken =
         await secureStorage.read(key: 'userAuthToken');
     final http.Response response = await http.get(
-        Uri.parse(
-            'https://beat.softwarealliancetest.tk/api/v1/user-queues/data/$queueId'),
+        Uri.parse('${BaseHelper().baseUrl}/api/v1/user-queues/data/$queueId'),
         //Uri.http(apiBaseUrl, '${AppAPIPath.queueMembers}fa6f6995-4980-4111-8030-5843fa2f1b9f'),
         headers: {
           HttpHeaders.authorizationHeader: 'Bearer $userAuthToken',

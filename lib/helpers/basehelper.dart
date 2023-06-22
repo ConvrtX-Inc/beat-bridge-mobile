@@ -13,10 +13,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import "dart:convert";
 
-TicketResponseModel ticketResponseModel =TicketResponseModel();
+TicketResponseModel ticketResponseModel = TicketResponseModel();
 
 class BaseHelper {
-  var baseUrl = "https://beat.softwarealliancetest.tk";
+  var baseUrl = "https://api.beatbridge.app";
+  // https://beat.softwarealliancetest.tk";
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
   toast(context, message) {
     Fluttertoast.showToast(
@@ -206,8 +207,7 @@ class BaseHelper {
       'is_admin': false
     };
     var body = json.encode(_body);
-    var url =
-        "https://beat.softwarealliancetest.tk${AppAPIPath.leaveQueue}$qid";
+    var url = "${BaseHelper().baseUrl}${AppAPIPath.leaveQueue}$qid";
     final http.Response response = await http.get(
       Uri.parse(url),
       headers: {
@@ -240,7 +240,7 @@ class BaseHelper {
 
     var _body = <String, dynamic>{"queueId": "$qid", "trackId": "$trackId"};
     var body = json.encode(_body);
-    var url = "https://beat.softwarealliancetest.tk${AppAPIPath.deleteTracks}";
+    var url = "${BaseHelper().baseUrl}${AppAPIPath.deleteTracks}";
     print("deleete track url: $url");
     final http.Response response = await http.delete(
       Uri.parse(url),
@@ -321,7 +321,7 @@ class BaseHelper {
       "message": "$message "
     };
     var body = json.encode(_body);
-    var url = "https://beat.softwarealliancetest.tk${AppAPIPath.addSupport}";
+    var url = "${BaseHelper().baseUrl}${AppAPIPath.addSupport}";
     print("deleete track url: $url");
     final http.Response response = await http.post(
       Uri.parse(url),
@@ -339,7 +339,8 @@ class BaseHelper {
 
       return jsons;
     } else {
-      ticketResponseModel = TicketResponseModel.fromJson(jsonDecode(response.body));
+      ticketResponseModel =
+          TicketResponseModel.fromJson(jsonDecode(response.body));
       print('8888888888888888888888');
 
       print('idktmlnmonnop');
@@ -362,7 +363,7 @@ class BaseHelper {
       toast(context, "$e");
     }
 
-    var url = "https://beat.softwarealliancetest.tk${AppAPIPath.getFaqs}";
+    var url = "${BaseHelper().baseUrl}${AppAPIPath.getFaqs}";
     print("deleete track url: $url");
     final http.Response response = await http.get(
       Uri.parse(url),
@@ -398,8 +399,7 @@ class BaseHelper {
       toast(context, "$e");
     }
 
-    var url =
-        "https://beat.softwarealliancetest.tk${AppAPIPath.getPrivacyPolicy}";
+    var url = "$baseUrl${AppAPIPath.getPrivacyPolicy}";
     print("deleete track url: $url");
     final http.Response response = await http.get(
       Uri.parse(url),
@@ -434,7 +434,7 @@ class BaseHelper {
       toast(context, "$e");
     }
 
-    var url = "https://beat.softwarealliancetest.tk${AppAPIPath.getFaqs}";
+    var url = "$baseUrl${AppAPIPath.getFaqs}";
     print("deleete track url: $url");
     final http.Response response = await http.get(
       Uri.parse(url),
@@ -471,8 +471,7 @@ class BaseHelper {
       toast(context, "$e");
     }
 
-    var url =
-        "https://beat.softwarealliancetest.tk${AppAPIPath.getTermsCondition}";
+    var url = "$baseUrl${AppAPIPath.getTermsCondition}";
     print("deleete track url: $url");
     final http.Response response = await http.get(
       Uri.parse(url),
@@ -508,8 +507,7 @@ class BaseHelper {
       toast(context, "$e");
     }
 
-    var url =
-        "https://beat.softwarealliancetest.tk${AppAPIPath.getSupport}$userID";
+    var url = "$baseUrl${AppAPIPath.getSupport}$userID";
     print("deleete track url: $url");
     final http.Response response = await http.get(
       Uri.parse(url),
@@ -535,5 +533,4 @@ class BaseHelper {
     }
     // return GlobalAPIServices().formatResponseToStandardFormat(response);
   }
-
 }

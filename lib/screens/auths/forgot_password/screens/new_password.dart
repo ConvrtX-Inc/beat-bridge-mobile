@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:beatbridge/constants/app_constants.dart';
+import 'package:beatbridge/helpers/basehelper.dart';
 import 'package:beatbridge/screens/auths/forgot_password/screens/verification_code.dart';
 import 'package:beatbridge/utils/helpers/form_helper.dart';
 import 'package:beatbridge/widgets/buttons/app_button_rounded.dart';
@@ -10,7 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../models/verifyOtp.dart';
 import 'package:http/http.dart' as http;
-
 
 class NewPasswordScreen extends StatefulWidget {
   const NewPasswordScreen({Key? key}) : super(key: key);
@@ -23,7 +23,6 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   TextEditingController _newPasswordController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
   final GlobalKey<FormState> _key = GlobalKey();
-
 
   String _newPassword = '';
   String _confirmPassword = '';
@@ -130,7 +129,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
           ButtonRoundedGradient(
             // buttonText: 'UPDATE',
             buttonCallback: () {
-              if(_key.currentState!.validate()){
+              if (_key.currentState!.validate()) {
                 newPassword();
               }
               print('zzzz');
@@ -140,38 +139,33 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
       ),
     );
   }
-  Future<NewPasswordModel?>  newPassword() async{
-    var headers = {
-      'Content-Type': 'application/json'
-    };
+
+  Future<NewPasswordModel?> newPassword() async {
+    var headers = {'Content-Type': 'application/json'};
     ///////
     final response = await http.post(
-      Uri.parse("https://beat.softwarealliancetest.tk/api/v1/auth/reset/password"),
+      Uri.parse("${BaseHelper().baseUrl}/api/v1/auth/reset/password"),
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       encoding: Encoding.getByName('utf-8'),
-      body: {
-        "password": _newPasswordController.value.text,
-        "hash": code
-      },
+      body: {"password": _newPasswordController.value.text, "hash": code},
     );
     ////////////////////
-    NewPasswordModel newpasswordmodel = NewPasswordModel.fromJson(jsonDecode(response.body));
-    if(response.statusCode==200){
-      if(newpasswordmodel.status == 200){
+    NewPasswordModel newpasswordmodel =
+        NewPasswordModel.fromJson(jsonDecode(response.body));
+    if (response.statusCode == 200) {
+      if (newpasswordmodel.status == 200) {
         print('Password Updated');
-        final snackBar = SnackBar( content: Text('Password updated sucessfully'));
+        final snackBar =
+            SnackBar(content: Text('Password updated sucessfully'));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
         Navigator.of(context).pop();
       }
-    }
-    else{
+    } else {
       print('not updated');
-      final snackBar = SnackBar( content: Text('not updated'));
+      final snackBar = SnackBar(content: Text('not updated'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
     }
-
   }
 }

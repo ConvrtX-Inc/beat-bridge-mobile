@@ -2,8 +2,8 @@
 
 import 'dart:async';
 
-
 import 'package:beatbridge/constants/app_constants.dart';
+import 'package:beatbridge/helpers/basehelper.dart';
 import 'package:beatbridge/models/verifyEmail.dart';
 import 'package:beatbridge/screens/auths/forgot_password/screens/verify_email.dart';
 import 'package:beatbridge/utils/hexColor.dart';
@@ -30,22 +30,23 @@ import '../../../../models/verifyEmail.dart';
 bool isLoading = false;
 
 class NumberVerificationCodeScreen extends StatefulWidget {
-const NumberVerificationCodeScreen({super.key});
+  const NumberVerificationCodeScreen({super.key});
 
   @override
-  _NumberVerificationCodeScreenState createState() => _NumberVerificationCodeScreenState();
+  _NumberVerificationCodeScreenState createState() =>
+      _NumberVerificationCodeScreenState();
 }
 
-class _NumberVerificationCodeScreenState extends State<NumberVerificationCodeScreen> {
+class _NumberVerificationCodeScreenState
+    extends State<NumberVerificationCodeScreen> {
   String _number = '0';
   late Timer _timer;
   int _seconds = 0;
   final GlobalKey<FormState> _key = GlobalKey();
 
-
   void _startTimer() {
     _seconds = 60;
-     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       _seconds = _seconds - 1;
       if (_seconds == 0) {
         timer.cancel();
@@ -54,6 +55,7 @@ class _NumberVerificationCodeScreenState extends State<NumberVerificationCodeScr
       setState(() {});
     });
   }
+
   @override
   void initState() {
     super.initState();
@@ -63,6 +65,7 @@ class _NumberVerificationCodeScreenState extends State<NumberVerificationCodeScr
     //     : '+' + widget.number.substring(1, widget.number.length);
     _startTimer();
   }
+
   @override
   void dispose() {
     super.dispose();
@@ -70,14 +73,14 @@ class _NumberVerificationCodeScreenState extends State<NumberVerificationCodeScr
     _timer.cancel();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: AppColorConstants.mirage,
-        body: SingleChildScrollView(child:Padding(
+        body: SingleChildScrollView(
+            child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Form(child: _verificationCodeUI()),
         )),
@@ -95,66 +98,67 @@ class _NumberVerificationCodeScreenState extends State<NumberVerificationCodeScr
           IconButton(
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
-            icon: Icon(Icons.abc,color: AppColorConstants.roseWhite,),onPressed: (){
-                Navigator.of(context).pop();
-              },
+            icon: Icon(
+              Icons.abc,
+              color: AppColorConstants.roseWhite,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
           SizedBox(height: 36.h),
-           Text(
-              AppTextConstants.verificationCodeTitle,
-              style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  color: AppColorConstants.roseWhite,
-                  fontFamily: 'Gilroy-Bold',
-                  fontSize: 22),
-            ),
-
+          Text(
+            AppTextConstants.verificationCodeTitle,
+            style: TextStyle(
+                fontWeight: FontWeight.w800,
+                color: AppColorConstants.roseWhite,
+                fontFamily: 'Gilroy-Bold',
+                fontSize: 22),
+          ),
           SizedBox(
             height: 31.h,
           ),
           Padding(
-                padding:
-                    const EdgeInsets.only(top: 35),
-                child: PinCodeTextField(
-                  textStyle: TextStyle(color:AppColorConstants.roseWhite),
-                  length: 4,
-                   // controller:NumberController,
+            padding: const EdgeInsets.only(top: 35),
+            child: PinCodeTextField(
+              textStyle: TextStyle(color: AppColorConstants.roseWhite),
+              length: 4,
+              // controller:NumberController,
 
-                  appContext: context,
-                  keyboardType: TextInputType.number,
-                  animationType: AnimationType.scale,
-                  pinTheme: PinTheme(
-                    shape: PinCodeFieldShape.box,
-                    fieldHeight: 77,
-                    fieldWidth: 78,
-                    borderWidth: 1,
-                    borderRadius:BorderRadius.circular(5),
-                    selectedColor:AppColorConstants.artyClickPurple,
-                    selectedFillColor: AppColorConstants.verificationFieldColor,
-                    inactiveFillColor:AppColorConstants.verificationFieldColor,
-                    inactiveColor:AppColorConstants.verificationFieldColor,
-                    activeColor:AppColorConstants.verificationFieldColor,
-                    activeFillColor:AppColorConstants.verificationFieldColor,
-                  ),
-                  animationDuration: const Duration(milliseconds: 300),
-                  backgroundColor: Colors.transparent,
-                  enableActiveFill: true,
-                  onChanged: (String val){},
-                  beforeTextPaste: (text) => true,
-                ),
+              appContext: context,
+              keyboardType: TextInputType.number,
+              animationType: AnimationType.scale,
+              pinTheme: PinTheme(
+                shape: PinCodeFieldShape.box,
+                fieldHeight: 77,
+                fieldWidth: 78,
+                borderWidth: 1,
+                borderRadius: BorderRadius.circular(5),
+                selectedColor: AppColorConstants.artyClickPurple,
+                selectedFillColor: AppColorConstants.verificationFieldColor,
+                inactiveFillColor: AppColorConstants.verificationFieldColor,
+                inactiveColor: AppColorConstants.verificationFieldColor,
+                activeColor: AppColorConstants.verificationFieldColor,
+                activeFillColor: AppColorConstants.verificationFieldColor,
               ),
-
-          Text(
-              AppTextConstants.verificationCodePhone,
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: AppColorConstants.roseWhite,
-                  fontSize: 16),
+              animationDuration: const Duration(milliseconds: 300),
+              backgroundColor: Colors.transparent,
+              enableActiveFill: true,
+              onChanged: (String val) {},
+              beforeTextPaste: (text) => true,
             ),
+          ),
+          Text(
+            AppTextConstants.verificationCodePhone,
+            style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: AppColorConstants.roseWhite,
+                fontSize: 16),
+          ),
           SizedBox(
             height: 100.h,
           ),
-              ButtonRoundedGradient(
+          ButtonRoundedGradient(
             buttonCallback: () {
               //
               //  if (NumberController.text.isEmpty) {
@@ -185,7 +189,7 @@ class _NumberVerificationCodeScreenState extends State<NumberVerificationCodeScr
                 alignment: Alignment.center,
                 children: [
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       print('Your press resend button');
                       setState(() {
                         isLoading = true; // Set isLoading state to true
@@ -206,17 +210,18 @@ class _NumberVerificationCodeScreenState extends State<NumberVerificationCodeScr
                     ),
                   ),
                   Visibility(
-                    visible: isLoading, // Show the CircularProgressIndicator only when isLoading state is true
+                    visible:
+                        isLoading, // Show the CircularProgressIndicator only when isLoading state is true
                     child: CircularProgressIndicator(),
                   ),
                 ],
               ),
             ],
           ),
-
         ]);
   }
-   void _showDialog() {
+
+  void _showDialog() {
     // flutter defined function
     showDialog(
       context: context,
@@ -232,47 +237,39 @@ class _NumberVerificationCodeScreenState extends State<NumberVerificationCodeScr
       },
     );
   }
-  Future<verifyEmailModel?> verfyEmail() async{
-    var headers = {
-      'Content-Type': 'application/json'
-    };
+
+  Future<verifyEmailModel?> verfyEmail() async {
+    var headers = {'Content-Type': 'application/json'};
     ///////
-    try{
+    try {
       final response = await http.post(
-        Uri.parse("https://beat.softwarealliancetest.tk/api/v1/auth/forgot/password"),
+        Uri.parse("${BaseHelper().baseUrl}/api/v1/auth/forgot/password"),
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
         encoding: Encoding.getByName('utf-8'),
-        body: {
-          "email": emailController.text
-        },
+        body: {"email": emailController.text},
       );
       ////////////////////
-      verifyEmailModel verifyemailmodel = verifyEmailModel.fromJson(jsonDecode(response.body));
-      if(response.statusCode==200){
-        if(verifyemailmodel.message == "Email Sent"){
+      verifyEmailModel verifyemailmodel =
+          verifyEmailModel.fromJson(jsonDecode(response.body));
+      if (response.statusCode == 200) {
+        if (verifyemailmodel.message == "Email Sent") {
           print('Email exist');
           Navigator.pushReplacementNamed(context, '/verification_code');
         }
-      }
-      else if(response.statusCode==500){
-        final snackBar = SnackBar( content: Text('Internal server error'));
+      } else if (response.statusCode == 500) {
+        final snackBar = SnackBar(content: Text('Internal server error'));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else if (response.statusCode == 422) {
+        final snackBar = SnackBar(content: Text('User does not exists'));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else {
+        final snackBar = SnackBar(content: Text('Socket exception'));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
-      else if(response.statusCode==422){
-        final snackBar = SnackBar( content: Text('User does not exists'));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
-      else{
-        final snackBar = SnackBar( content: Text('Socket exception'));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
-    }
-    catch(e){
+    } catch (e) {
       print(e);
     }
-
   }
-
 }

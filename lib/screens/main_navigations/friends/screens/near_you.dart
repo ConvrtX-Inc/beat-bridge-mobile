@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/constants/asset_path.dart';
+import 'package:beatbridge/helpers/basehelper.dart';
 import 'package:beatbridge/models/apis/api_standard_return.dart';
 import 'package:beatbridge/models/friends/near_you_model.dart';
 import 'package:beatbridge/models/people_model.dart';
@@ -180,7 +181,7 @@ class _NearYouScreenState extends State<NearYouScreen> {
                             borderRadius: BorderRadius.circular(8),
                             image: DecorationImage(
                               image: NetworkImage(
-                                  "https://beat.softwarealliancetest.tk${friendsNearYou[index].profileImage}"),
+                                  "${BaseHelper().baseUrl}${friendsNearYou[index].profileImage}"),
                               fit: BoxFit.fitHeight,
                             )),
                       )

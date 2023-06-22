@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/constants/asset_path.dart';
+import 'package:beatbridge/helpers/basehelper.dart';
 import 'package:beatbridge/models/apis/api_standard_return.dart';
 import 'package:beatbridge/models/friends/friend_request_model.dart';
 import 'package:beatbridge/models/friends/near_you_model.dart';
@@ -158,7 +159,7 @@ class _FriendRequestScreenState extends State<FriendRequestScreen> {
                               borderRadius: BorderRadius.circular(8),
                               image: DecorationImage(
                                 image: NetworkImage(
-                                    "https://beat.softwarealliancetest.tk${friendsNearYou[index].image}"),
+                                    "${BaseHelper().baseUrl}${friendsNearYou[index].image}"),
                                 fit: BoxFit.fitHeight,
                               )),
                         )),

@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:beatbridge/constants/app_constants.dart';
 import 'package:beatbridge/constants/asset_path.dart';
 import 'package:beatbridge/controller/all_queues_controller.dart';
+import 'package:beatbridge/helpers/basehelper.dart';
 import 'package:beatbridge/models/apis/api_standard_return.dart';
 import 'package:beatbridge/models/recent_queue_model.dart';
 import 'package:beatbridge/models/users/new_queue_model.dart';
@@ -71,7 +72,6 @@ class AllQueueScreen extends StatelessWidget {
           Expanded(child: buildQueueItemList(context))
         ]);
   }
-
 
   Widget buildQueueItemList(BuildContext context) {
     return FutureBuilder<APIStandardReturnFormat>(
@@ -141,46 +141,50 @@ class AllQueueScreen extends StatelessWidget {
                           children: <Widget>[
                             if (userQueues[index].platform == null)
                               Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 20.h, 0),
-                                  child: Container(
-                                    height: 60,
-                                    width: 60,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        image: DecorationImage(
-                                          image: NetworkImage(userQueues[index].platform == null
-                                              ? "https://beat.softwarealliancetest.tk${userQueues[index].image}" : userQueues[index].queueData?.images?[index].url ??
-
-                                              'null'
-                                          ),
-                                          fit: BoxFit.fitHeight,
-                                        ),
-                                      // image: DecorationImage(
-                                      //   image: NetworkImage(
-                                      //       '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.playButtonImage}'
-                                      //   ),
-                                      //   fit: BoxFit.fitHeight,
-                                      // ),
+                                padding: EdgeInsets.fromLTRB(0, 0, 20.h, 0),
+                                child: Container(
+                                  height: 60,
+                                  width: 60,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    image: DecorationImage(
+                                      image: NetworkImage(userQueues[index]
+                                                  .platform ==
+                                              null
+                                          ? "${BaseHelper().baseUrl}${userQueues[index].image}"
+                                          : userQueues[index]
+                                                  .queueData
+                                                  ?.images?[index]
+                                                  .url ??
+                                              'null'),
+                                      fit: BoxFit.fitHeight,
                                     ),
+                                    // image: DecorationImage(
+                                    //   image: NetworkImage(
+                                    //       '${AssetsPathConstants.assetsPNGPath}/${AssetsNameConstants.playButtonImage}'
+                                    //   ),
+                                    //   fit: BoxFit.fitHeight,
+                                    // ),
                                   ),
+                                ),
                               )
                             else
                               Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 20.h, 0),
-                                  child: Container(
-                                    height: 60,
-                                    width: 60,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        image: DecorationImage(
-                                          image: NetworkImage(userQueues[index]
-                                                  .queueData
-                                                  ?.images?[0]
-                                                  .url ??
-                                              'null'),
-                                          fit: BoxFit.fitHeight,
-                                        )),
-                                  ),
+                                padding: EdgeInsets.fromLTRB(0, 0, 20.h, 0),
+                                child: Container(
+                                  height: 60,
+                                  width: 60,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      image: DecorationImage(
+                                        image: NetworkImage(userQueues[index]
+                                                .queueData
+                                                ?.images?[0]
+                                                .url ??
+                                            'null'),
+                                        fit: BoxFit.fitHeight,
+                                      )),
+                                ),
                               ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,

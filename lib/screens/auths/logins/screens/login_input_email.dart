@@ -259,6 +259,7 @@ class _LoginInputEmailScreenState extends State<LoginInputEmailScreen> {
                 setState(() {
                   _isAPICallInProgress = false;
                 });
+                print("my login response: ${response.successResponse}");
 
                 if (response.status == 'error') {
                   final Map<String, dynamic> decoded =
